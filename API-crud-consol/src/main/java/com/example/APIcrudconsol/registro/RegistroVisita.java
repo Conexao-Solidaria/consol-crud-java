@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 
 @Entity
 public class RegistroVisita {
-    @Column(name = "datavisita")
+
+    @Id
     private String dataVisita;
 
-    @Column(name = "descricao")
     private String descricao;
 
-    @Column(name = "fkusuario")
     @Id
     private Integer fkUsuario;
 

@@ -1,6 +1,6 @@
 package com.example.APIcrudconsol.beneficio;
 
-import com.example.APIcrudconsol.usuario.UsuarioRepositorio;
+import com.example.APIcrudconsol.donatario.DonatarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +15,11 @@ public class BeneficioController {
     @Autowired
     private BeneficioRepositorio beneficioRepositorio;
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
+    private DonatarioRepositorio donatarioRepositorio;
 
     @PostMapping()
     public ResponseEntity adicionar(@RequestBody Beneficio beneficio) throws ParseException {
-        if(usuarioRepositorio.findById(beneficio.getFkUsuario()).isEmpty() || beneficio.getFkUsuario() == null){
+        if(donatarioRepositorio.findById(beneficio.getFkUsuario()).isEmpty() || beneficio.getFkUsuario() == null){
             return ResponseEntity.status(400).build();
         }
 

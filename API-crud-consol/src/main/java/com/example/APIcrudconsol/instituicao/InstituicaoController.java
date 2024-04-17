@@ -1,4 +1,4 @@
-package com.example.APIcrudconsol.usuario;
+package com.example.APIcrudconsol.instituicao;
 
 import com.example.APIcrudconsol.donatario.DonatarioRepositorio;
 import com.example.APIcrudconsol.familiar.Familiar;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/familiar")
-public class UsuarioController {
+public class InstituicaoController {
 
     @Autowired
     private FamiliarRepositorio familiarRepositorio;

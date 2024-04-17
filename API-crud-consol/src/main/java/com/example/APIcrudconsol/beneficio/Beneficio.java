@@ -6,15 +6,12 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Beneficio {
-    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "valor")
     private Double valor;
 
-    @Column(name = "fk_usuario")
     @Id
-    private Integer fkUsuario;
+    private Integer fkBeneficiario;
 
     public String getNome() {
         return nome;
@@ -32,11 +29,11 @@ public class Beneficio {
         this.valor = valor;
     }
 
-    public Integer getFkUsuario() {
-        return fkUsuario;
+    public Integer getFkBeneficiario() {
+        return fkBeneficiario;
     }
 
-    public void setFkUsuario(Integer fkUsuario) {
-        this.fkUsuario = fkUsuario;
+    public void setFkBeneficiario(Integer fkBeneficiario) {
+        this.fkBeneficiario = fkBeneficiario;
     }
 }

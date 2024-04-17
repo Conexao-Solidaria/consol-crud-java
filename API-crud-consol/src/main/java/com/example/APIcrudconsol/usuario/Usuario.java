@@ -2,55 +2,29 @@ package com.example.APIcrudconsol.usuario;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.time.LocalDate;
-
 @Entity
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idusuario")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
     private int idUsuario;
 
-    @Column(name = "datacadastro")
-    private String dataCadastro;
+    @Column(name = "coordenador")
+    private Boolean coordenador;
 
-    @Column(name = "nome")
-    private String nome;
+    @Column(name = "nome_usuario")
+    private String nomeUsuario;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "senha")
+    private String senha;
 
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "datanascimento")
-    private String dataNascimento;
-
-    @Column(name = "telefone1")
-    private String telefone1;
-
-    @Column(name = "telefone2")
-    private String telefone2;
-
-    @Column(name = "cep")
-    private String cep;
-
-    @Column(name = "numerocasa")
-    private int numeroCasa;
-
-    @Column(name = "estadocivil")
-    private String estadoCivil;
-
-    @Column(name = "escolaridade")
-    private String escolaridade;
-
-    @Column(name = "trabalhando")
-    private Boolean trabalhando;
-
-    @Column(name = "ocupacao")
-    private String ocupacao;
-
-    @Column(name = "renda")
-    private Double renda;
-
+    private Integer FkInstituicao;
 
     public int getIdUsuario() {
         return idUsuario;
@@ -60,20 +34,36 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public String getDataCadastro() {
-        return dataCadastro;
+    public Boolean getCoordenador() {
+        return coordenador;
     }
 
-    public void setDataCadastro(String dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setCoordenador(Boolean coordenador) {
+        this.coordenador = coordenador;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getCpf() {
@@ -84,83 +74,11 @@ public class Usuario {
         this.cpf = cpf;
     }
 
-    public String getDataNascimento() {
-        return dataNascimento;
+    public Integer getFkInstituicao() {
+        return FkInstituicao;
     }
 
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public String getTelefone1() {
-        return telefone1;
-    }
-
-    public void setTelefone1(String telefone1) {
-        this.telefone1 = telefone1;
-    }
-
-    public String getTelefone2() {
-        return telefone2;
-    }
-
-    public void setTelefone2(String telefone2) {
-        this.telefone2 = telefone2;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public Integer getNumeroCasa() {
-        return numeroCasa;
-    }
-
-    public void setNumeroCasa(Integer numeroCasa) {
-        this.numeroCasa = numeroCasa;
-    }
-
-    public String getEstadoCivil() {
-        return estadoCivil;
-    }
-
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil = estadoCivil;
-    }
-
-    public String getEscolaridade() {
-        return escolaridade;
-    }
-
-    public void setEscolaridade(String escolaridade) {
-        this.escolaridade = escolaridade;
-    }
-
-    public Boolean getTrabalhando() {
-        return trabalhando;
-    }
-
-    public void setTrabalhando(Boolean trabalhando) {
-        this.trabalhando = trabalhando;
-    }
-
-    public String getOcupacao() {
-        return ocupacao;
-    }
-
-    public void setOcupacao(String ocupacao) {
-        this.ocupacao = ocupacao;
-    }
-
-    public Double getRenda() {
-        return renda;
-    }
-
-    public void setRenda(Double renda) {
-        this.renda = renda;
+    public void setFkInstituicao(Integer fkInstituicao) {
+        FkInstituicao = fkInstituicao;
     }
 }

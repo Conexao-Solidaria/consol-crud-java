@@ -2,23 +2,29 @@ package com.example.APIcrudconsol.familiar;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 public class Familiar {
-    @Column(name = "nome")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idFamilia;
+
     private String nome;
 
-    @Column(name = "datanascimento")
-    private String dataNascimento;
+    private String cep;
 
-    @Column(name = "parentesco")
-    private String parentesco;
+    private Integer numeroCasa;
 
-    @Column(name = "rg")
-    private String rg;
+    private Double renda;
 
-    @Column(name = "fkusuario")
-    @Id
-    private Integer fkUsuario;
+    public int getIdFamilia() {
+        return idFamilia;
+    }
+
+    public void setIdFamilia(int idFamilia) {
+        this.idFamilia = idFamilia;
+    }
 
     public String getNome() {
         return nome;
@@ -28,35 +34,27 @@ public class Familiar {
         this.nome = nome;
     }
 
-    public String getDataNascimento() {
-        return dataNascimento;
+    public String getCep() {
+        return cep;
     }
 
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    public String getParentesco() {
-        return parentesco;
+    public Integer getNumeroCasa() {
+        return numeroCasa;
     }
 
-    public void setParentesco(String parentesco) {
-        this.parentesco = parentesco;
+    public void setNumeroCasa(Integer numeroCasa) {
+        this.numeroCasa = numeroCasa;
     }
 
-    public String getRg() {
-        return rg;
+    public Double getRenda() {
+        return renda;
     }
 
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public Integer getFkUsuario() {
-        return fkUsuario;
-    }
-
-    public void setFkUsuario(Integer fkUsuario) {
-        this.fkUsuario = fkUsuario;
+    public void setRenda(Double renda) {
+        this.renda = renda;
     }
 }

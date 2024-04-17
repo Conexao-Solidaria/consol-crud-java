@@ -3,30 +3,27 @@ package com.example.APIcrudconsol.despesa;
 import jakarta.persistence.*;
 @Entity
 public class Despesa {
-    @Column(name = "fk_usuario")
     @Id
-    private Integer fkUsuario;
+    private Integer fkFamilia;
 
-    @Column(name = "nome")
-    private String nome;
+    private String tipo;
 
-    @Column(name = "gasto")
     private Double gasto;
 
-    public Integer getFkUsuario() {
-        return fkUsuario;
+    public Integer getFkFamilia() {
+        return fkFamilia;
     }
 
-    public void setFkUsuario(Integer fkUsuario) {
-        this.fkUsuario = fkUsuario;
+    public void setFkFamilia(Integer fkFamilia) {
+        this.fkFamilia = fkFamilia;
     }
 
-    public String getNome() {
-        return nome;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Double getGasto() {
