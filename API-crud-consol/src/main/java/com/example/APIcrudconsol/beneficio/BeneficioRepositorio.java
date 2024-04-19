@@ -9,6 +9,4 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Collection;
 
 public interface BeneficioRepositorio extends JpaRepository<Beneficio, Integer> {
-    @Query("SELECT b FROM Beneficio b")
-    Collection<Beneficio> encontrarTodos();
 }

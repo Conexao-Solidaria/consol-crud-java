@@ -1,14 +1,28 @@
 package com.example.APIcrudconsol.instituicaoFamilia;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.APIcrudconsol.familia.Familia;
+import com.example.APIcrudconsol.instituicao.Instituicao;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@ToString
+//@Data
+@Builder
 public class InstituicaoFamilia {
     @Id
-    private Integer fkInstituicao;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idFamiliaInstituicao;
 
-    @Id
-    private Integer fkFamilia;
+    @ManyToOne
+    @JoinColumn(name = "fk_instituicao")
+    private Instituicao fkInstituicao;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_familia")
+    private Familia fkFamilia;
 }

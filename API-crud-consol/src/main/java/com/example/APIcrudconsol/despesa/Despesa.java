@@ -1,36 +1,28 @@
 package com.example.APIcrudconsol.despesa;
 
+import com.example.APIcrudconsol.familia.Familia;
 import jakarta.persistence.*;
+import lombok.*;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@ToString
+//@Data
+@Builder
 public class Despesa {
     @Id
-    private Integer fkFamilia;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idDespesa;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_familia")
+    private Familia familia;
 
     private String tipo;
 
     private Double gasto;
 
-    public Integer getFkFamilia() {
-        return fkFamilia;
-    }
-
-    public void setFkFamilia(Integer fkFamilia) {
-        this.fkFamilia = fkFamilia;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public Double getGasto() {
-        return gasto;
-    }
-
-    public void setGasto(Double gasto) {
-        this.gasto = gasto;
-    }
 }

@@ -1,8 +1,17 @@
 package com.example.APIcrudconsol.necessidade;
 
+import com.example.APIcrudconsol.instituicao.Instituicao;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@ToString
+//@Data
+@Builder
 public class Necessidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,38 +21,8 @@ public class Necessidade {
 
     private String descricao;
 
-    private String fkInstituicao;
+    @ManyToOne
+    @JoinColumn(name = "fk_instituicao")
+    private Instituicao instituicao;
 
-
-    public int getIdNecessidade() {
-        return idNecessidade;
-    }
-
-    public void setIdNecessidade(int idNecessidade) {
-        this.idNecessidade = idNecessidade;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getFkInstituicao() {
-        return fkInstituicao;
-    }
-
-    public void setFkInstituicao(String fkInstituicao) {
-        this.fkInstituicao = fkInstituicao;
-    }
 }

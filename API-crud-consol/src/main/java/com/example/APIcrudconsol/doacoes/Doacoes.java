@@ -1,14 +1,15 @@
 package com.example.APIcrudconsol.doacoes;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.APIcrudconsol.donatario.Donatario;
+import com.example.APIcrudconsol.instituicao.Instituicao;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
 public class Doacoes {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idDoacoes;
 
     private Double peso;
@@ -19,9 +20,12 @@ public class Doacoes {
 
     private LocalDate dataDoacao;
 
-    @Id
-    private Integer fkInstituicao;
+    @ManyToOne
+    @JoinColumn(name = "fk_instituicao")
+    private Instituicao instituicao;
 
-    private Integer fkDonatario;
+    @JoinColumn(name = "fk_donatario")
+    @ManyToOne
+    private Donatario donatario;
 
 }

@@ -1,11 +1,17 @@
-package com.example.APIcrudconsol.familiar;
+package com.example.APIcrudconsol.familia;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDate;
+import lombok.*;
 
 @Entity
-public class Familiar {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@ToString
+//@Data
+@Builder
+public class Familia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idFamilia;
@@ -17,44 +23,4 @@ public class Familiar {
     private Integer numeroCasa;
 
     private Double renda;
-
-    public int getIdFamilia() {
-        return idFamilia;
-    }
-
-    public void setIdFamilia(int idFamilia) {
-        this.idFamilia = idFamilia;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public Integer getNumeroCasa() {
-        return numeroCasa;
-    }
-
-    public void setNumeroCasa(Integer numeroCasa) {
-        this.numeroCasa = numeroCasa;
-    }
-
-    public Double getRenda() {
-        return renda;
-    }
-
-    public void setRenda(Double renda) {
-        this.renda = renda;
-    }
 }

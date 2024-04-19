@@ -1,68 +1,94 @@
 package com.example.APIcrudconsol.usuario;
 
-import com.example.APIcrudconsol.donatario.DonatarioRepositorio;
-import com.example.APIcrudconsol.familiar.Familiar;
-import com.example.APIcrudconsol.familiar.FamiliarRepositorio;
+import com.example.APIcrudconsol.instituicao.Instituicao;
+import com.example.APIcrudconsol.instituicao.InstituicaoRepository;
+import com.example.APIcrudconsol.instituicao.dto.InstituicaoAtualizarDto;
+import com.example.APIcrudconsol.instituicao.dto.InstituicaoConsultaDto;
+import com.example.APIcrudconsol.instituicao.dto.InstituicaoMapper;
+import com.example.APIcrudconsol.usuario.dto.UsuarioAtualizarDto;
+import com.example.APIcrudconsol.usuario.dto.UsuarioCadastroDto;
+import com.example.APIcrudconsol.usuario.dto.UsuarioConsultaDto;
+import com.example.APIcrudconsol.usuario.dto.UsuarioMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/familiar")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
-    private FamiliarRepositorio familiarRepositorio;
+    private UsuarioRepository usuarioRepository;
     @Autowired
-    private DonatarioRepositorio donatarioRepositorio;
+    private InstituicaoRepository instituicaoRepository;
 
-    @PostMapping()
-    public ResponseEntity adicionar(@RequestBody Familiar familiar) throws ParseException {
-        if(donatarioRepositorio.findById(familiar.getFkUsuario()).isEmpty() || familiar.getFkUsuario() == null){
-            return ResponseEntity.status(400).build();
-        }
 
-        familiarRepositorio.save(familiar);
-        return ResponseEntity.status(201).build();
+    @PostMapping
+    public ResponseEntity<UsuarioConsultaDto> criacaoProduto(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+        if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
+        if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
+
+        Usuario usuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
+
+        Usuario usuarioSalvar = usuarioRepository.save(usuario);
+
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuarioSalvar);
+
+        return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<Familiar>> buscarTodos(){
-        List<Familiar> familiares = new ArrayList<>();
-        familiares = (List<Familiar>) familiarRepositorio.encontrarTodos();
+    @GetMapping
+    public ResponseEntity<List<UsuarioConsultaDto>> listagemUsuarios(){
+        List<Usuario> usuarios = usuarioRepository.findAll();
 
-        if(familiares.isEmpty()){
-            return ResponseEntity.status(204).build();
-        }
+        if(usuarios.isEmpty()) return ResponseEntity.status(204).build();
 
-        return ResponseEntity.status(200).body(familiares);
+        return ResponseEntity.status(200).body(UsuarioMapper.listagemDtoList(usuarios));
     }
 
-    @PutMapping()
-    public ResponseEntity<Familiar> atualizar(@RequestBody Familiar familiar){
-        if(pegarFamiliarFk(familiar.getFkUsuario()) == null){
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioConsultaDto> consultarPorId(@PathVariable Integer id){
+        Optional<Usuario> usuarioBuscado = usuarioRepository.findById(id);
+
+        if(usuarioBuscado.isEmpty()) return ResponseEntity.status(404).build();
+
+        UsuarioConsultaDto dto = UsuarioMapper.usuarioParaConsultaDto(usuarioBuscado.get());
+
+        return ResponseEntity.status(200).body(dto);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<UsuarioConsultaDto> atualizarEvento(@RequestBody @Valid UsuarioAtualizarDto usuarioAtualizarDto, @PathVariable Integer id){
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        //Isso é idiota, o java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
+
+        if(usuarioOptional.isEmpty()) return ResponseEntity.status(404).build();
+
+        Usuario usuarioBuscado = usuarioOptional.get();
+
+        Usuario usuario = UsuarioMapper.atualizarDtoParaUsuario(usuarioAtualizarDto, usuarioBuscado);
+
+
+        Usuario eventoAtualizado = usuarioRepository.save(usuario);
+
+        UsuarioConsultaDto dto = UsuarioMapper.usuarioParaConsultaDto(eventoAtualizado);
+
+        return ResponseEntity.status(200).body(dto);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deletarPorId(@PathVariable Integer id){
+        if(!usuarioRepository.existsById(id)){
             return ResponseEntity.status(404).build();
         }
-        Familiar familiarSalvo = familiarRepositorio.save(familiar);
-        return ResponseEntity.status(200).body(familiarRepositorio.save(familiar));
-    }
 
-    @DeleteMapping("/{fk}")
-    public ResponseEntity delete(@PathVariable int fk) {
-        if(pegarFamiliarFk(fk) == null){
-            return ResponseEntity.status(404).build();
-        }
-        familiarRepositorio.deleteById(fk);
-        return ResponseEntity.status(200).build();
-    }
+        usuarioRepository.deleteById(id);
 
-    public Familiar pegarFamiliarFk(int fk){
-        Optional<Familiar> familiar = familiarRepositorio.findById(fk);
-        return familiar.orElse(null);
+        return ResponseEntity.ok(null);
     }
 }

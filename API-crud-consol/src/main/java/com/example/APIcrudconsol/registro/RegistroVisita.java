@@ -1,39 +1,31 @@
 package com.example.APIcrudconsol.registro;
 
+import com.example.APIcrudconsol.donatario.Donatario;
 import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@ToString
+//@Data
+@Builder
 public class RegistroVisita {
-
     @Id
-    private String dataVisita;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idRegistroVisita;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_donatario")
+    private Donatario donatario;
+
+    @CreationTimestamp
+    private LocalDate dataVisita;
 
     private String descricao;
-
-    @Id
-    private Integer fkUsuario;
-
-    public String getDataVisita() {
-        return dataVisita;
-    }
-
-    public void setDataVisita(String dataVisita) {
-        this.dataVisita = dataVisita;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Integer getFkUsuario() {
-        return fkUsuario;
-    }
-
-    public void setFkUsuario(Integer fkUsuario) {
-        this.fkUsuario = fkUsuario;
-    }
 }

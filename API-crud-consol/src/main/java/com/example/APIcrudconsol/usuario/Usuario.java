@@ -1,8 +1,17 @@
 package com.example.APIcrudconsol.usuario;
 
+import com.example.APIcrudconsol.instituicao.Instituicao;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+//@ToString
+//@Data
+@Builder
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,61 +33,7 @@ public class Usuario {
     @Column(name = "cpf")
     private String cpf;
 
-    private Integer FkInstituicao;
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Boolean getCoordenador() {
-        return coordenador;
-    }
-
-    public void setCoordenador(Boolean coordenador) {
-        this.coordenador = coordenador;
-    }
-
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public Integer getFkInstituicao() {
-        return FkInstituicao;
-    }
-
-    public void setFkInstituicao(Integer fkInstituicao) {
-        FkInstituicao = fkInstituicao;
-    }
+    @ManyToOne
+    @JoinColumn(name = "fk_instituicao")
+    private Instituicao FkInstituicao;
 }
