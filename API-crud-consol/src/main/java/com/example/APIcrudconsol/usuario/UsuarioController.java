@@ -5,10 +5,7 @@ import com.example.APIcrudconsol.instituicao.InstituicaoRepository;
 import com.example.APIcrudconsol.instituicao.dto.InstituicaoAtualizarDto;
 import com.example.APIcrudconsol.instituicao.dto.InstituicaoConsultaDto;
 import com.example.APIcrudconsol.instituicao.dto.InstituicaoMapper;
-import com.example.APIcrudconsol.usuario.dto.UsuarioAtualizarDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioCadastroDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioConsultaDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioMapper;
+import com.example.APIcrudconsol.usuario.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +25,7 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<UsuarioConsultaDto> criacaoProduto(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+    public ResponseEntity<UsuarioConsultaDto> criar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
         if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
         if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
 
@@ -62,10 +59,10 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UsuarioConsultaDto> atualizarEvento(@RequestBody @Valid UsuarioAtualizarDto usuarioAtualizarDto, @PathVariable Integer id){
+    public ResponseEntity<UsuarioConsultaDto> atualizar(@RequestBody @Valid UsuarioAtualizarDto usuarioAtualizarDto, @PathVariable Integer id){
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
 
-        //Isso é idiota, o java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
+        //O  java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
 
         if(usuarioOptional.isEmpty()) return ResponseEntity.status(404).build();
 
@@ -82,7 +79,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Integer id){
+    public ResponseEntity<Void> apagarPorId(@PathVariable Integer id){
         if(!usuarioRepository.existsById(id)){
             return ResponseEntity.status(404).build();
         }
@@ -90,5 +87,21 @@ public class UsuarioController {
         usuarioRepository.deleteById(id);
 
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/login") //O método POST está planejado para quando houver a implementação do JWT
+    public ResponseEntity<UsuarioConsultaDto> login(
+            @RequestBody @Valid UsuarioLoginDto usuarioLoginDto
+    ) {
+        String email = usuarioLoginDto.getEmail();
+        String senha = usuarioLoginDto.getSenha();
+        Optional<Usuario> usuarioOpt =
+                usuarioRepository.findByEmailAndSenhaEquals(email, senha);
+
+        if (usuarioOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+        Usuario usuario = usuarioOpt.get();
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuario);
+        return ResponseEntity.ok(usuarioConsultaDto);
     }
 }
