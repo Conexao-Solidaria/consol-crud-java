@@ -9,8 +9,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
 public class Usuario {
     @Id

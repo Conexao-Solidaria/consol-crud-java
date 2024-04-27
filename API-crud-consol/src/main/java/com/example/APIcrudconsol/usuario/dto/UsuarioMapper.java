@@ -52,11 +52,24 @@ public class UsuarioMapper {
         return usuario;
     }
 
-    public static Usuario loginDtoParaUsuario(UsuarioLoginDto dto){
+    public static UsuarioTokenDto of(Usuario usuario, String token) {
+        UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
+
+        usuarioTokenDto.setUserId(usuario.getIdUsuario());
+        usuarioTokenDto.setEmail(usuarioTokenDto.getEmail());
+        usuarioTokenDto.setNome(usuario.getNomeUsuario());
+        usuarioTokenDto.setToken(token);
+
+        return usuarioTokenDto;
+    }
+
+    public static Usuario of(UsuarioCriacaoDto usuarioCriacaoDto) {
         Usuario usuario = new Usuario();
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
-        usuario.setCoordenador(dto.getCoordenador());
+
+        usuario.setNomeUsuario(usuarioCriacaoDto.getNomeUsuario());
+        usuario.setEmail(usuarioCriacaoDto.getEmail());
+        usuario.setSenha(usuario.getSenha());
+
         return usuario;
     }
 

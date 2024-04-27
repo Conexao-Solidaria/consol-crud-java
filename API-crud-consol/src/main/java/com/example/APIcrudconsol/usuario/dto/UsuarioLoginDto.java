@@ -9,13 +9,7 @@ import lombok.Data;
 @Data
 public class UsuarioLoginDto {
 
-    @NotBlank(message = "O e-mail não pode estar em branco")
-    @Email(message = "O e-mail deve ser válido")
     private String email;
 
-    @NotBlank(message = "A senha não pode estar em branco")
-    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String senha;
-
-    private Boolean coordenador;
 }

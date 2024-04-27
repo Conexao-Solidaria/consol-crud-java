@@ -5,6 +5,7 @@ import com.example.APIcrudconsol.instituicao.InstituicaoRepository;
 import com.example.APIcrudconsol.instituicao.dto.InstituicaoAtualizarDto;
 import com.example.APIcrudconsol.instituicao.dto.InstituicaoConsultaDto;
 import com.example.APIcrudconsol.instituicao.dto.InstituicaoMapper;
+import com.example.APIcrudconsol.usuario.Service.UsuarioService;
 import com.example.APIcrudconsol.usuario.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private InstituicaoRepository instituicaoRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
 
     @PostMapping
@@ -89,19 +92,11 @@ public class UsuarioController {
         return ResponseEntity.ok(null);
     }
 
-    @PostMapping("/login") //O método POST está planejado para quando houver a implementação do JWT
-    public ResponseEntity<UsuarioConsultaDto> login(
-            @RequestBody @Valid UsuarioLoginDto usuarioLoginDto
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioTokenDto> login(
+            @RequestBody UsuarioLoginDto usuarioLoginDto
     ) {
-        String email = usuarioLoginDto.getEmail();
-        String senha = usuarioLoginDto.getSenha();
-        Optional<Usuario> usuarioOpt =
-                usuarioRepository.findByEmailAndSenhaEquals(email, senha);
-
-        if (usuarioOpt.isEmpty()) return ResponseEntity.notFound().build();
-
-        Usuario usuario = usuarioOpt.get();
-        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuario);
-        return ResponseEntity.ok(usuarioConsultaDto);
+        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
+        return ResponseEntity.ok(usuarioToken);
     }
 }
