@@ -1,15 +1,17 @@
 package com.example.APIcrudconsol.usuario.dto;
 
 import com.example.APIcrudconsol.usuario.Usuario;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+@Data
 public class UsuarioDetalhesDto implements UserDetails {
 
-    private final String nome;
-    private final String email;
-    private final String senha;
+    private String nome;
+    private String email;
+    private String senha;
 
     public UsuarioDetalhesDto(Usuario usuario) {
         this.nome = usuario.getNomeUsuario();
@@ -24,31 +26,31 @@ public class UsuarioDetalhesDto implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

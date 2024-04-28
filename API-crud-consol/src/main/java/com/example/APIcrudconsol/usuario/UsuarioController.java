@@ -99,4 +99,19 @@ public class UsuarioController {
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
         return ResponseEntity.ok(usuarioToken);
     }
+
+    @PostMapping("/cadastro")
+    public ResponseEntity<UsuarioConsultaDto> cadastrar(
+            @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
+    ) {
+        if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
+        if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
+
+        usuarioService.criar(usuarioCadastroDto);
+
+        Usuario usuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuario);
+
+        return ResponseEntity.status(201).body(usuarioConsultaDto);
+    }
 }

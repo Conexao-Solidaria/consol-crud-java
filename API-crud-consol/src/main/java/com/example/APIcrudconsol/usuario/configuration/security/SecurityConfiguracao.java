@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,13 +33,11 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguracao {
-    private static final String ORIGENS_PERMITIDAS = "*";
 
     @Autowired
     private AutenticacaoService autenticacaoService;
 
     @Autowired
-    @Qualifier("autenticacaoEntryPoint")
     private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
@@ -55,38 +54,37 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/usuarios/login/**"),
             new AntPathRequestMatcher("/h2-console/**"),
-            new AntPathRequestMatcher("/mysql/**"),
+            new AntPathRequestMatcher("/h2-console/**/**"),
             new AntPathRequestMatcher("/error/**")
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(Customizer.withDefaults())
-            .csrf(CsrfConfigurer<HttpSecurity>::disable)
-            .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(URLS_PERMITIDAS)
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            )
-            .exceptionHandling(handling -> handling
-                    .authenticationEntryPoint(autenticacaoJwtEntryPoint))
-            .sessionManagement(management -> management
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .cors(Customizer.withDefaults())
+                .csrf(CsrfConfigurer<HttpSecurity>::disable)
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(URLS_PERMITIDAS)
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint(autenticacaoJwtEntryPoint))
+                .sessionManagement(management -> management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.addFilterBefore(jwtAuthenticationFilterBean(),
-            UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
+        return http.build();
     }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(
-                new AutenticacaoProvider(autenticacaoService, passwordEncoder()));
+        authenticationManagerBuilder.authenticationProvider(new AutenticacaoProvider(autenticacaoService, passwordEncoder()));
         return authenticationManagerBuilder.build();
     }
 
@@ -123,9 +121,7 @@ public class SecurityConfiguracao {
                         HttpMethod.DELETE.name(),
                         HttpMethod.OPTIONS.name(),
                         HttpMethod.HEAD.name(),
-                        HttpMethod.TRACE.name()
-                )
-        );
+                        HttpMethod.TRACE.name()));
 
         configuracao.setExposedHeaders(List.of(HttpHeaders.CONTENT_DISPOSITION));
 

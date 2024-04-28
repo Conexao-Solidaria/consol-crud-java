@@ -15,15 +15,10 @@ import java.io.IOException;
 public class AutenticacaoEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-    AuthenticationException authException) throws IOException, ServletException {
-
-        if (authException.getClass().equals(BadCredentialsException.class)
-                || authException.getClass().equals(InsufficientAuthenticationException.class)) {
-
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        if (authException.getClass().equals(BadCredentialsException.class)|| authException.getClass().equals(InsufficientAuthenticationException.class)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-        else {
+        } else {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
     }

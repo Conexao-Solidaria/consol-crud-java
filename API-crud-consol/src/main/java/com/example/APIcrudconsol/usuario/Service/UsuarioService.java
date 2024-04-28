@@ -3,10 +3,7 @@ package com.example.APIcrudconsol.usuario.Service;
 import com.example.APIcrudconsol.usuario.Usuario;
 import com.example.APIcrudconsol.usuario.UsuarioRepository;
 import com.example.APIcrudconsol.usuario.configuration.security.jwt.GerenciadorTokenJwt;
-import com.example.APIcrudconsol.usuario.dto.UsuarioCriacaoDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioLoginDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioMapper;
-import com.example.APIcrudconsol.usuario.dto.UsuarioTokenDto;
+import com.example.APIcrudconsol.usuario.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,14 +17,13 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class UsuarioService {
 
-
     private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
 
-    public void criar(UsuarioCriacaoDto usuarioCriacaoDto) {
-        final Usuario novoUsuario = UsuarioMapper.of(usuarioCriacaoDto);
+    public void criar(UsuarioCadastroDto usuarioCadastroDto) {
+        final Usuario novoUsuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
 
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UsuarioTokenDto {
-    private int userId;
+    private Integer userId;
     private String nome;
     private String email;
     private String token;
