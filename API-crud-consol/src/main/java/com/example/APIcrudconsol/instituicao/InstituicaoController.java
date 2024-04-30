@@ -20,7 +20,7 @@ public class InstituicaoController {
     InstituicaoRepository repositoryInst;
 
     @PostMapping
-    public ResponseEntity<InstituicaoConsultaDto> criacaoProduto(@RequestBody @Valid InstituicaoCadastroDto instituicaoCadastroDto){
+    public ResponseEntity<InstituicaoConsultaDto> criar(@RequestBody @Valid InstituicaoCadastroDto instituicaoCadastroDto){
         if(instituicaoCadastroDto == null) return ResponseEntity.status(400).build();
 
         Instituicao instituicaoSalvar = InstituicaoMapper.cadastroDtoToInstituicao(instituicaoCadastroDto);
@@ -53,7 +53,7 @@ public class InstituicaoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<InstituicaoConsultaDto> atualizarEvento(@RequestBody @Valid InstituicaoAtualizarDto instituicaoAtualizarDto, @PathVariable Integer id){
+    public ResponseEntity<InstituicaoConsultaDto> atualizar(@RequestBody @Valid InstituicaoAtualizarDto instituicaoAtualizarDto, @PathVariable Integer id){
         Optional<Instituicao> instituicaoBuscadoOpt = repositoryInst.findById(id);
 
         //Isso é idiota, o java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
@@ -79,7 +79,7 @@ public class InstituicaoController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Integer id){
+    public ResponseEntity<Void> apagarPorId(@PathVariable Integer id){
         if(!repositoryInst.existsById(id)){
             return ResponseEntity.status(404).build();
         }

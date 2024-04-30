@@ -3,6 +3,8 @@ package com.example.APIcrudconsol.usuario;
 import com.example.APIcrudconsol.instituicaoFamilia.InstituicaoFamilia;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+import java.util.Optional;
 
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    Optional<Usuario> findByEmail(String email);
 }
