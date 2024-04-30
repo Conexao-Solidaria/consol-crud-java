@@ -8,6 +8,7 @@ import com.example.APIcrudconsol.instituicao.dto.InstituicaoMapper;
 import com.example.APIcrudconsol.usuario.Service.UsuarioService;
 import com.example.APIcrudconsol.usuario.dto.*;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +18,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private InstituicaoRepository instituicaoRepository;
-    @Autowired
-    private UsuarioService usuarioService;
-
+    private final UsuarioRepository usuarioRepository;
+    private final InstituicaoRepository instituicaoRepository;
+    private final UsuarioService usuarioService;
 
     @PostMapping
     public ResponseEntity<UsuarioConsultaDto> criar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){

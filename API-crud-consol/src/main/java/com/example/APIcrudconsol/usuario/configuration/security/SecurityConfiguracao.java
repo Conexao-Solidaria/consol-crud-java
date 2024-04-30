@@ -2,6 +2,7 @@ package com.example.APIcrudconsol.usuario.configuration.security;
 
 import com.example.APIcrudconsol.usuario.autenticacao.AutenticacaoService;
 import com.example.APIcrudconsol.usuario.configuration.security.jwt.GerenciadorTokenJwt;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -32,13 +33,11 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguracao {
 
-    @Autowired
-    private AutenticacaoService autenticacaoService;
-
-    @Autowired
-    private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
+    private final AutenticacaoService autenticacaoService;
+    private final AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/swagger-ui/**"),
