@@ -52,6 +52,17 @@ public class UsuarioMapper {
         return usuario;
     }
 
+    public static UsuarioTokenDto of(Usuario usuario, String token) {
+        UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
+
+        usuarioTokenDto.setUserId(usuario.getIdUsuario());
+        usuarioTokenDto.setEmail(usuario.getEmail());
+        usuarioTokenDto.setNome(usuario.getNomeUsuario());
+        usuarioTokenDto.setToken(token);
+
+        return usuarioTokenDto;
+    }
+
     public static List<UsuarioConsultaDto> listagemDtoList(List<Usuario> usuarios){
         return usuarios.stream().map(UsuarioMapper::usuarioParaConsultaDto).toList();
     }

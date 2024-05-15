@@ -1,16 +1,10 @@
 package com.example.APIcrudconsol.usuario;
 
-import com.example.APIcrudconsol.instituicao.Instituicao;
 import com.example.APIcrudconsol.instituicao.InstituicaoRepository;
-import com.example.APIcrudconsol.instituicao.dto.InstituicaoAtualizarDto;
-import com.example.APIcrudconsol.instituicao.dto.InstituicaoConsultaDto;
-import com.example.APIcrudconsol.instituicao.dto.InstituicaoMapper;
-import com.example.APIcrudconsol.usuario.dto.UsuarioAtualizarDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioCadastroDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioConsultaDto;
-import com.example.APIcrudconsol.usuario.dto.UsuarioMapper;
+import com.example.APIcrudconsol.usuario.service.UsuarioService;
+import com.example.APIcrudconsol.usuario.dto.*;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +13,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private InstituicaoRepository instituicaoRepository;
-
+    private final UsuarioRepository usuarioRepository;
+    private final InstituicaoRepository instituicaoRepository;
+    private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioConsultaDto> criacaoProduto(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
+    public ResponseEntity<UsuarioConsultaDto> criar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
         if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
         if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
 
@@ -62,10 +55,10 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UsuarioConsultaDto> atualizarEvento(@RequestBody @Valid UsuarioAtualizarDto usuarioAtualizarDto, @PathVariable Integer id){
+    public ResponseEntity<UsuarioConsultaDto> atualizar(@RequestBody @Valid UsuarioAtualizarDto usuarioAtualizarDto, @PathVariable Integer id){
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
 
-        //Isso é idiota, o java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
+        //O  java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
 
         if(usuarioOptional.isEmpty()) return ResponseEntity.status(404).build();
 
@@ -82,7 +75,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Integer id){
+    public ResponseEntity<Void> apagarPorId(@PathVariable Integer id){
         if(!usuarioRepository.existsById(id)){
             return ResponseEntity.status(404).build();
         }
@@ -90,5 +83,28 @@ public class UsuarioController {
         usuarioRepository.deleteById(id);
 
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioTokenDto> login(
+            @RequestBody UsuarioLoginDto usuarioLoginDto
+    ) {
+        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
+        return ResponseEntity.ok(usuarioToken);
+    }
+
+    @PostMapping("/cadastro")
+    public ResponseEntity<UsuarioConsultaDto> cadastrar(
+            @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
+    ) {
+        if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
+        if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
+
+        usuarioService.criar(usuarioCadastroDto);
+
+        Usuario usuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuario);
+
+        return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 }
