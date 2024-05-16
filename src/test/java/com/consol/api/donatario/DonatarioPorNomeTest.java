@@ -60,12 +60,19 @@ public class DonatarioPorNomeTest {
         private MockMvc mockMvc;
 
         @Test
+        @DisplayName("Deve retornar 204 quando nao houver donatarios cadastrados")
+        public void teste1() throws Exception {
+            mockMvc.perform(get(URL + "Joao"))
+                    .andExpect(status().isNoContent());
+        }
+
+        @Test
         @SqlGroup({
                 @Sql(scripts = FILL_DATABASE_SCRIPT,
                         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
         })
         @DisplayName("Deve retornar 204 quando nao encontrar o donatario")
-        public void teste1() throws Exception {
+        public void teste2() throws Exception {
             mockMvc.perform(get(URL + "Donatario 3"))
                     .andExpect(status().isNoContent());
         }

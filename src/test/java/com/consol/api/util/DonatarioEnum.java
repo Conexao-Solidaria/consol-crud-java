@@ -4,7 +4,7 @@ public enum DonatarioEnum {
 
     BASE_URL("/donatarios"),
     POR_ID("/donatarios/{id}"),
-    POR_NOME("/donatarios/filtro?nome=");
+    POR_NOME("/donatarios/filtro");
 
 
     DonatarioEnum(String PATH) { this.PATH = PATH; }

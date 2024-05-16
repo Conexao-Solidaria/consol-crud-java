@@ -2,6 +2,9 @@ package com.consol.api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -11,16 +14,17 @@ import lombok.*;
 //@ToString
 //@Data
 @Builder
-public class Beneficio {
+public class RegistroVisita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idBeneficio;
-
-    private String nome;
-
-    private Double valor;
+    private Integer idRegistroVisita;
 
     @ManyToOne
     @JoinColumn(name = "fk_donatario")
     private Donatario donatario;
+
+    @CreationTimestamp
+    private LocalDate dataVisita;
+
+    private String descricao;
 }

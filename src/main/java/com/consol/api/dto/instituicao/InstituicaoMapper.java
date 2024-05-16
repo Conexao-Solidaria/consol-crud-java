@@ -1,5 +1,4 @@
 package com.consol.api.dto.instituicao;
-import com.consol.api.entity.Instituicao;
 
 import java.util.List;
 

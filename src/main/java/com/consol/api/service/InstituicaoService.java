@@ -4,7 +4,6 @@ import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
 import com.consol.api.dto.instituicao.InstituicaoCadastroDto;
 import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
 import com.consol.api.dto.instituicao.InstituicaoMapper;
-import com.consol.api.entity.Instituicao;
 import com.consol.api.repository.InstituicaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

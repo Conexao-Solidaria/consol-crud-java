@@ -11,16 +11,17 @@ import lombok.*;
 //@ToString
 //@Data
 @Builder
-public class Familia {
+public class Necessidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idFamilia;
+    private int idNecessidade;
 
-    private String nome;
+    private String tipo;
 
-    private String cep;
+    private String descricao;
 
-    private Integer numeroCasa;
+    @ManyToOne
+    @JoinColumn(name = "fk_instituicao")
+    private Instituicao instituicao;
 
-    private Double renda;
 }

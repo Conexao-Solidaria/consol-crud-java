@@ -28,6 +28,5 @@ public class DonatarioAtualizacaoTest {
     @Nested
     @DisplayName("Dados Invalidos")
     public class Invalido {
-
     }
 }
