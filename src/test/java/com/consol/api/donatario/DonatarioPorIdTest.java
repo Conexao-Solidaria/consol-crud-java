@@ -7,23 +7,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@DisplayName("Donatario - Listagem Por Nome")
-public class DonatarioPorNomeTest {
+@DisplayName("Donatario - Listagem Por Id")
+public class DonatarioPorIdTest {
 
-    public static final String URL = DonatarioEnum.POR_NOME.PATH;
+    public static final String URL = DonatarioEnum.POR_ID.PATH;
+
     public static final String FILL_DATABASE_SCRIPT = "/data/fill_donatario.sql";
 
     @Nested
@@ -34,15 +34,13 @@ public class DonatarioPorNomeTest {
         private MockMvc mockMvc;
 
         @Test
-        @DisplayName("Deve retornar 200 e listar todos os donatarios que contem o nome")
+        @DisplayName("Deve retornar 200 e listar o donatario por id")
         public void teste1() throws Exception {
-            mockMvc.perform(get(URL + "Joao"))
+            mockMvc.perform(get(URL + "1"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$").isArray())
-                    .andExpect(jsonPath("$", hasSize(2)))
                     .andExpect(jsonPath("$.id").isNumber())
                     .andExpect(jsonPath("$.nome").value("Joao Silva"))
-                    .andExpect(jsonPath("$.cpf").value("12345678901"));
+                    .andExpect(jsonPath("$.cpf").value("123456789"));
         }
     }
 
@@ -54,10 +52,10 @@ public class DonatarioPorNomeTest {
         private MockMvc mockMvc;
 
         @Test
-        @DisplayName("Deve retornar 204 quando nao encontrar o donatario")
+        @DisplayName("Deve retornar 404 quando nao encontrar o donatario")
         public void teste1() throws Exception {
-            mockMvc.perform(get(URL + "Donatario 3"))
-                    .andExpect(status().isNoContent());
+            mockMvc.perform(get(URL + "300"))
+                    .andExpect(status().isNotFound());
         }
     }
 }

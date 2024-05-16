@@ -4,7 +4,7 @@ public enum DonatarioEnum {
 
     BASE_URL("/donatarios"),
     POR_ID("/donatarios/{id}"),
-    POR_NOME("/donatarios/filtro"),
+    POR_NOME("/donatarios/filtro?nome="),
     POR_DATA("/donatarios/data"),
     POR_PERIODO("/donatarios/periodo"),
     POR_FAMILIAR("/donatarios/familiar");

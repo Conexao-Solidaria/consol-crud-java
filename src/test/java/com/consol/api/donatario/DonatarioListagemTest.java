@@ -36,7 +36,7 @@ public class DonatarioListagemTest {
         private MockMvc mockMvc;
 
         @Test
-        @DisplayName("Deve listar todos os donatarios com sucesso e retornar 200")
+        @DisplayName("Deve retornar 200 e listar todos os donatarios")
         public void teste1() throws Exception {
             mockMvc.perform(get(URL))
                     .andExpect(status().isOk())
