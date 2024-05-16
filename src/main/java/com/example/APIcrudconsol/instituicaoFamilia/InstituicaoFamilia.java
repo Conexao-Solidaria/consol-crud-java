@@ -1,7 +1,7 @@
 package com.example.APIcrudconsol.instituicaoFamilia;
 
 import com.example.APIcrudconsol.familia.Familia;
-import com.example.APIcrudconsol.instituicao.Instituicao;
+import com.consol.api.entity.Instituicao;
 import jakarta.persistence.*;
 import lombok.*;
 

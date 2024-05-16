@@ -1,7 +1,6 @@
-package com.example.APIcrudconsol.instituicao.dto;
+package com.consol.api.dto.instituicao;
 
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 

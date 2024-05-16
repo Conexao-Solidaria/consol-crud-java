@@ -1,5 +1,5 @@
-package com.example.APIcrudconsol.instituicao.dto;
-import com.example.APIcrudconsol.instituicao.Instituicao;
+package com.consol.api.dto.instituicao;
+import com.consol.api.entity.Instituicao;
 
 import java.util.List;
 

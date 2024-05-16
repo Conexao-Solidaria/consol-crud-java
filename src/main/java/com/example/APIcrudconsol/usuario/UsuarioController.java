@@ -1,15 +1,10 @@
 package com.example.APIcrudconsol.usuario;
 
-import com.example.APIcrudconsol.instituicao.Instituicao;
-import com.example.APIcrudconsol.instituicao.InstituicaoRepository;
-import com.example.APIcrudconsol.instituicao.dto.InstituicaoAtualizarDto;
-import com.example.APIcrudconsol.instituicao.dto.InstituicaoConsultaDto;
-import com.example.APIcrudconsol.instituicao.dto.InstituicaoMapper;
+import com.consol.api.repository.InstituicaoRepository;
 import com.example.APIcrudconsol.usuario.Service.UsuarioService;
 import com.example.APIcrudconsol.usuario.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

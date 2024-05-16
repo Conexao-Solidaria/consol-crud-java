@@ -1,7 +1,7 @@
 package com.example.APIcrudconsol.doacoes;
 
 import com.example.APIcrudconsol.donatario.Donatario;
-import com.example.APIcrudconsol.instituicao.Instituicao;
+import com.consol.api.entity.Instituicao;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

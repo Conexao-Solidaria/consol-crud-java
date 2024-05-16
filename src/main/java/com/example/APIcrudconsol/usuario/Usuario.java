@@ -1,6 +1,6 @@
 package com.example.APIcrudconsol.usuario;
 
-import com.example.APIcrudconsol.instituicao.Instituicao;
+import com.consol.api.entity.Instituicao;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.example.APIcrudconsol.usuario.dto;
 
-import com.example.APIcrudconsol.instituicao.Instituicao;
+import com.consol.api.entity.Instituicao;
 import com.example.APIcrudconsol.usuario.Usuario;
 
 import java.util.List;
