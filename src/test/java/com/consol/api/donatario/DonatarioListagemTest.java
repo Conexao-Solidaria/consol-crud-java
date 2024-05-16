@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebM
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -36,6 +38,10 @@ public class DonatarioListagemTest {
         private MockMvc mockMvc;
 
         @Test
+        @SqlGroup({
+                @Sql(scripts = FILL_DATABASE_SCRIPT,
+                        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        })
         @DisplayName("Deve retornar 200 e listar todos os donatarios")
         public void teste1() throws Exception {
             mockMvc.perform(get(URL))

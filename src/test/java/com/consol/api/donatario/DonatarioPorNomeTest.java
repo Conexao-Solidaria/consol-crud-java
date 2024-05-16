@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -34,6 +36,10 @@ public class DonatarioPorNomeTest {
         private MockMvc mockMvc;
 
         @Test
+        @SqlGroup({
+                @Sql(scripts = FILL_DATABASE_SCRIPT,
+                        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        })
         @DisplayName("Deve retornar 200 e listar todos os donatarios que contem o nome")
         public void teste1() throws Exception {
             mockMvc.perform(get(URL + "Joao"))
@@ -54,6 +60,10 @@ public class DonatarioPorNomeTest {
         private MockMvc mockMvc;
 
         @Test
+        @SqlGroup({
+                @Sql(scripts = FILL_DATABASE_SCRIPT,
+                        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        })
         @DisplayName("Deve retornar 204 quando nao encontrar o donatario")
         public void teste1() throws Exception {
             mockMvc.perform(get(URL + "Donatario 3"))

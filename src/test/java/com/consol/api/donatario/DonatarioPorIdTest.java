@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,6 +36,10 @@ public class DonatarioPorIdTest {
         private MockMvc mockMvc;
 
         @Test
+        @SqlGroup({
+                @Sql(scripts = FILL_DATABASE_SCRIPT,
+                        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        })
         @DisplayName("Deve retornar 200 e listar o donatario por id")
         public void teste1() throws Exception {
             mockMvc.perform(get(URL + "1"))
@@ -52,6 +58,10 @@ public class DonatarioPorIdTest {
         private MockMvc mockMvc;
 
         @Test
+        @SqlGroup({
+                @Sql(scripts = FILL_DATABASE_SCRIPT,
+                        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        })
         @DisplayName("Deve retornar 404 quando nao encontrar o donatario")
         public void teste1() throws Exception {
             mockMvc.perform(get(URL + "300"))
