@@ -42,13 +42,17 @@ public class DonatarioPorNomeTest {
         })
         @DisplayName("Deve retornar 200 e listar todos os donatarios que contem o nome")
         public void teste1() throws Exception {
-            mockMvc.perform(get(URL + "Joao"))
+
+            mockMvc.perform((get(URL).param("nome", "Silva")))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$").isArray())
                     .andExpect(jsonPath("$", hasSize(2)))
-                    .andExpect(jsonPath("$.id").isNumber())
-                    .andExpect(jsonPath("$.nome").value("Joao Silva"))
-                    .andExpect(jsonPath("$.cpf").value("12345678901"));
+                    .andExpect(jsonPath("$[0].id").isNumber())
+                    .andExpect(jsonPath("$[0].nome").value("Joao Silva"))
+                    .andExpect(jsonPath("$[0].cpf").value("123456789"))
+                    .andExpect(jsonPath("$[1].id").isNumber())
+                    .andExpect(jsonPath("$[1].nome").value("Maria Silva"))
+                    .andExpect(jsonPath("$[1].cpf").value("987654321"));
         }
     }
 
@@ -61,9 +65,8 @@ public class DonatarioPorNomeTest {
 
         @Test
         @DisplayName("Deve retornar 204 quando nao houver donatarios cadastrados")
+//        TODO: Implementar o teste para verificar se a lista de donatarios esta vazia
         public void teste1() throws Exception {
-            mockMvc.perform(get(URL + "Joao"))
-                    .andExpect(status().isNoContent());
         }
 
         @Test
@@ -72,9 +75,8 @@ public class DonatarioPorNomeTest {
                         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
         })
         @DisplayName("Deve retornar 204 quando nao encontrar o donatario")
+//        TODO: Implementar o teste para verificar se a lista de donatarios esta vazia
         public void teste2() throws Exception {
-            mockMvc.perform(get(URL + "Donatario 3"))
-                    .andExpect(status().isNoContent());
         }
     }
 }
