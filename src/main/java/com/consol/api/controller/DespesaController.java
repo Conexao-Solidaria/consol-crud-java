@@ -1,4 +1,4 @@
-package com.consol.api.dto.instituicao;
+package com.consol.api.controller;
 
 import com.consol.api.repository.DonatarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

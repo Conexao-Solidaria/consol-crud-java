@@ -1,4 +1,4 @@
-package com.consol.api.dto.instituicao;
+package com.consol.api.controller;
 
 import org.springframework.web.bind.annotation.*;
 

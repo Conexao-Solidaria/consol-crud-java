@@ -13,7 +13,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,9 +53,9 @@ public class DonatarioCriacaoTest {
                         "dataNascimento": "1990-01-01"
                     }""";
 
-            mockMvc.perform(post(URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(donatario))
+            MvcResult mvcResult = mockMvc.perform(post(URL)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(donatario))
                     .andExpect(status().isCreated())
 //                    Verificar se retora a URI de onde chamar o donatario depois
 //                    .andExpect(header().)
@@ -61,7 +63,14 @@ public class DonatarioCriacaoTest {
                     .andExpect(jsonPath("$.nome").value("Donatario 1"))
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
                     .andExpect(jsonPath("$.dataNascimento")
-                            .value("1990-01-01"));
+                            .value("1990-01-01"))
+                    .andReturn();
+
+
+            String location = mvcResult.getResponse()
+                    .getHeader("Location");
+
+            assertTrue(location.contains(URL));
         }
     }
 

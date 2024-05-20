@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class InstituicaoAtualizarDto {
-    private String nomeInstituicao;
+    private String nome;
 
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "O CEP deve estar no formato 00000-000")
     private String cep;

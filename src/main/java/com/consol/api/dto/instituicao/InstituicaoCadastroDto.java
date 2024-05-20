@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class InstituicaoCadastroDto {
     @NotBlank(message = "O nome da instituição não pode estar em branco")
-    private String nomeInstituicao;
+    private String nome;
 
     @NotBlank(message = "O CEP não pode estar em branco")
     private String cep;
