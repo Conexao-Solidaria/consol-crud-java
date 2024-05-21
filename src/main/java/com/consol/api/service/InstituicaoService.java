@@ -4,6 +4,7 @@ import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
 import com.consol.api.dto.instituicao.InstituicaoCadastroDto;
 import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
 import com.consol.api.dto.instituicao.InstituicaoMapper;
+import com.consol.api.entity.Instituicao;
 import com.consol.api.repository.InstituicaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class InstituicaoService {
 
             Instituicao instituicaoBuscado = instituicaoBuscadoOpt.get();
             Instituicao instituicao = InstituicaoMapper.atualizacaoDtoToInstituicao(instituicaoAtualizarDto);
-            instituicao.setIdInstituicao(id);
+            instituicao.setId(id);
 
             if (instituicao.getCep() == null) instituicao.setCep(instituicaoBuscado.getCep());
             if (instituicao.getNumeroImovel() == null) instituicao.setNumeroImovel(instituicaoBuscado.getNumeroImovel());

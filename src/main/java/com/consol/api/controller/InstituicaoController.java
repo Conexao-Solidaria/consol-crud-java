@@ -1,5 +1,6 @@
 package com.consol.api.controller;
 
+import com.consol.api.entity.Instituicao;
 import com.consol.api.repository.InstituicaoRepository;
 import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
 import com.consol.api.dto.instituicao.InstituicaoCadastroDto;
@@ -65,7 +66,7 @@ public class InstituicaoController {
 
         Instituicao instituicao = InstituicaoMapper.atualizacaoDtoToInstituicao(instituicaoAtualizarDto);
 
-        instituicao.setIdInstituicao(id);
+        instituicao.setId(id);
         if(instituicao.getCep() == null) instituicao.setCep(instituicaoBuscado.getCep()); ;
         if(instituicao.getNumeroImovel() == null) instituicao.setNumeroImovel(instituicaoBuscado.getNumeroImovel()); ;
         if(instituicao.getDescricao() == null) instituicao.setDescricao(instituicaoBuscado.getDescricao());

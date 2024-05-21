@@ -22,7 +22,6 @@ public class DonatarioAtualizacaoTest {
     @Nested
     @DisplayName("Dados Validos")
     public class Valido {
-
     }
 
     @Nested
