@@ -18,7 +18,7 @@ public class Donatario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idDonatario;
 
-    private String dataCadastro;
+    private LocalDate dataCadastro;
 
     private String nome;
 
@@ -28,9 +28,9 @@ public class Donatario {
 
     private LocalDate dataNascimento;
 
-    private String telefone1;
+    private String celular;
 
-    private String telefone2;
+    private String telefone;
 
 //    @Column(name = "cep")
 //    private String cep;
