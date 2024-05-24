@@ -14,7 +14,7 @@ import lombok.*;
 public class Familia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idFamilia;
+    private int id;
 
     private String nome;
 

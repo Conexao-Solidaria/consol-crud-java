@@ -1,4 +1,4 @@
 package com.consol.api.controller;
 
-public class DonatarioController {
+public class FamiliaController {
 }
