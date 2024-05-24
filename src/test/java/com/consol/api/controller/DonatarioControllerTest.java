@@ -40,7 +40,7 @@ class DonatarioControllerTest {
     class listar {
 
         @Test
-        @DisplayName("Se os dados estiverem corretos: " +
+        @DisplayName("Se houver donatarios: " +
                 "Deve retornar 200 e listar todos os donatários")
         void deveListarTodosOsDonatarios() throws Exception {
 
