@@ -18,7 +18,7 @@ public class Donatario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idDonatario;
 
-    private String dataCadastro;
+    private LocalDate dataCadastro;
 
     private String nome;
 
