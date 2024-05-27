@@ -18,7 +18,6 @@ public class FamiliaService {
         return null;
     }
 
-    public boolean deletar(int i) {
-        return false;
+    public void deletar(int i) {
     }
 }
