@@ -26,7 +26,6 @@ public class DonatarioService {
         return null;
     }
 
-    public boolean deletar(int id) {
-        return false;
+    public void deletar(int id) {
     }
 }
