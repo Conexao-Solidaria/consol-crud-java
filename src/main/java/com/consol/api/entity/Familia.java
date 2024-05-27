@@ -3,13 +3,13 @@ package com.consol.api.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
 public class Familia {
     @Id
@@ -23,4 +23,10 @@ public class Familia {
     private Integer numeroCasa;
 
     private Double renda;
+
+    @OneToMany(mappedBy = "familia")
+    private List<Donatario> donatarios;
+
+    @OneToMany(mappedBy = "familia")
+    private List<Despesa> despesas;
 }

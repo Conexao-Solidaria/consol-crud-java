@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 
-public interface FamiliarRepository extends JpaRepository<Familia, Integer> {
+public interface FamiliaRepository extends JpaRepository<Familia, Integer> {
     @Query("SELECT f FROM Familia f")
     Collection<Familia> encontrarTodos();
 }
