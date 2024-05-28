@@ -2,13 +2,14 @@ package com.consol.api.dto.instituicao;
 
 
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class InstituicaoAtualizarDto {
     private String nome;
 
-    @Pattern(regexp = "\\d{5}-\\d{3}", message = "O CEP deve estar no formato 00000-000")
+    @Size(min = 8, max = 8)
     private String cep;
 
     private String numeroImovel;
