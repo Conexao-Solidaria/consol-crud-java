@@ -116,9 +116,16 @@ public class BeneficioControllerTest {
                 Mockito.when(beneficioService.cadastrar(Mockito.any(Beneficio.class)))
                         .thenReturn(beneficioCadastrado);
 
+                var content = """
+                    {
+                        "nome": "Bolsa familia",
+                        "valor": 150.0,
+                        "donatario": {}
+                    }""";
+
                 mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.BASE_URL.PATH)
                                 .contentType("application/json")
-                                .content("{ \"nome\": \"Bolsa família\", \"valor\": 150.0, \"donatario\": {} }"))
+                                .content(content))
                                 .andExpect(status().isCreated())
                                 .andExpect(header().string("Location", "/beneficios/1"))
                                 .andExpect(jsonPath("$.id")
@@ -137,7 +144,7 @@ public class BeneficioControllerTest {
             void deveRetornarListaVazia() throws Exception {
                 Mockito.when(beneficioService.listar()).thenReturn(Collections.emptyList());
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/beneficios")
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.BASE_URL.PATH)
                                 .contentType("application/json"))
                         .andExpect(status().isNoContent())
                         .andExpect(jsonPath("$").isArray())
