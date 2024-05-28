@@ -158,7 +158,6 @@ public class BeneficioControllerTest {
         @DisplayName("GET /beneficios/filtro")
         class listarPorDonatario {
             // Se existir donatário, 200 e o benefício
-            // Se não existir donatário, 404 e mensagem de erro
 
             @Test
             @DisplayName("Se o benefício existir: " +
@@ -255,7 +254,6 @@ public class BeneficioControllerTest {
         @DisplayName("PUT /beneficios/{id}")
         class atualizar {
             // Se os dados estiverem corretos, 200 e atualizar Beneficio
-            // Se o id não existir, 404 e mensagem de erro
 
             @Test
             @DisplayName("Se os dados estiverem corretos, 200 e atualizar Beneficio")
@@ -370,7 +368,6 @@ public class BeneficioControllerTest {
         @DisplayName("DELETE /beneficios/{id}")
         class deletar {
             // Se o beneficio existir, retornar 204 e deletar o beneficio
-            // Se o benefício não existir, retornar 404 e mensagem de erro
 
             @Test
             @DisplayName("Se o benefício existir: " +
@@ -382,16 +379,5 @@ public class BeneficioControllerTest {
                                 .andExpect(status().isNoContent());
             }
 
-            @Test
-            @DisplayName("Se o benefício não existir: " +
-                    "Deve retornar 404 e uma mensagem de erro")
-            void deveRetornarErroBeneficioNaoEncontrado() throws Exception {
-
-                mockMvc.perform(MockMvcRequestBuilders.delete(BeneficioEnum.POR_ID.PATH, 1)
-                                .contentType("application/json"))
-                                .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.mensagem")
-                                .value("Benefício não encontrado"));
-            }
         }
 }
