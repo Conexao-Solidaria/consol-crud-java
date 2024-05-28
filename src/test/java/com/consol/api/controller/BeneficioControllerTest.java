@@ -119,11 +119,14 @@ public class BeneficioControllerTest {
                 mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.BASE_URL.PATH)
                                 .contentType("application/json")
                                 .content("{ \"nome\": \"Bolsa família\", \"valor\": 150.0, \"donatario\": {} }"))
-                        .andExpect(status().isCreated())
-                        .andExpect(header().string("Location", "/beneficios/1"))
-                        .andExpect(jsonPath("$.id").value(1))
-                        .andExpect(jsonPath("$.nome").value("Bolsa família"))
-                        .andExpect(jsonPath("$.valor").value(150.0));
+                                .andExpect(status().isCreated())
+                                .andExpect(header().string("Location", "/beneficios/1"))
+                                .andExpect(jsonPath("$.id")
+                                        .value(1))
+                                .andExpect(jsonPath("$.nome")
+                                        .value("Bolsa família"))
+                                .andExpect(jsonPath("$.valor")
+                                        .value(150.0));
 
                 Mockito.verify(beneficioService, Mockito.times(1)).cadastrar(Mockito.any(Beneficio.class));
             }
@@ -151,53 +154,38 @@ public class BeneficioControllerTest {
             // Se não existir donatário, 404 e mensagem de erro
 
             @Test
-            @DisplayName("Se o donatário existir: " +
-                    "Deve retornar 200 e o donatário")
+            @DisplayName("Se o benefício existir: " +
+                    "Deve retornar 200 e os benefícios por donatario")
             void deveRetornarBeneficioPorDonatario() throws Exception {
 
-                Donatario donatario = Donatario.builder()
-                        .idDonatario(1)
-                        .dataCadastro(LocalDate.now())
-                        .nome("Donatário 1")
-                        .rg("123456")
-                        .cpf("12345678901")
-                        .dataNascimento(LocalDate.parse("2000-01-01"))
-                        .telefone1("123456789")
-                        .telefone2("987654321")
-                        .estadoCivil("Solteiro")
-                        .escolaridade("Ensino Médio")
-                        .trabalhando(true)
-                        .ocupacao("Programador")
+                Beneficio beneficio = Beneficio.builder()
+                        .id(1)
+                        .nome("Benefício X")
+                        .valor(50.0)
                         .build();
 
                 Mockito.when(beneficioService.listarPorDonatario("Donatário X"))
-                        .thenReturn((List<Beneficio>) donatario);
+                        .thenReturn((List<Beneficio>) beneficio);
 
-                mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_ID.PATH, 1)
                         .contentType("application/json"))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.idDonatario").value(1))
-                        .andExpect(jsonPath("$.nome").value("Donatário 1"))
-                        .andExpect(jsonPath("$.rg").value("123456"))
-                        .andExpect(jsonPath("$.cpf").value("12345678901"))
-                        .andExpect(jsonPath("$.dataNascimento").value("2000-01-01"))
-                        .andExpect(jsonPath("$.telefone1").value("987654322"))
-                        .andExpect(jsonPath("$.telefone2").value("987654321"))
-                        .andExpect(jsonPath("$.estadoCivil").value("Solteiro"))
-                        .andExpect(jsonPath("$.escolaridade").value("Ensino Médio"))
-                        .andExpect(jsonPath("$.trabalhando").value(true))
-                        .andExpect(jsonPath("$.ocupacao").value("Programador"));
+                        .andExpect(jsonPath("$.id").value(1))
+                        .andExpect(jsonPath("$.nome").value("Benefício X"))
+                        .andExpect(jsonPath("$.valor").value(50.0))
+                        .andExpect(jsonPath("$.donatario.id").value(1)
+                        );
             }
 
             @Test
-            @DisplayName("Se não houver donatários cadastrados: " +
+            @DisplayName("Se não houver donatários e nem benefícios cadastrados: " +
                     "Deve retornar 204 e uma lista vazia")
             void deveRetornarListaVazia() throws Exception {
 
-                Mockito.when(beneficioService.listarPorDonatario("Donatário"))
+                Mockito.when(beneficioService.listarPorDonatario("Donatário X"))
                         .thenReturn(Collections.emptyList());
 
-                mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.FILTRO.PATH)
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH)
                                 .param("nome", "Donatário")
                                 .contentType("application/json"))
                                 .andExpect(status().isNoContent())
@@ -214,8 +202,8 @@ public class BeneficioControllerTest {
             // Se não houver familias, 204 e lista vazia
 
             @Test
-            @DisplayName("Se a família existir: " +
-                    "Deve retornar 200 e a família")
+            @DisplayName("Se o benefício e família existirem: " +
+                    "Deve retornar 200 e uma lista de benefícios por família")
             void deveRetornarBeneficioPorFamilia() throws Exception {
 
                 Familia familia = Familia.builder()
@@ -229,7 +217,7 @@ public class BeneficioControllerTest {
                 Mockito.when(beneficioService.listarPorFamilia("Família X"))
                         .thenReturn((List<Beneficio>) familia);
 
-                mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_ID.PATH, 1)
                                 .contentType("application/json"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id").value(1))
@@ -247,8 +235,8 @@ public class BeneficioControllerTest {
                 Mockito.when(beneficioService.listarPorFamilia("Família X"))
                         .thenReturn(Collections.emptyList());
 
-                mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.FILTRO.PATH)
-                                .param("nome", "Família")
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH)
+                                .param("nome", "Família X")
                                 .contentType("application/json"))
                                 .andExpect(status().isNoContent())
                                 .andExpect(jsonPath("$").isArray())
@@ -323,7 +311,7 @@ public class BeneficioControllerTest {
                     }
                     """;
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/beneficios")
+                mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.POR_FILTRO.PATH)
                                 .contentType("application/json")
                                 .content(content))
                                 .andExpect(status().isBadRequest())
@@ -342,11 +330,11 @@ public class BeneficioControllerTest {
                     }
                     """;
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/beneficios")
+                mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.POR_FILTRO.PATH)
                                 .contentType("application/json")
                                 .content(content))
-                        .andExpect(status().isBadRequest())
-                        .andExpect(jsonPath("$.mensagem").value("O valor é obrigatório"));
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.mensagem").value("O valor é obrigatório"));
             }
 
             @Test
@@ -361,7 +349,7 @@ public class BeneficioControllerTest {
                     }
                     """;
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/beneficios")
+                mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.POR_FILTRO.PATH)
                                 .contentType("application/json")
                                 .content(content))
                         .andExpect(status().isBadRequest())
@@ -382,9 +370,6 @@ public class BeneficioControllerTest {
                     "Deve retornar 204 e deletar o benefício")
             void deveDeletarBeneficio() throws Exception {
 
-                Mockito.when(beneficioService.deletar(1))
-                        .thenReturn(true);
-
                 mockMvc.perform(MockMvcRequestBuilders.delete(BeneficioEnum.POR_ID.PATH, 1)
                                 .contentType("application/json"))
                                 .andExpect(status().isNoContent());
@@ -395,15 +380,11 @@ public class BeneficioControllerTest {
                     "Deve retornar 404 e uma mensagem de erro")
             void deveRetornarErroBeneficioNaoEncontrado() throws Exception {
 
-                Mockito.when(beneficioService.deletar(1))
-                        .thenReturn(false);
-
                 mockMvc.perform(MockMvcRequestBuilders.delete(BeneficioEnum.POR_ID.PATH, 1)
                                 .contentType("application/json"))
-                        .andExpect(status().isNotFound())
-                        .andExpect(jsonPath("$.mensagem")
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.mensagem")
                                 .value("Benefício não encontrado"));
             }
         }
-
 }

@@ -32,7 +32,7 @@ public class BeneficioService {
         return null;
     }
 
-    public boolean deletar(int id) {
-        return false;
+    public void deletar(int id) {
+        return;
     }
 }
