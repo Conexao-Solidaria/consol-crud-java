@@ -61,9 +61,7 @@ public class FamiliaController {
     public ResponseEntity<Void> apagar(
             @PathVariable int id
     ) {
-        if (!service.deletar(id)) {
-            return ResponseEntity.notFound().build();
-        }
+        service.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }

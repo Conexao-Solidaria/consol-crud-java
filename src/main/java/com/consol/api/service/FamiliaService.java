@@ -41,11 +41,7 @@ public class FamiliaService {
         return repository.save(familia);
     }
 
-    public boolean deletar(int id) {
-        if (!repository.existsById(id)) {
-            return false;
-        }
-        repository.deleteById(id);
-        return true;
+    public void deletar(int id) {
+        repository.delete(porId(id));
     }
 }
