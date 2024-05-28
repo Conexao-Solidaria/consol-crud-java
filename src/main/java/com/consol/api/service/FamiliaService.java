@@ -28,10 +28,6 @@ public class FamiliaService {
     public Familia atualizar(int id, Familia familia) {
         Familia familiaAtualizada = porId(id);
 
-        System.out.println("+=".repeat(50));
-        System.out.println(familiaAtualizada.getId());
-
-
         familiaAtualizada.setCep(familia.getCep());
         familiaAtualizada.setNumeroCasa(familia.getNumeroCasa());
         return familiaAtualizada;
@@ -42,6 +38,9 @@ public class FamiliaService {
     }
 
     public void deletar(int id) {
-        repository.delete(porId(id));
+        if (!repository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        repository.deleteById(id);
     }
 }

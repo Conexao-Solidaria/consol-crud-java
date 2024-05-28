@@ -31,6 +31,8 @@ public class FamiliaMapper {
     }
 
     public static List<FamiliaConsultaDto.DonatarioDto> toDonatarioDto(List<Donatario> donatarios) {
+        if (donatarios == null) return null;
+
         List<FamiliaConsultaDto.DonatarioDto> donatarioDtoList = new ArrayList<>();
 
         for (Donatario donatarioAtual : donatarios) {
@@ -47,6 +49,8 @@ public class FamiliaMapper {
     }
 
     public static List<FamiliaConsultaDto.DespesaDto> toDespesaDto(List<Despesa> despesas) {
+        if (despesas == null) return null;
+
         List<FamiliaConsultaDto.DespesaDto> despesaDtoList = new ArrayList<>();
 
         for (Despesa despesaAtual : despesas) {

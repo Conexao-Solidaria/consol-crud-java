@@ -14,6 +14,7 @@ import java.util.List;
 public class Familia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_familia")
     private int id;
 
     private String nome;
