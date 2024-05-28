@@ -8,7 +8,7 @@ public class FamiliaCadastroDto {
     @NotBlank(message = "O nome da família não pode estar em branco")
     private String nome;
 
-    @Size(max = 8)
+    @Size(min = 8, max = 8)
     @NotBlank(message = "O CEP não pode estar em branco")
     private String cep;
 

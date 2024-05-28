@@ -9,7 +9,7 @@ import lombok.Data;
 public class InstituicaoAtualizarDto {
     private String nome;
 
-    @Size(max = 8)
+    @Size(min = 8, max = 8)
     private String cep;
 
     private String numeroImovel;
