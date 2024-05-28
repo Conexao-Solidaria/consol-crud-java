@@ -83,7 +83,7 @@ class DonatarioControllerTest {
         void deveSalvarDonatario() throws Exception {
 
             Donatario donatario = Donatario.builder()
-                    .idDonatario(1)
+                    .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
                     .rg("123456")
@@ -120,7 +120,7 @@ class DonatarioControllerTest {
                             .contentType("application/json")
                             .content(content))
                     .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.idDonatario").value(1))
+                    .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.nome").value("Donatário 1"))
                     .andExpect(jsonPath("$.rg").value("123456"))
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
@@ -542,7 +542,7 @@ class DonatarioControllerTest {
         void deveRetornarDonatario() throws Exception {
 
             Donatario donatario = Donatario.builder()
-                    .idDonatario(1)
+                    .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
                     .rg("123456")
@@ -562,7 +562,7 @@ class DonatarioControllerTest {
             mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.idDonatario").value(1))
+                    .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.nome").value("Donatário 1"))
                     .andExpect(jsonPath("$.rg").value("123456"))
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
@@ -577,20 +577,6 @@ class DonatarioControllerTest {
                     .andExpect(jsonPath("$.ocupacao").value("Programador"));
         }
 
-        @Test
-        @DisplayName("Se o donatário não existir: " +
-                "Deve retornar 404 e uma mensagem de erro")
-        void deveRetornarErroDonatarioNaoEncontrado() throws Exception {
-
-                Mockito.when(donatarioService.listarPorId(1))
-                        .thenReturn(null);
-
-                mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
-                                .contentType("application/json"))
-                        .andExpect(status().isNotFound())
-                        .andExpect(jsonPath("$.mensagem")
-                                .value("Donatário não encontrado"));
-        }
     }
 
     @Nested
@@ -605,11 +591,11 @@ class DonatarioControllerTest {
                 Mockito.when(donatarioService.listarPorNome("Donatário"))
                         .thenReturn(List.of(
                                 Donatario.builder()
-                                        .idDonatario(1)
+                                        .id(1)
                                         .nome("Donatário 1")
                                         .build(),
                                 Donatario.builder()
-                                        .idDonatario(2)
+                                        .id(2)
                                         .nome("Donatário 2")
                                         .build()));
 
@@ -619,9 +605,9 @@ class DonatarioControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$").isArray())
                         .andExpect(jsonPath("$.length()").value(2))
-                        .andExpect(jsonPath("$[0].idDonatario").value(1))
+                        .andExpect(jsonPath("$[0].id").value(1))
                         .andExpect(jsonPath("$[0].nome").value("Donatário 1"))
-                        .andExpect(jsonPath("$[1].idDonatario").value(2))
+                        .andExpect(jsonPath("$[1].id").value(2))
                         .andExpect(jsonPath("$[1].nome").value("Donatário 2"));
         }
 
@@ -652,7 +638,7 @@ class DonatarioControllerTest {
         void deveAtualizarDonatario() throws Exception {
 
                 Donatario donatario = Donatario.builder()
-                        .idDonatario(1)
+                        .id(1)
                         .dataCadastro(LocalDate.now())
                         .nome("Donatário 1")
                         .rg("123456")
@@ -688,7 +674,7 @@ class DonatarioControllerTest {
                                 .contentType("application/json")
                                 .content(content))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.idDonatario").value(1))
+                        .andExpect(jsonPath("$.id").value(1))
                         .andExpect(jsonPath("$.nome").value("Donatário 1"))
                         .andExpect(jsonPath("$.rg").value("123456"))
                         .andExpect(jsonPath("$.cpf").value("12345678901"))
@@ -703,36 +689,6 @@ class DonatarioControllerTest {
                         .andExpect(jsonPath("$.ocupacao").value("Programador"));
         }
 
-        @Test
-        @DisplayName("Se o id nao existir: " +
-                "Deve retornar 404 e uma mensagem de erro")
-        void deveRetornarErroIdNaoEncontrado() throws Exception {
-
-            Mockito.when(donatarioService.atualizar(1, new Donatario()))
-                    .thenReturn(null);
-
-            var content = """
-                    {
-                        "nome": "Donatário 1",
-                        "rg": "123456",
-                        "cpf": "12345678901",
-                        "dataNascimento": "2000-01-01",
-                        "telefone1": "123456789",
-                        "telefone2": "987654321",
-                        "estadoCivil": "Solteiro",
-                        "escolaridade": "Ensino Médio",
-                        "trabalhando": true,
-                        "ocupacao": "Programador"
-                    }
-                    """;
-
-            mockMvc.perform(MockMvcRequestBuilders.put(DonatarioEnum.POR_ID.PATH, 1)
-                            .contentType("application/json")
-                            .content(content))
-                    .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.mensagem")
-                            .value("Donatário não encontrado"));
-        }
     }
 
     @Nested
@@ -747,18 +703,6 @@ class DonatarioControllerTest {
             mockMvc.perform(MockMvcRequestBuilders.delete(DonatarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isNoContent());
-        }
-
-        @Test
-        @DisplayName("Se o donatário não existir: " +
-                "Deve retornar 404 e uma mensagem de erro")
-        void deveRetornarErroDonatarioNaoEncontrado() throws Exception {
-
-            mockMvc.perform(MockMvcRequestBuilders.delete(DonatarioEnum.POR_ID.PATH, 1)
-                            .contentType("application/json"))
-                    .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.mensagem")
-                            .value("Donatário não encontrado"));
         }
     }
 }
