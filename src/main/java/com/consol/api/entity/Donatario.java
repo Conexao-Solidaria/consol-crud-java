@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Donatario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idDonatario;
+    private Integer id;
 
     private LocalDate dataCadastro;
 
