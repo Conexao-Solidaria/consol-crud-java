@@ -32,7 +32,5 @@ public class BeneficioService {
         return null;
     }
 
-    public void deletar(int id) {
-        return;
-    }
+    public void deletar(int id) { }
 }
