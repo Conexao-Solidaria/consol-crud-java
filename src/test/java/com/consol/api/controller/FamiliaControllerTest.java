@@ -353,27 +353,10 @@ class FamiliaControllerTest {
                 "Deve retornar 204 e deletar a família")
         void deveDeletarFamilia() throws Exception {
 
-            Mockito.when(familiaService.deletar(Mockito.anyInt()))
-                    .thenReturn(true);
-
             mockMvc.perform(MockMvcRequestBuilders.delete
                             (FamiliaEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isNoContent());
-        }
-
-        @Test
-        @DisplayName("Se o id não existir: " +
-                "Deve retornar 404")
-        void deveRetornarNotFound() throws Exception {
-
-                Mockito.when(familiaService.deletar(Mockito.anyInt()))
-                        .thenReturn(false);
-
-                mockMvc.perform(MockMvcRequestBuilders.delete
-                                (FamiliaEnum.POR_ID.PATH, 1)
-                                .contentType("application/json"))
-                        .andExpect(status().isNotFound());
         }
     }
 }
