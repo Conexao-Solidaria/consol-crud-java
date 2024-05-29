@@ -83,7 +83,7 @@ class DonatarioControllerTest {
         void deveSalvarDonatario() throws Exception {
 
             Donatario donatario = Donatario.builder()
-                    .idDonatario(1)
+                    .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
                     .rg("123456")
@@ -120,7 +120,7 @@ class DonatarioControllerTest {
                             .contentType("application/json")
                             .content(content))
                     .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.idDonatario").value(1))
+                    .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.nome").value("Donatário 1"))
                     .andExpect(jsonPath("$.rg").value("123456"))
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
@@ -542,7 +542,7 @@ class DonatarioControllerTest {
         void deveRetornarDonatario() throws Exception {
 
             Donatario donatario = Donatario.builder()
-                    .idDonatario(1)
+                    .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
                     .rg("123456")
@@ -562,7 +562,7 @@ class DonatarioControllerTest {
             mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.idDonatario").value(1))
+                    .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.nome").value("Donatário 1"))
                     .andExpect(jsonPath("$.rg").value("123456"))
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
@@ -605,11 +605,11 @@ class DonatarioControllerTest {
                 Mockito.when(donatarioService.listarPorNome("Donatário"))
                         .thenReturn(List.of(
                                 Donatario.builder()
-                                        .idDonatario(1)
+                                        .id(1)
                                         .nome("Donatário 1")
                                         .build(),
                                 Donatario.builder()
-                                        .idDonatario(2)
+                                        .id(2)
                                         .nome("Donatário 2")
                                         .build()));
 
@@ -619,9 +619,9 @@ class DonatarioControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$").isArray())
                         .andExpect(jsonPath("$.length()").value(2))
-                        .andExpect(jsonPath("$[0].idDonatario").value(1))
+                        .andExpect(jsonPath("$[0].id").value(1))
                         .andExpect(jsonPath("$[0].nome").value("Donatário 1"))
-                        .andExpect(jsonPath("$[1].idDonatario").value(2))
+                        .andExpect(jsonPath("$[1].id").value(2))
                         .andExpect(jsonPath("$[1].nome").value("Donatário 2"));
         }
 
@@ -652,7 +652,7 @@ class DonatarioControllerTest {
         void deveAtualizarDonatario() throws Exception {
 
                 Donatario donatario = Donatario.builder()
-                        .idDonatario(1)
+                        .id(1)
                         .dataCadastro(LocalDate.now())
                         .nome("Donatário 1")
                         .rg("123456")
@@ -688,7 +688,7 @@ class DonatarioControllerTest {
                                 .contentType("application/json")
                                 .content(content))
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.idDonatario").value(1))
+                        .andExpect(jsonPath("$.id").value(1))
                         .andExpect(jsonPath("$.nome").value("Donatário 1"))
                         .andExpect(jsonPath("$.rg").value("123456"))
                         .andExpect(jsonPath("$.cpf").value("12345678901"))
