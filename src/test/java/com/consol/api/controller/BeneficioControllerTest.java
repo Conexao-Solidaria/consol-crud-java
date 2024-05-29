@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BeneficioControllerTest.class)
 @AutoConfigureMockMvc(addFilters = false)
+@DisplayName("Controller - Benefício")
 public class BeneficioControllerTest {
 
     @Autowired

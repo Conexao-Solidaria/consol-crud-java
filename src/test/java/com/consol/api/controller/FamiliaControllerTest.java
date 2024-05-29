@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(FamiliaController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@DisplayName("Controller - Familia")
 class FamiliaControllerTest {
 
     @Autowired
