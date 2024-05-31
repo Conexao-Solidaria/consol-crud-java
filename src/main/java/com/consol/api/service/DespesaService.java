@@ -12,4 +12,25 @@ public class DespesaService {
     public Despesa salvar(Despesa despesa) {
         return null;
     }
+
+    public Despesa buscarId(Integer id){
+        return null;
+    }
+
+    public List<Despesa> buscarDespesasPorDonatario(String nomeDonatario){
+        return null;
+    }
+
+    public List<Despesa> buscarDespesasPorFamilia(String nomeFamilia){
+        return null;
+    }
+
+    public Despesa atualizarDespesa(Integer id, Despesa despesa){
+        return null;
+    }
+
+    public Boolean deletarDespesa(Integer id){
+        return null;
+    }
+
 }
