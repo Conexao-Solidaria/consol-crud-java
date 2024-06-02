@@ -10,17 +10,17 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
 public class Donatario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idDonatario;
+    private Integer id;
 
     private LocalDate dataCadastro;
 
     private String nome;
+
+    private String Sobrenome;
 
     private String rg;
 
@@ -28,15 +28,9 @@ public class Donatario {
 
     private LocalDate dataNascimento;
 
-    private String telefone1;
+    private String celular;
 
-    private String telefone2;
-
-//    @Column(name = "cep")
-//    private String cep;
-//
-//    @Column(name = "numerocasa")
-//    private int numeroCasa;
+    private String telefone;
 
     private String estadoCivil;
 
@@ -45,6 +39,10 @@ public class Donatario {
     private Boolean trabalhando;
 
     private String ocupacao;
+
+    @OneToMany
+    @JoinColumn(name = "fk_beneficio")
+    private Beneficio beneficio;
 
     @ManyToOne
     @JoinColumn(name = "fk_familiar")
