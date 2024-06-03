@@ -3,10 +3,7 @@ import com.consol.api.entity.Beneficio;
 import com.consol.api.entity.Donatario;
 import com.consol.api.entity.Familia;
 import com.consol.api.service.BeneficioService;
-import com.consol.api.service.FamiliaService;
 import com.consol.api.utils.BeneficioEnum;
-import com.consol.api.utils.DonatarioEnum;
-import com.consol.api.utils.FamiliaEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BeneficioControllerTest.class)
 @AutoConfigureMockMvc(addFilters = false)
+@DisplayName("Controller - Benefício")
 public class BeneficioControllerTest {
 
     @Autowired
@@ -113,7 +110,7 @@ public class BeneficioControllerTest {
                         .valor(150.0)
                         .donatario(new Donatario()).build();
 
-                Mockito.when(beneficioService.cadastrar(Mockito.any(Beneficio.class)))
+                Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class)))
                         .thenReturn(beneficioCadastrado);
 
                 var content = """
@@ -135,7 +132,7 @@ public class BeneficioControllerTest {
                                 .andExpect(jsonPath("$.valor")
                                         .value(150.0));
 
-                Mockito.verify(beneficioService, Mockito.times(1)).cadastrar(Mockito.any(Beneficio.class));
+                Mockito.verify(beneficioService, Mockito.times(1)).salvar(Mockito.any(Beneficio.class));
             }
 
 
@@ -265,7 +262,7 @@ public class BeneficioControllerTest {
                         .valor(50.0)
                         .build();
 
-                Mockito.when(beneficioService.cadastrar(Mockito.any(Beneficio.class)))
+                Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class)))
                         .thenReturn(beneficio);
 
                 var content = """

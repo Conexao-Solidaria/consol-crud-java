@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(DonatarioController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@DisplayName("Controller - Donatario")
 class DonatarioControllerTest {
 
     @Autowired

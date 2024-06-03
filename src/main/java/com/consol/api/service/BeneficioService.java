@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public class BeneficioService {
 
-    public Beneficio cadastrar(Beneficio beneficio) {
+    public Beneficio salvar(Beneficio beneficio) {
         return null;
     }
 
