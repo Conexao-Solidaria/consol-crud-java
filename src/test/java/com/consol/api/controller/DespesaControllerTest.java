@@ -142,8 +142,6 @@ public class DespesaControllerTest {
                     .andExpect(jsonPath("$.familia.numeroCasa").value(familia.getNumeroCasa()))
                     .andReturn();
 
-            System.out.println(result.getResponse().getHeader("Location"));
-
             assertTrue(result.getResponse().getHeader("Location")
                     .contains(DespesaEnum.BASE_URL.PATH + "/1"));
         }
