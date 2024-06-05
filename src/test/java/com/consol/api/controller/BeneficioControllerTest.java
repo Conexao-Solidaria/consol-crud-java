@@ -7,6 +7,7 @@ import com.consol.api.utils.BeneficioEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,6 +33,9 @@ public class BeneficioControllerTest {
 
     @MockBean
     private BeneficioService beneficioService;
+
+    @InjectMocks
+    private BeneficioController beneficioController;
 
         @Nested
         @DisplayName("GET /beneficios")

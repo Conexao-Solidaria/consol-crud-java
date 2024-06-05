@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,6 +38,9 @@ class DonatarioControllerTest {
 
     @MockBean
     private DonatarioService donatarioService;
+
+    @InjectMocks
+    private DonatarioController donatarioController;
 
     @Nested
     @DisplayName("GET /donatarios")

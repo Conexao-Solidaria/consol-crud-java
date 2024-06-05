@@ -14,7 +14,7 @@ import lombok.*;
 public class Necessidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idNecessidade;
+    private int id;
 
     private String tipo;
 
