@@ -85,7 +85,7 @@ public class BeneficioControllerTest {
     }
 
         @Nested
-        @DisplayName("POST / beneficios")
+        @DisplayName("POST /beneficios")
         class cadastrar {
             // Se os dados estiverem corretos, 201, URI e salvar benefício
             // Se o nome stiver vazio, 400 e mensagem de erro

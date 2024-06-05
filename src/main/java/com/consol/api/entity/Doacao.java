@@ -1,20 +1,24 @@
 package com.consol.api.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-public class Doacoes {
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Doacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDoacoes;
+    private Integer id;
 
     private Double peso;
 
     private String descricao;
-
-    private char statusDoacao;
 
     private LocalDate dataDoacao;
 
