@@ -30,7 +30,9 @@ public class BeneficioService {
     }
 
     public Beneficio listarPorId(int id) {
-        return null;
+        return beneficioRepository.findById(id).orElseThrow(
+                () -> new EntidadeNaoEncontradaException()
+        );
     }
 
     public List<Beneficio> listarPorDonatario(String donatario) {

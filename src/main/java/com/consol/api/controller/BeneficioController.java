@@ -20,7 +20,7 @@ public class BeneficioController {
 
     private final BeneficioService beneficioService;
 
-    @PostMapping("/{idDonatario}")
+    @PostMapping("/donatario/{idDonatario}")
     private ResponseEntity<BeneficioConsultaDto> salvar(
             @PathVariable int idDonatario,
             @RequestBody @Valid BeneficoCriacaoDto benefico){
@@ -29,7 +29,7 @@ public class BeneficioController {
         System.out.println(entity.getNome());
         Beneficio salvo = beneficioService.salvar(entity,idDonatario);
         BeneficioConsultaDto dto = BeneficioMapper.toDto(salvo);
-        return ResponseEntity.status(200).body(dto);
+        return ResponseEntity.status(201).body(dto);
     }
 
     @GetMapping
@@ -42,4 +42,13 @@ public class BeneficioController {
         return ResponseEntity.status(200).body(dtos);
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BeneficioConsultaDto> listarPorId(@PathVariable int id){
+        Beneficio entity = beneficioService.listarPorId(id);
+        BeneficioConsultaDto dto = BeneficioMapper.toDto(entity);
+        return ResponseEntity.status(200).body(dto);
+    }
+
+
 }
