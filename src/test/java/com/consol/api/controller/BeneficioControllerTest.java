@@ -47,13 +47,13 @@ public class BeneficioControllerTest {
             Mockito.when(beneficioService.listar()).thenReturn(
                     List.of(
                             Beneficio.builder()
-                                    .id(1)
+                                    .idBeneficio(1)
                                     .nome("Bolsa família")
                                     .valor(150.0)
                                     .donatario(new Donatario()).build(),
 
                             Beneficio.builder()
-                                    .id(2)
+                                    .idBeneficio(2)
                                     .nome("Auxílio Emergencial")
                                     .valor(500.0)
                                     .donatario(new Donatario()).build()
@@ -105,7 +105,7 @@ public class BeneficioControllerTest {
                         .donatario(new Donatario()).build();
 
                 Beneficio beneficioCadastrado = Beneficio.builder()
-                        .id(1)
+                        .idBeneficio(1)
                         .nome("Bolsa família")
                         .valor(150.0)
                         .donatario(new Donatario()).build();
@@ -162,7 +162,7 @@ public class BeneficioControllerTest {
             void deveRetornarBeneficioPorDonatario() throws Exception {
 
                 Beneficio beneficio = Beneficio.builder()
-                        .id(1)
+                        .idBeneficio(1)
                         .nome("Benefício X")
                         .valor(50.0)
                         .build();
@@ -257,7 +257,7 @@ public class BeneficioControllerTest {
             void deveCadastrarBeneficio() throws Exception {
 
                 Beneficio beneficio = Beneficio.builder()
-                        .id(1)
+                        .idBeneficio(1)
                         .nome("Benefício X")
                         .valor(50.0)
                         .build();

@@ -1,19 +1,24 @@
 package com.consol.api.service;
 
 import com.consol.api.entity.Beneficio;
+import com.consol.api.repository.BeneficioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BeneficioService {
+
+    private final BeneficioRepository beneficioRepository;
 
     public Beneficio salvar(Beneficio beneficio) {
         return null;
     }
 
     public List<Beneficio> listar() {
-        return null;
+        return beneficioRepository.findAll();
     }
 
     public Beneficio listarPorId(int id) {

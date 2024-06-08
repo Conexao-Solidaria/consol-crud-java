@@ -13,8 +13,8 @@ import lombok.*;
 @Builder
 public class Beneficio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer idBeneficio;
 
     private String nome;
 
