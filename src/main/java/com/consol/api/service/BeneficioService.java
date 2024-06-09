@@ -52,8 +52,14 @@ public class BeneficioService {
     }
 
 
-    public Beneficio atualizar(int idBenefico, Beneficio beneficio) {
-        return null;
+    public Beneficio atualizar(int idBenefico, Beneficio beneficioAtualizado) {
+        Optional<Beneficio> beneficio = beneficioRepository.findById(idBenefico);
+        if (beneficio.isEmpty()) throw new EntidadeNaoEncontradaException();
+
+        beneficioAtualizado.setIdBeneficio(beneficio.get().getIdBeneficio());
+        beneficioAtualizado.setDonatario(beneficio.get().getDonatario());
+
+        return beneficioRepository.save(beneficioAtualizado);
     }
 
     public void deletar(int id) { }

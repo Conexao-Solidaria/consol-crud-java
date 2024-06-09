@@ -1,5 +1,6 @@
 package com.consol.api.controller;
 
+import com.consol.api.dto.beneficio.BeneficioAtualizacaoDto;
 import com.consol.api.dto.beneficio.BeneficioConsultaDto;
 import com.consol.api.dto.beneficio.BeneficioMapper;
 import com.consol.api.dto.beneficio.BeneficoCriacaoDto;
@@ -23,7 +24,7 @@ public class BeneficioController {
     // Alterar de donatário Repository para donatario service, após a service de donatário estar completa
     // Buscar por Donatario =  trocado do nome do donatário para o id, pois pode ter mais de um donatário com o mesmo nome
     // Busca por Familia =  trocado de nome família para o id, mesma questão do busca por donatário
-    // atualizar beneficio
+    // atualizar beneficio = atualizar o nome e o valor faz sentido? ou deveria apenas atualizar o valor?
 
     private final BeneficioService beneficioService;
 
@@ -77,5 +78,17 @@ public class BeneficioController {
         return ResponseEntity.status(200).body(dtos);
     }
 
+    @PatchMapping("/{idBeneficio}")
+    public ResponseEntity<BeneficioConsultaDto> atualizar(
+            @PathVariable int idBeneficio,
+            @RequestBody @Valid BeneficioAtualizacaoDto beneficioAtualizacao
+    ){
+
+        Beneficio entity = BeneficioMapper.toEntity(beneficioAtualizacao);
+        Beneficio atualizado = beneficioService.atualizar(idBeneficio,entity);
+        BeneficioConsultaDto dto = BeneficioMapper.toDto(atualizado);
+        return ResponseEntity.status(200).body(dto);
+
+    }
 
 }

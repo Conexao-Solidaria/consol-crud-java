@@ -8,11 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BeneficoCriacaoDto {
+public class BeneficioAtualizacaoDto {
     @NotBlank
     private String nome;
     @NotNull
     @Positive
     private Double valor;
-
 }
