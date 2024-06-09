@@ -47,6 +47,6 @@ public class Donatario {
     private String ocupacao;
 
     @ManyToOne
-    @JoinColumn(name = "fk_familiar")
+    @JoinColumn(name = "fk_familia")
     private Familia familia;
 }
