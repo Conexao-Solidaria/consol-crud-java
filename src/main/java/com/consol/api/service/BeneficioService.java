@@ -62,5 +62,8 @@ public class BeneficioService {
         return beneficioRepository.save(beneficioAtualizado);
     }
 
-    public void deletar(int id) { }
+    public void deletar(int idBenefico) {
+        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException();
+        beneficioRepository.deleteById(idBenefico);
+    }
 }

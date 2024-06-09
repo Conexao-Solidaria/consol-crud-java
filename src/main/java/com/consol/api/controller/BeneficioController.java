@@ -91,4 +91,10 @@ public class BeneficioController {
 
     }
 
+    @DeleteMapping("/{idBeneficio}")
+    public ResponseEntity deletar(@PathVariable int idBeneficio){
+        beneficioService.deletar(idBeneficio);
+        return ResponseEntity.status(204).build();
+    }
+
 }
