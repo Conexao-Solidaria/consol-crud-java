@@ -23,7 +23,7 @@ public class DoacaoService {
         return null;
     }
 
-    public List<Doacao> listarPorPeriodo() {
+    public List<Doacao> listarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
         return null;
     }
 }

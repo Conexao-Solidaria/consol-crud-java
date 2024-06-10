@@ -2,15 +2,16 @@ package com.consol.api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder;
 
 import java.time.LocalDate;
 
 @Entity
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Doacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
