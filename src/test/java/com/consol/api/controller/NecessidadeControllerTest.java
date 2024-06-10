@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -150,8 +150,8 @@ public class NecessidadeControllerTest {
     class atualizar {
         @Test
         @DisplayName("Se os dados estiverem corretos: " +
-                "Deve retornar 200 e a necessidade atualizada")
-        void deveRetornar200() throws Exception {
+                "Deve retornar 201 e a necessidade atualizada")
+        void deveRetornar201() throws Exception {
             Instituicao instituicao = Instituicao.builder()
                     .id(1)
                     .nome("Casa da Criança")
@@ -176,11 +176,10 @@ public class NecessidadeControllerTest {
             var content = """
                     {
                         "tipo": "Alimento",
-                        "descricao": "Arroz",
+                        "descricao": "Arroz"
                     }
                     """;
-
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, 1)
+            mockMvc.perform(put(NecessidadeEnum.POR_ID.PATH, 1)
                             .contentType("application/json")
                             .content(content))
                     .andExpect(status().isCreated())
@@ -210,7 +209,7 @@ public class NecessidadeControllerTest {
                     }
                     """;
 
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, 1)
+            mockMvc.perform(put(NecessidadeEnum.POR_ID.PATH, 1)
                             .contentType("application/json")
                             .content(content))
                     .andExpect(status().isBadRequest());
@@ -227,7 +226,7 @@ public class NecessidadeControllerTest {
                     }
                     """;
 
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, 1)
+            mockMvc.perform(put(NecessidadeEnum.POR_ID.PATH, 1)
                             .contentType("application/json")
                             .content(content))
                     .andExpect(status().isBadRequest());
@@ -241,7 +240,7 @@ public class NecessidadeControllerTest {
         @DisplayName("Se o id for valido: " +
                 "Deve retornar 204")
         void deveRetornar204() throws Exception {
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, 1))
+            mockMvc.perform(delete(NecessidadeEnum.POR_ID.PATH, 1))
                     .andExpect(status().isNoContent());
         }
 
@@ -249,7 +248,7 @@ public class NecessidadeControllerTest {
         @DisplayName("Se o id for invalido: " +
                 "Deve retornar 400")
         void deveRetornar400() throws Exception {
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, "id"))
+            mockMvc.perform(delete(NecessidadeEnum.POR_ID.PATH, "id"))
                     .andExpect(status().isBadRequest());
         }
     }
@@ -291,7 +290,7 @@ public class NecessidadeControllerTest {
 
             Mockito.when(necessidadeService.buscarTodos()).thenReturn(necessidades);
 
-            mockMvc.perform(post(NecessidadeEnum.BASE_URL.PATH))
+            mockMvc.perform(get(NecessidadeEnum.BASE_URL.PATH))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$[0].id").value(1))
                     .andExpect(jsonPath("$[0].tipo").value("Alimento"))
@@ -329,7 +328,7 @@ public class NecessidadeControllerTest {
         void deveRetornar204() throws Exception {
             Mockito.when(necessidadeService.buscarTodos()).thenReturn(Collections.emptyList());
 
-            mockMvc.perform(post(NecessidadeEnum.BASE_URL.PATH))
+            mockMvc.perform(get(NecessidadeEnum.BASE_URL.PATH))
                     .andExpect(status().isNoContent());
         }
     }
@@ -360,7 +359,7 @@ public class NecessidadeControllerTest {
             Mockito.when(necessidadeService.buscarPorId(Mockito.any(Integer.class)))
                     .thenReturn(necessidade);
 
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, 1))
+            mockMvc.perform(get(NecessidadeEnum.POR_ID.PATH, 1))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.tipo").value("Alimento"))
@@ -377,7 +376,7 @@ public class NecessidadeControllerTest {
         @DisplayName("Se o id for invalido: " +
                 "Deve retornar 400")
         void deveRetornar400() throws Exception {
-            mockMvc.perform(post(NecessidadeEnum.POR_ID.PATH, "id"))
+            mockMvc.perform(get(NecessidadeEnum.POR_ID.PATH, "id"))
                     .andExpect(status().isBadRequest());
         }
     }
@@ -422,7 +421,7 @@ public class NecessidadeControllerTest {
             Mockito.when(necessidadeService.buscarPorTipo(Mockito.any(String.class)))
                     .thenReturn(necessidades);
 
-            mockMvc.perform(post(NecessidadeEnum.FILTRO.PATH)
+            mockMvc.perform(get(NecessidadeEnum.FILTRO.PATH)
                             .param("tipo", "Alimento"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$[0].id").value(1))
@@ -461,7 +460,7 @@ public class NecessidadeControllerTest {
         void deveRetornar204() throws Exception {
             Mockito.when(necessidadeService.buscarPorTipo(Mockito.any(String.class))).thenReturn(Collections.emptyList());
 
-            mockMvc.perform(post(NecessidadeEnum.FILTRO.PATH)
+            mockMvc.perform(get(NecessidadeEnum.FILTRO.PATH)
                             .param("tipo", "Alimento"))
                     .andExpect(status().isNoContent());
         }
