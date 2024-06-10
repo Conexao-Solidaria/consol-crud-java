@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,9 @@ public class NecessidadeController {
 
         NecessidadeListagemDto necessidadeListagemDto = NecessidadeMapper.toDto(necessidadeSalva);
 
-        return ResponseEntity.status(201).body(necessidadeListagemDto);
+        URI uri = URI.create("/necessidades/" + necessidadeListagemDto.getId());
+
+        return ResponseEntity.created(uri).body(necessidadeListagemDto);
     }
 
     @GetMapping("/{id}")
