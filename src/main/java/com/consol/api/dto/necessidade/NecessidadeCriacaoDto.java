@@ -7,10 +7,8 @@ import lombok.Data;
 @Data
 public class NecessidadeCriacaoDto {
     @NotBlank
-    @NotNull
     private String tipo;
     @NotBlank
-    @NotNull
     private String descricao;
 
     @NotNull
