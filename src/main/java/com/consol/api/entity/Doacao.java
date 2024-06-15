@@ -27,8 +27,8 @@ public class Doacao {
     @JoinColumn(name = "fk_instituicao")
     private Instituicao instituicao;
 
-    @JoinColumn(name = "fk_donatario")
     @ManyToOne
+    @JoinColumn(name = "fk_donatario")
     private Donatario donatario;
 
 }
