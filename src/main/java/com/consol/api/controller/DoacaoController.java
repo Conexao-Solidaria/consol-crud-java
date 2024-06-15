@@ -42,7 +42,7 @@ public class DoacaoController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/filtro/data")
+    @GetMapping("/filtro/por-data")
     private ResponseEntity<List<DoacaoConsultaDto>> porData(
             @RequestParam LocalDate data
     ) {
@@ -55,7 +55,7 @@ public class DoacaoController {
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/filtro/periodo")
+    @GetMapping("/filtro/por-periodo")
     private ResponseEntity<List<DoacaoConsultaDto>> porPeriodo(
             @RequestParam LocalDate dataInicio,
             @RequestParam LocalDate dataFim
