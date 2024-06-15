@@ -15,6 +15,7 @@ public class DoacaoMapper {
 
         dto.setId(doacao.getId());
         dto.setPeso(doacao.getPeso());
+        dto.setDescricao(doacao.getDescricao());
         dto.setDataDoacao(doacao.getDataDoacao());
 
         dto.setInstituicao(toInstituicaoDto(doacao.getInstituicao()));

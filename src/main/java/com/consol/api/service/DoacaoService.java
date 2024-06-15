@@ -20,12 +20,16 @@ public class DoacaoService {
     private final InstituicaoService instituicaoService;
     private final DonatarioService donatarioService;
 
-    public Doacao salvar(Doacao doacao, Integer instituicaoId, Integer donatarioId) {
-        Instituicao instituicao = instituicaoService.consultarPorId(instituicaoId);
-        Donatario donatario = donatarioService.listarPorId(donatarioId);
+    public Doacao salvar(
+            Doacao doacao
+            //Integer instituicaoId,
+            //Integer donatarioId
+    ) {
+        //Instituicao instituicao = instituicaoService.consultarPorId(instituicaoId);
+        //Donatario donatario = donatarioService.listarPorId(donatarioId);
 
-        doacao.setInstituicao(instituicao);
-        doacao.setDonatario(donatario);
+        //doacao.setInstituicao(instituicao);
+        //doacao.setDonatario(donatario);
 
         return repository.save(doacao);
     }
@@ -34,7 +38,7 @@ public class DoacaoService {
         return repository.findAll();
     }
 
-    public Doacao porId(int id) {
+    public Doacao listarPorId(int id) {
         return repository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );

@@ -36,13 +36,13 @@ public class DoacaoController {
     private ResponseEntity<DoacaoConsultaDto> porData(
             @PathVariable Integer id
     ) {
-        Doacao doacao = service.porId(id);
+        Doacao doacao = service.listarPorId(id);
         DoacaoConsultaDto dto = DoacaoMapper.toDto(doacao);
 
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/filtro")
+    @GetMapping("/filtro/data")
     private ResponseEntity<List<DoacaoConsultaDto>> porData(
             @RequestParam LocalDate data
     ) {
@@ -55,7 +55,7 @@ public class DoacaoController {
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/filtro")
+    @GetMapping("/filtro/periodo")
     private ResponseEntity<List<DoacaoConsultaDto>> porPeriodo(
             @RequestParam LocalDate dataInicio,
             @RequestParam LocalDate dataFim
@@ -74,7 +74,10 @@ public class DoacaoController {
             @RequestBody @Valid DoacaoCadastroDto dto
             ) {
         Doacao doacao = DoacaoMapper.toEntity(dto);
-        Doacao doacaoSalva = service.salvar(doacao, dto.getInstituicaoId(), dto.getDonatarioId());
+        Doacao doacaoSalva = service.salvar(doacao
+                //dto.getInstituicaoId(),
+                //dto.getDonatarioId()
+        );
         DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoSalva);
 
         URI uri = URI.create("/doacoes/" + doacaoConsultaDto.getId());
