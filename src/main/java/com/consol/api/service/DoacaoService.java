@@ -1,6 +1,8 @@
 package com.consol.api.service;
 
 import com.consol.api.entity.Doacao;
+import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Instituicao;
 import com.consol.api.repository.DoacaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,8 +17,16 @@ import java.util.List;
 public class DoacaoService {
 
     private final DoacaoRepository repository;
+    private final InstituicaoService instituicaoService;
+    private final DonatarioService donatarioService;
 
-    public Doacao salvar(Doacao doacao) {
+    public Doacao salvar(Doacao doacao, Integer instituicaoId, Integer donatarioId) {
+        Instituicao instituicao = instituicaoService.consultarPorId(instituicaoId);
+        Donatario donatario = donatarioService.listarPorId(donatarioId);
+
+        doacao.setInstituicao(instituicao);
+        doacao.setDonatario(donatario);
+
         return repository.save(doacao);
     }
 
@@ -24,7 +34,7 @@ public class DoacaoService {
         return repository.findAll();
     }
 
-    public Doacao listarPorId(int id) {
+    public Doacao porId(int id) {
         return repository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
