@@ -1,9 +1,6 @@
 package com.consol.api.dto.doacao;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -21,6 +18,7 @@ public class DoacaoCadastroDto {
     private String descricao;
 
     @NotNull(message = "A data da doação está nula")
+    @PastOrPresent(message = "A data da doação está inválida")
     private LocalDate dataDoacao;
 
     private Integer instituicaoId;

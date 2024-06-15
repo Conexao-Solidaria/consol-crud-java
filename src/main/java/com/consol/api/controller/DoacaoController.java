@@ -72,7 +72,7 @@ public class DoacaoController {
     @PostMapping
     private ResponseEntity<DoacaoConsultaDto> criar(
             @RequestBody @Valid DoacaoCadastroDto dto
-            ) {
+    ) {
         Doacao doacao = DoacaoMapper.toEntity(dto);
         Doacao doacaoSalva = service.salvar(doacao
                 //dto.getInstituicaoId(),
