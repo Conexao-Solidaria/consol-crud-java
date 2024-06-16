@@ -13,9 +13,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private int id;
+    private Integer id;
 
-    private int coordenador;
+    private Integer coordenador;
 
     private String nomeUsuario;
 
@@ -26,5 +26,6 @@ public class Usuario {
     private String cpf;
 
     @ManyToOne
+    @JoinColumn(name = "fk_instituicao")
     private Instituicao instituicao;
 }
