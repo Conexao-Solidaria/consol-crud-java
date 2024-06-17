@@ -12,9 +12,9 @@ public class DonatarioAtualizarDto {
 
     private String Sobrenome;
 
-    private String celular;
+    private String telefone1;
 
-    private String telefone;
+    private String telefone2;
 
     private String estadoCivil;
 
