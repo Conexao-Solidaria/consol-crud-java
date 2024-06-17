@@ -10,8 +10,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
 public class Donatario {
     @Id
@@ -21,6 +19,8 @@ public class Donatario {
     private LocalDate dataCadastro;
 
     private String nome;
+
+    private String Sobrenome;
 
     private String rg;
 
@@ -32,12 +32,6 @@ public class Donatario {
 
     private String telefone2;
 
-//    @Column(name = "cep")
-//    private String cep;
-//
-//    @Column(name = "numerocasa")
-//    private int numeroCasa;
-
     private String estadoCivil;
 
     private String escolaridade;
@@ -45,6 +39,10 @@ public class Donatario {
     private Boolean trabalhando;
 
     private String ocupacao;
+
+    @OneToMany
+    @JoinColumn(name = "fk_beneficio")
+    private Beneficio beneficio;
 
     @ManyToOne
     @JoinColumn(name = "fk_familiar")
