@@ -7,7 +7,6 @@ import com.consol.api.repository.UsuarioRepository;
 import com.consol.api.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,7 +76,7 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(dto);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagarPorId(@PathVariable Integer id){
         if(!usuarioRepository.existsById(id)){
             return ResponseEntity.status(404).build();

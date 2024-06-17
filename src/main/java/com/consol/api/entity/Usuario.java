@@ -14,10 +14,10 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private int idUsuario;
+    private int id;
 
     @Column(name = "coordenador")
-    private Boolean coordenador;
+    private boolean coordenador;
 
     @Column(name = "nome_usuario")
     private String nomeUsuario;
@@ -33,5 +33,5 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")
-    private Instituicao FkInstituicao;
+    private Instituicao instituicao;
 }
