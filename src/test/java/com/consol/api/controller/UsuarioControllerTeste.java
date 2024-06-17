@@ -16,11 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(FamiliaController.class)
+@WebMvcTest(UsuarioController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @DisplayName("Controller - Usuario")
 public class UsuarioControllerTeste {
@@ -35,7 +37,7 @@ public class UsuarioControllerTeste {
     class PorIdInst {
         @Test
         @DisplayName("Se os dados estiverem corretos: " +
-                "Deve retornar 200 e listar todos os donatários")
+                "Deve retornar 200 e listar todos os usuarios")
         void deveListarTodosOsFamilias() throws Exception {
             Instituicao instituicao = new Instituicao(1, "teste", "11111111", "12", "teste", null);
 
@@ -49,7 +51,7 @@ public class UsuarioControllerTeste {
                     .instituicao(instituicao)
                     .build();
 
-            Mockito.when(usuarioService.porIdInst()).thenReturn(usuario);
+            Mockito.when(usuarioService.porIdInstuicao(1)).thenReturn((List <Usuario>) usuario);
 
             mockMvc.perform(MockMvcRequestBuilders.get(UsuarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
@@ -67,7 +69,7 @@ public class UsuarioControllerTeste {
                     .andReturn();
 
 
-            Mockito.verify(usuarioService, Mockito.times(1)).porIdInst();
+            Mockito.verify(usuarioService, Mockito.times(1)).porIdInstuicao(1);
         }
     }
 
@@ -90,7 +92,7 @@ public class UsuarioControllerTeste {
                     .instituicao(instituicao)
                     .build();
 
-            Mockito.when(usuarioService.salvar(usuario)).thenReturn(usuario);
+            Mockito.when(usuarioService.salvar(usuario, 1)).thenReturn(usuario);
 
             var content = """
                     {
@@ -294,9 +296,6 @@ public class UsuarioControllerTeste {
                 "Deve retornar 204 e deletar o usuario")
         void deveDeletarUsuario() throws Exception {
 
-            Mockito.when(usuarioService.deletar(1))
-                    .thenReturn(true);
-
             mockMvc.perform(MockMvcRequestBuilders.delete(UsuarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isNoContent());
@@ -306,9 +305,6 @@ public class UsuarioControllerTeste {
         @DisplayName("Se a usuario não existir: " +
                 "Deve retornar 404 e uma mensagem de erro")
         void deveRetornarErroUsuarioNaoEncontrado() throws Exception {
-            Mockito.when(usuarioService.deletar(1))
-                    .thenReturn(false);
-
             mockMvc.perform(MockMvcRequestBuilders.delete(UsuarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isNotFound())
