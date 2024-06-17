@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.time.LocalDate;
@@ -87,8 +89,8 @@ class DonatarioControllerTest {
                     .rg("123456")
                     .cpf("12345678901")
                     .dataNascimento(LocalDate.parse("2000-01-01"))
-                    .celular("123456789")
-                    .telefone("987654321")
+                    .telefone1("123456789")
+                    .telefone2("987654321")
                     .estadoCivil("Solteiro")
                     .escolaridade("Ensino Médio")
                     .trabalhando(true)
@@ -104,8 +106,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -124,8 +126,8 @@ class DonatarioControllerTest {
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
                     .andExpect(jsonPath("$.dataNascimento")
                             .value("2000-01-01"))
-                    .andExpect(jsonPath("$.celular").value("123456789"))
-                    .andExpect(jsonPath("$.telefone").value("987654321"))
+                    .andExpect(jsonPath("$.telefone1").value("123456789"))
+                    .andExpect(jsonPath("$.telefone2").value("987654321"))
                     .andExpect(jsonPath("$.estadoCivil").value("Solteiro"))
                     .andExpect(jsonPath("$.escolaridade")
                             .value("Ensino Médio"))
@@ -148,8 +150,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -176,8 +178,8 @@ class DonatarioControllerTest {
                         "rg": "",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -204,8 +206,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -232,8 +234,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -250,7 +252,7 @@ class DonatarioControllerTest {
         }
 
         @Test
-        @DisplayName("Se o celular e o telefone estiverem vazios: " +
+        @DisplayName("Se o telefone1 e o telefone2 estiverem vazios: " +
                 "Deve retornar 400 e uma mensagem de erro")
         void deveRetornarErroCelularETelefoneVazios() throws Exception {
 
@@ -260,8 +262,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "",
-                        "telefone": "",
+                        "telefone1": "",
+                        "telefone2": "",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -274,7 +276,7 @@ class DonatarioControllerTest {
                             .content(content))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.mensagem")
-                            .value("O celular ou o telefone é obrigatório"));
+                            .value("O telefone1 ou o telefone2 é obrigatório"));
         }
 
         @Test
@@ -288,8 +290,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -316,8 +318,8 @@ class DonatarioControllerTest {
                         "rg": "1234567",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -344,8 +346,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "1234567890",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -372,8 +374,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2100-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -390,7 +392,7 @@ class DonatarioControllerTest {
         }
 
         @Test
-        @DisplayName("Se o celular for inválido: " +
+        @DisplayName("Se o telefone1 for inválido: " +
                 "Deve retornar 400 e uma mensagem de erro")
         void deveRetornarErroCelularInvalido() throws Exception {
 
@@ -400,8 +402,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "1234567890",
-                        "telefone": "987654321",
+                        "telefone1": "1234567890",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -414,11 +416,11 @@ class DonatarioControllerTest {
                             .content(content))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.mensagem")
-                            .value("O celular é inválido"));
+                            .value("O telefone1 é inválido"));
         }
 
         @Test
-        @DisplayName("Se o telefone for inválido: " +
+        @DisplayName("Se o telefone2 for inválido: " +
                 "Deve retornar 400 e uma mensagem de erro")
         void deveRetornarErroTelefoneInvalido() throws Exception {
 
@@ -428,8 +430,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "98765432",
+                        "telefone1": "123456789",
+                        "telefone2": "98765432",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -442,7 +444,7 @@ class DonatarioControllerTest {
                             .content(content))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.mensagem")
-                            .value("O telefone é inválido"));
+                            .value("O telefone2 é inválido"));
         }
 
         @Test
@@ -456,8 +458,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteirox",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -484,8 +486,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médiox",
                         "trabalhando": true,
@@ -512,8 +514,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": null,
@@ -546,8 +548,8 @@ class DonatarioControllerTest {
                     .rg("123456")
                     .cpf("12345678901")
                     .dataNascimento(LocalDate.parse("2000-01-01"))
-                    .celular("123456789")
-                    .telefone("987654321")
+                    .telefone1("123456789")
+                    .telefone2("987654321")
                     .estadoCivil("Solteiro")
                     .escolaridade("Ensino Médio")
                     .trabalhando(true)
@@ -566,8 +568,8 @@ class DonatarioControllerTest {
                     .andExpect(jsonPath("$.cpf").value("12345678901"))
                     .andExpect(jsonPath("$.dataNascimento")
                             .value("2000-01-01"))
-                    .andExpect(jsonPath("$.celular").value("123456789"))
-                    .andExpect(jsonPath("$.telefone").value("987654321"))
+                    .andExpect(jsonPath("$.telefone1").value("123456789"))
+                    .andExpect(jsonPath("$.telefone2").value("987654321"))
                     .andExpect(jsonPath("$.estadoCivil").value("Solteiro"))
                     .andExpect(jsonPath("$.escolaridade")
                             .value("Ensino Médio"))
@@ -656,8 +658,8 @@ class DonatarioControllerTest {
                         .rg("123456")
                         .cpf("12345678901")
                         .dataNascimento(LocalDate.parse("2000-01-01"))
-                        .celular("123456789")
-                        .telefone("987654321")
+                        .telefone1("123456789")
+                        .telefone2("987654321")
                         .estadoCivil("Solteiro")
                         .escolaridade("Ensino Médio")
                         .trabalhando(true)
@@ -673,8 +675,8 @@ class DonatarioControllerTest {
                             "rg": "123456",
                             "cpf": "12345678901",
                             "dataNascimento": "2000-01-01",
-                            "celular": "123456789",
-                            "telefone": "987654321",
+                            "telefone1": "123456789",
+                            "telefone2": "987654321",
                             "estadoCivil": "Solteiro",
                             "escolaridade": "Ensino Médio",
                             "trabalhando": true,
@@ -692,8 +694,8 @@ class DonatarioControllerTest {
                         .andExpect(jsonPath("$.cpf").value("12345678901"))
                         .andExpect(jsonPath("$.dataNascimento")
                                 .value("2000-01-01"))
-                        .andExpect(jsonPath("$.celular").value("123456789"))
-                        .andExpect(jsonPath("$.telefone").value("987654321"))
+                        .andExpect(jsonPath("$.telefone1").value("123456789"))
+                        .andExpect(jsonPath("$.telefone2").value("987654321"))
                         .andExpect(jsonPath("$.estadoCivil").value("Solteiro"))
                         .andExpect(jsonPath("$.escolaridade")
                                 .value("Ensino Médio"))
@@ -715,8 +717,8 @@ class DonatarioControllerTest {
                         "rg": "123456",
                         "cpf": "12345678901",
                         "dataNascimento": "2000-01-01",
-                        "celular": "123456789",
-                        "telefone": "987654321",
+                        "telefone1": "123456789",
+                        "telefone2": "987654321",
                         "estadoCivil": "Solteiro",
                         "escolaridade": "Ensino Médio",
                         "trabalhando": true,
@@ -742,9 +744,6 @@ class DonatarioControllerTest {
                 "Deve retornar 204 e deletar o donatário")
         void deveDeletarDonatario() throws Exception {
 
-            Mockito.when(donatarioService.deletar(1))
-                    .thenReturn(true);
-
             mockMvc.perform(MockMvcRequestBuilders.delete(DonatarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
                     .andExpect(status().isNoContent());
@@ -754,9 +753,6 @@ class DonatarioControllerTest {
         @DisplayName("Se o donatário não existir: " +
                 "Deve retornar 404 e uma mensagem de erro")
         void deveRetornarErroDonatarioNaoEncontrado() throws Exception {
-
-            Mockito.when(donatarioService.deletar(1))
-                    .thenReturn(false);
 
             mockMvc.perform(MockMvcRequestBuilders.delete(DonatarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))

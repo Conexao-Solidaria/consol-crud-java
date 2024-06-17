@@ -1,6 +1,7 @@
 package com.consol.api.dto.despesa;
 
 import com.consol.api.entity.Despesa;
+import com.consol.api.entity.Familia;
 
 import java.util.List;
 
@@ -19,7 +20,15 @@ public class DespesaMapper {
         Despesa despesa = new Despesa();
         despesa.setTipo(dto.getTipo());
         despesa.setGasto(dto.getGasto());
-        despesa.setFamilia(dto.getFamiliaDto());
+
+        Familia familia = Familia.builder()
+                        .id(dto.getFamiliaDto().getId())
+                        .nome(dto.getFamiliaDto().getNome())
+                        .cep(dto.getFamiliaDto().getCep())
+                        .numeroCasa(dto.getFamiliaDto().getNumeroCasa())
+                        .renda(dto.getFamiliaDto().getRenda()).build();
+
+        despesa.setFamilia(familia);
         return despesa;
     }
 

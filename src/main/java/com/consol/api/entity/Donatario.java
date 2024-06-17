@@ -28,9 +28,9 @@ public class Donatario {
 
     private LocalDate dataNascimento;
 
-    private String celular;
+    private String telefone1;
 
-    private String telefone;
+    private String telefone2;
 
 //    @Column(name = "cep")
 //    private String cep;

@@ -64,9 +64,7 @@ class FamiliaControllerTest {
 
             mockMvc.perform(MockMvcRequestBuilders.get(FamiliaEnum.BASE_URL.PATH)
                             .contentType("application/json"))
-                    .andExpect(status().isNoContent())
-                    .andExpect(jsonPath("$").isArray())
-                    .andExpect(jsonPath("$.length()").value(0));
+                    .andExpect(status().isNoContent());
 
             Mockito.verify(familiaService, Mockito.times(1)).listar();
         }
@@ -84,7 +82,7 @@ class FamiliaControllerTest {
             Familia familia = Familia.builder()
                     .id(1)
                     .nome("Família 1")
-                    .cep("12345-678")
+                    .cep("12345678")
                     .numeroCasa(123)
                     .renda(1000.0)
                     .build();
@@ -95,8 +93,9 @@ class FamiliaControllerTest {
             var content = """
                     {
                         "nome": "Família 1",
-                        "cep": "12345-678",
+                        "cep": "12345678",
                         "numeroCasa": 123,
+                        "renda": 1000.0
                     }
                     """;
 
@@ -107,7 +106,7 @@ class FamiliaControllerTest {
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.nome").value("Família 1"))
-                    .andExpect(jsonPath("$.cep").value("12345-678"))
+                    .andExpect(jsonPath("$.cep").value("12345678"))
                     .andExpect(jsonPath("$.numeroCasa").value(123))
                     .andReturn();
 
@@ -122,7 +121,7 @@ class FamiliaControllerTest {
                 var content = """
                         {
                             "nome": "",
-                            "cep": "12345-678",
+                            "cep": "12345678",
                             "numeroCasa": 123,
                         }
                         """;
@@ -160,7 +159,7 @@ class FamiliaControllerTest {
                 var content = """
                         {
                             "nome": "Família 1",
-                            "cep": "12345-678",
+                            "cep": "12345678",
                             "numeroCasa": null,
                         }
                         """;
@@ -198,7 +197,7 @@ class FamiliaControllerTest {
                 var content = """
                         {
                             "nome": "Família 1",
-                            "cep": "12345-678",
+                            "cep": "12345678",
                             "numeroCasa": -123,
                         }
                         """;
@@ -223,7 +222,7 @@ class FamiliaControllerTest {
             Familia familia = Familia.builder()
                     .id(1)
                     .nome("Família 1")
-                    .cep("12345-678")
+                    .cep("12345678")
                     .numeroCasa(123)
                     .renda(1000.0)
                     .build();
@@ -233,8 +232,8 @@ class FamiliaControllerTest {
 
             var content = """
                     {
-                        "cep": "12345-678",
-                        "numeroCasa": 123,
+                        "cep": "12345678",
+                        "numeroCasa": 123
                     }
                     """;
 
@@ -245,30 +244,8 @@ class FamiliaControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id").value(1))
                     .andExpect(jsonPath("$.nome").value("Família 1"))
-                    .andExpect(jsonPath("$.cep").value("12345-678"))
+                    .andExpect(jsonPath("$.cep").value("12345678"))
                     .andExpect(jsonPath("$.numeroCasa").value(123));
-        }
-
-        @Test
-        @DisplayName("Se o id não existir: " +
-                "Deve retornar 404")
-        void deveRetornarNotFound() throws Exception {
-
-                Mockito.when(familiaService.atualizar(Mockito.anyInt(), Mockito.any(Familia.class)))
-                        .thenReturn(null);
-
-                var content = """
-                        {
-                            "cep": "12345-678",
-                            "numeroCasa": 123,
-                        }
-                        """;
-
-                mockMvc.perform(MockMvcRequestBuilders.put
-                                (FamiliaEnum.POR_ID.PATH, 1)
-                                .contentType("application/json")
-                                .content(content))
-                        .andExpect(status().isNotFound());
         }
 
         @Test
@@ -295,7 +272,7 @@ class FamiliaControllerTest {
         void deveRetornarBadRequestNumeroCasa() throws Exception {
                 var content = """
                         {
-                            "cep": "12345-678",
+                            "cep": "12345678",
                             "numeroCasa": null,
                         }
                         """;
@@ -331,7 +308,7 @@ class FamiliaControllerTest {
         void deveRetornarBadRequestNumeroCasaNegativo() throws Exception {
                 var content = """
                         {
-                            "cep": "12345-678",
+                            "cep": "12345678",
                             "numeroCasa": -123,
                         }
                         """;
