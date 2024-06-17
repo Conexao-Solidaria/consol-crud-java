@@ -100,8 +100,8 @@ public class DonatarioController {
 
         donatario.setId(id);
         if (donatario.getNome() == null) donatario.setNome(donatarioBuscado.getNome());
-        if (donatario.getCelular() == null) donatario.setCelular(donatarioBuscado.getCelular());
-        if (donatario.getTelefone() == null) donatario.setTelefone(donatarioBuscado.getTelefone());
+        if (donatario.getTelefone1() == null) donatario.setTelefone1(donatarioBuscado.getTelefone1());
+        if (donatario.getTelefone2() == null) donatario.setTelefone2(donatarioBuscado.getTelefone2());
         if (donatario.getEstadoCivil() == null) donatario.setEstadoCivil(donatarioBuscado.getEstadoCivil());
         if (donatario.getEscolaridade() == null) donatario.setEscolaridade(donatarioBuscado.getEscolaridade());
         if (donatario.getTrabalhando() == null) donatario.setTrabalhando(donatarioBuscado.getTrabalhando());
