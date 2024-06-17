@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class FamiliaConsultaDto {
 
+    private Integer id;
     private String nome;
     private String cep;
     private Integer numeroCasa;

@@ -8,7 +8,7 @@ import com.consol.api.dto.familia.FamiliaConsultaDto;
 import com.consol.api.entity.Donatario;
 import com.consol.api.entity.Familia;
 import com.consol.api.repository.DonatarioRepository;
-import com.consol.api.repository.FamiliarRepository;
+import com.consol.api.repository.FamiliaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +25,14 @@ public class DonatarioController {
     DonatarioRepository donatarioRepository;
 
     @Autowired
-    FamiliarRepository familiarRepository;
+    FamiliaRepository familiaRepository;
 
     @PostMapping
     public ResponseEntity<DonatarioConsultaDto> criar(@RequestBody @Valid DonatarioCadastroDto donatarioCadastroDto) {
 
         if (donatarioCadastroDto == null) return ResponseEntity.status(400).build();
 
-        Familia familia = familiarRepository.findByNameAndCepEquals(donatarioCadastroDto.getCepFamilia(), donatarioCadastroDto.getNomeFamilia());
+        Familia familia = familiaRepository.findByNameAndCepEquals(donatarioCadastroDto.getCepFamilia(), donatarioCadastroDto.getNomeFamilia());
 
         if (familia == null) {
             return ResponseEntity.status(404).body(null);
