@@ -7,8 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class BeneficioConsultaDto {
     private Integer id;
     private String nome;

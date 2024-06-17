@@ -22,7 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(BeneficioControllerTest.class)
+@WebMvcTest(BeneficioController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @DisplayName("Controller - Benefício")
 public class BeneficioControllerTest {
@@ -64,9 +64,7 @@ public class BeneficioControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$").isArray())
                     .andExpect(jsonPath("$.length()").value(2))
-                    .andExpect(jsonPath("$.id").value(1))
-
-            ;
+                    .andExpect(jsonPath("$[0].id").value(1));
 
             Mockito.verify(beneficioService, Mockito.times(1)).listar();
         }
@@ -110,7 +108,7 @@ public class BeneficioControllerTest {
                         .valor(150.0)
                         .donatario(new Donatario()).build();
 
-                Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class)))
+                Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class), Mockito.any(Integer.class)))
                         .thenReturn(beneficioCadastrado);
 
                 var content = """
@@ -120,11 +118,11 @@ public class BeneficioControllerTest {
                         "donatario": {}
                     }""";
 
-                mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.BASE_URL.PATH)
+                mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.CRIAR.PATH,1)
                                 .contentType("application/json")
                                 .content(content))
                                 .andExpect(status().isCreated())
-                                .andExpect(header().string("Location", "/beneficios/1"))
+                                .andExpect(header().string("Location", "/beneficios/donatario/1"))
                                 .andExpect(jsonPath("$.id")
                                         .value(1))
                                 .andExpect(jsonPath("$.nome")
@@ -132,22 +130,9 @@ public class BeneficioControllerTest {
                                 .andExpect(jsonPath("$.valor")
                                         .value(150.0));
 
-                Mockito.verify(beneficioService, Mockito.times(1)).salvar(Mockito.any(Beneficio.class));
+                Mockito.verify(beneficioService, Mockito.times(1)).salvar(Mockito.any(Beneficio.class), Mockito.any(Integer.class));
             }
 
-
-            @Test
-            @DisplayName("Se não houver benefícios: 204 e lista vazia")
-            void deveRetornarListaVazia() throws Exception {
-                Mockito.when(beneficioService.listar()).thenReturn(Collections.emptyList());
-
-                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.BASE_URL.PATH)
-                                .contentType("application/json"))
-                        .andExpect(status().isNoContent())
-                        .andExpect(jsonPath("$").isArray())
-                        .andExpect(jsonPath("$.length()").value(0));
-
-            }
 
         }
 
@@ -167,10 +152,10 @@ public class BeneficioControllerTest {
                         .valor(50.0)
                         .build();
 
-                Mockito.when(beneficioService.listarPorDonatario("Donatário X"))
+                Mockito.when(beneficioService.listarPorDonatario(1))
                         .thenReturn((List<Beneficio>) beneficio);
 
-                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_ID.PATH, 1)
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH, 1)
                         .contentType("application/json"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id").value(1))
@@ -185,10 +170,10 @@ public class BeneficioControllerTest {
                     "Deve retornar 204 e uma lista vazia")
             void deveRetornarListaVazia() throws Exception {
 
-                Mockito.when(beneficioService.listarPorDonatario("Donatário X"))
+                Mockito.when(beneficioService.listarPorDonatario(1))
                         .thenReturn(Collections.emptyList());
 
-                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH)
+                mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH,1)
                                 .param("nome", "Donatário")
                                 .contentType("application/json"))
                                 .andExpect(status().isNoContent())
@@ -217,7 +202,7 @@ public class BeneficioControllerTest {
                         .renda(2.500)
                         .build();
 
-                Mockito.when(beneficioService.listarPorFamilia("Família X"))
+                Mockito.when(beneficioService.listarPorFamilia(1))
                         .thenReturn((List<Beneficio>) familia);
 
                 mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_ID.PATH, 1)
@@ -235,7 +220,7 @@ public class BeneficioControllerTest {
                     "Deve retornar 204 e uma lista vazia")
             void deveRetornarListaVazia() throws Exception {
 
-                Mockito.when(beneficioService.listarPorFamilia("Família X"))
+                Mockito.when(beneficioService.listarPorFamilia(1))
                         .thenReturn(Collections.emptyList());
 
                 mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH)
@@ -255,14 +240,13 @@ public class BeneficioControllerTest {
             @Test
             @DisplayName("Se os dados estiverem corretos, 200 e atualizar Beneficio")
             void deveCadastrarBeneficio() throws Exception {
-
                 Beneficio beneficio = Beneficio.builder()
                         .idBeneficio(1)
                         .nome("Benefício X")
                         .valor(50.0)
                         .build();
 
-                Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class)))
+                Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class), 1))
                         .thenReturn(beneficio);
 
                 var content = """

@@ -12,6 +12,7 @@ import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,10 @@ public class BeneficioController {
         Beneficio entity = BeneficioMapper.toEntity(benefico);
         Beneficio salvo = beneficioService.salvar(entity,idDonatario);
         BeneficioConsultaDto dto = BeneficioMapper.toDto(salvo);
-        return ResponseEntity.status(201).body(dto);
+
+        URI uri = URI.create("/beneficios/donatario/" + idDonatario);
+
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping
