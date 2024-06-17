@@ -146,11 +146,18 @@ public class BeneficioControllerTest {
                     "Deve retornar 200 e os benefícios por donatario")
             void deveRetornarBeneficioPorDonatario() throws Exception {
 
-                Beneficio beneficio = Beneficio.builder()
-                        .idBeneficio(1)
-                        .nome("Benefício X")
-                        .valor(50.0)
-                        .build();
+                List<Beneficio> beneficio = List.of(
+                        Beneficio.builder()
+                            .idBeneficio(1)
+                            .nome("Benefício X")
+                            .valor(50.0)
+                            .build(),
+                        Beneficio.builder()
+                            .idBeneficio(2)
+                            .nome("Benefício Y")
+                            .valor(100.0)
+                            .build()
+                );
 
                 Mockito.when(beneficioService.listarPorDonatario(1))
                         .thenReturn((List<Beneficio>) beneficio);
