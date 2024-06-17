@@ -15,19 +15,19 @@ public class UsuarioMapper {
         usuario.setCoordenador(dto.getCoordenador());
         Instituicao instituicao = new Instituicao();
         instituicao.setId(dto.getFkInstituicao());
-        usuario.setFkInstituicao(instituicao);
+        usuario.setInstituicao(instituicao);
         return usuario;
     }
 
     public static UsuarioConsultaDto usuarioParaConsultaDto(Usuario usuario) {
         UsuarioConsultaDto dto = new UsuarioConsultaDto();
-        dto.setIdUsuario(usuario.getIdUsuario());
+        dto.setIdUsuario(usuario.getId());
         dto.setNomeUsuario(usuario.getNomeUsuario());
         dto.setEmail(usuario.getEmail());
         dto.setCpf(usuario.getCpf());
-        dto.setCoordenador(usuario.getCoordenador());
-        if (usuario.getFkInstituicao() != null) {
-            dto.setFkInstituicaoId(usuario.getFkInstituicao().getId());
+        dto.setCoordenador(usuario.isCoordenador());
+        if (usuario.getInstituicao() != null) {
+            dto.setFkInstituicao(usuario.getInstituicao().getId());
         }
         return dto;
     }
@@ -55,7 +55,7 @@ public class UsuarioMapper {
     public static UsuarioTokenDto of(Usuario usuario, String token) {
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
-        usuarioTokenDto.setUserId(usuario.getIdUsuario());
+        usuarioTokenDto.setUserId(usuario.getId());
         usuarioTokenDto.setEmail(usuario.getEmail());
         usuarioTokenDto.setNome(usuario.getNomeUsuario());
         usuarioTokenDto.setToken(token);
