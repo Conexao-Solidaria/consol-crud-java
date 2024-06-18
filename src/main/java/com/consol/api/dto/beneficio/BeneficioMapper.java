@@ -26,6 +26,8 @@ public class BeneficioMapper {
     }
 
     public static BeneficioConsultaDto toDto(Beneficio entity){
+        if (entity == null) return null;
+
         BeneficioConsultaDto dto = new BeneficioConsultaDto();
         dto.setId(entity.getIdBeneficio());
         dto.setNome(entity.getNome());

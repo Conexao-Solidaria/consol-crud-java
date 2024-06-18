@@ -39,7 +39,7 @@ public class InstituicaoService {
         instituicaoAtualizada.setDescricao(instituicao.getDescricao());
         instituicaoAtualizada.setFotoPerfil(instituicao.getFotoPerfil());
 
-        return instituicaoAtualizada;
+        return repository.save(instituicaoAtualizada);
     }
 
     public void apagarPorId(Integer id) {
