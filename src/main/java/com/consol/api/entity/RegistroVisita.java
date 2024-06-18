@@ -17,7 +17,8 @@ import java.time.LocalDate;
 public class RegistroVisita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idRegistroVisita;
+    @Column(name = "id_registro_visita")
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "fk_donatario")

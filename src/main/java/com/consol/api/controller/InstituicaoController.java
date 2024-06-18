@@ -1,93 +1,77 @@
 package com.consol.api.controller;
 
 import com.consol.api.entity.Instituicao;
-import com.consol.api.repository.InstituicaoRepository;
 import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
 import com.consol.api.dto.instituicao.InstituicaoCadastroDto;
 import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
 import com.consol.api.dto.instituicao.InstituicaoMapper;
+import com.consol.api.service.InstituicaoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/instituicoes")
+@RequiredArgsConstructor
 public class InstituicaoController {
 
-    @Autowired
-    InstituicaoRepository repositoryInst;
+    private final InstituicaoService service;
 
     @PostMapping
-    public ResponseEntity<InstituicaoConsultaDto> criar(@RequestBody @Valid InstituicaoCadastroDto instituicaoCadastroDto){
-        if(instituicaoCadastroDto == null) return ResponseEntity.status(400).build();
+    public ResponseEntity<InstituicaoConsultaDto> criar(
+            @RequestBody @Valid InstituicaoCadastroDto dto
+    ){
+        Instituicao instituicao = InstituicaoMapper.toEntity(dto);
+        Instituicao instituicaoSalva = service.criar(instituicao);
+        InstituicaoConsultaDto instituicaoConsultaDto = InstituicaoMapper.toDto(instituicaoSalva);
 
-        Instituicao instituicaoSalvar = InstituicaoMapper.cadastroDtoToInstituicao(instituicaoCadastroDto);
+        URI uri = URI.create("/instituicoes/" + instituicaoConsultaDto.getId());
 
-        Instituicao instituicaoSalvo = repositoryInst.save(instituicaoSalvar);
-
-        InstituicaoConsultaDto instituicaoConsultaDto = InstituicaoMapper.instituicaoToListagemDto(instituicaoSalvo);
-
-        return ResponseEntity.status(201).body(instituicaoConsultaDto);
+        return ResponseEntity.created(uri).body(instituicaoConsultaDto);
     }
 
     @GetMapping
     public ResponseEntity<List<InstituicaoConsultaDto>> listagemInstituicao(){
-        List<Instituicao> instituicaos = repositoryInst.findAll();
+        List<Instituicao> instituicoes = service.listarInstituicoes();
 
-        if(instituicaos.isEmpty()) return ResponseEntity.status(204).build();
+        if (instituicoes.isEmpty()) return ResponseEntity.noContent().build();
 
-        return ResponseEntity.status(200).body(InstituicaoMapper.listagemDtoToInstituicaoLista(instituicaos));
+        List<InstituicaoConsultaDto> dtos = InstituicaoMapper.toDto(instituicoes);
+
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InstituicaoConsultaDto> consultarPorId(@PathVariable Integer id){
-        Optional<Instituicao> instituicaoBuscado = repositoryInst.findById(id);
+    public ResponseEntity<InstituicaoConsultaDto> consultarPorId(
+            @PathVariable Integer id
+    ){
+        Instituicao instituicao = service.consultarPorId(id);
+        InstituicaoConsultaDto dto = InstituicaoMapper.toDto(instituicao);
 
-        if(instituicaoBuscado.isEmpty()) return ResponseEntity.status(404).build();
-
-        InstituicaoConsultaDto dto = InstituicaoMapper.instituicaoToListagemDto(instituicaoBuscado.get());
-
-        return ResponseEntity.status(200).body(dto);
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<InstituicaoConsultaDto> atualizar(@RequestBody @Valid InstituicaoAtualizarDto instituicaoAtualizarDto, @PathVariable Integer id){
-        Optional<Instituicao> instituicaoBuscadoOpt = repositoryInst.findById(id);
+    public ResponseEntity<InstituicaoConsultaDto> atualizar(
+            @RequestBody @Valid InstituicaoAtualizarDto dto,
+            @PathVariable Integer id
+    ){
+        Instituicao instituicao = InstituicaoMapper.toEntity(dto);
+        Instituicao instituicaoAtualizada = service.atualizar(id, instituicao);
+        InstituicaoConsultaDto instituicaoConsultaDto = InstituicaoMapper.toDto(instituicaoAtualizada);
 
-        //Isso é idiota, o java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
-
-        if(instituicaoBuscadoOpt.isEmpty()) return ResponseEntity.status(404).build();
-
-        Instituicao instituicaoBuscado = instituicaoBuscadoOpt.get();
-
-        Instituicao instituicao = InstituicaoMapper.atualizacaoDtoToInstituicao(instituicaoAtualizarDto);
-
-        instituicao.setId(id);
-        if(instituicao.getCep() == null) instituicao.setCep(instituicaoBuscado.getCep()); ;
-        if(instituicao.getNumeroImovel() == null) instituicao.setNumeroImovel(instituicaoBuscado.getNumeroImovel()); ;
-        if(instituicao.getDescricao() == null) instituicao.setDescricao(instituicaoBuscado.getDescricao());
-        if(instituicao.getFotoPerfil() == null) instituicao.setFotoPerfil(instituicaoBuscado.getFotoPerfil());
-
-
-        Instituicao eventoAtualizado = repositoryInst.save(instituicao);
-
-        InstituicaoConsultaDto dto = InstituicaoMapper.instituicaoToListagemDto(eventoAtualizado);
-
-        return ResponseEntity.status(200).body(dto);
+        return ResponseEntity.ok(instituicaoConsultaDto);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> apagarPorId(@PathVariable Integer id){
-        if(!repositoryInst.existsById(id)){
-            return ResponseEntity.status(404).build();
-        }
-
-        repositoryInst.deleteById(id);
-
-        return ResponseEntity.ok(null);
+    public ResponseEntity<Void> apagarPorId(
+            @PathVariable Integer id
+    ){
+        service.apagarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }

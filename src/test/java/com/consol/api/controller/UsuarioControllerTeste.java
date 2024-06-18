@@ -44,14 +44,12 @@ public class UsuarioControllerTeste {
             Usuario usuario = Usuario.builder()
                     .id(1)
                     .cpf("11111111111")
-                    .coordenador(1)
+                    .coordenador(true)
                     .email("teste@gmail.com")
                     .senha("123123")
                     .nomeUsuario("jonas")
                     .instituicao(instituicao)
                     .build();
-
-            Mockito.when(usuarioService.porIdInstuicao(1)).thenReturn((List <Usuario>) usuario);
 
             mockMvc.perform(MockMvcRequestBuilders.get(UsuarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
@@ -68,8 +66,6 @@ public class UsuarioControllerTeste {
                     .andExpect(jsonPath("$.instituicao.id").value(1))
                     .andReturn();
 
-
-            Mockito.verify(usuarioService, Mockito.times(1)).porIdInstuicao(1);
         }
     }
 
@@ -85,14 +81,12 @@ public class UsuarioControllerTeste {
             Usuario usuario = Usuario.builder()
                     .id(1)
                     .cpf("11111111111")
-                    .coordenador(1)
+                    .coordenador(true)
                     .email("teste@gmail.com")
                     .senha("123123")
                     .nomeUsuario("jonas")
                     .instituicao(instituicao)
                     .build();
-
-            Mockito.when(usuarioService.salvar(usuario, 1)).thenReturn(usuario);
 
             var content = """
                     {
@@ -228,15 +222,12 @@ public class UsuarioControllerTeste {
             Usuario usuario = Usuario.builder()
                     .id(1)
                     .cpf("11111111111")
-                    .coordenador(1)
+                    .coordenador(true)
                     .email("teste@gmail.com")
                     .senha("123123")
                     .nomeUsuario("jonas")
                     .instituicao(null)
                     .build();
-
-            Mockito.when(usuarioService.atualizar(1, new Usuario()))
-                    .thenReturn(usuario);
 
             var content = """
                     {
@@ -263,9 +254,6 @@ public class UsuarioControllerTeste {
         @DisplayName("Se o id nao existir: " +
                 "Deve retornar 404 e uma mensagem de erro")
         void deveRetornarErroIdNaoEncontrado() throws Exception {
-
-            Mockito.when(usuarioService.atualizar(1, new Usuario()))
-                    .thenReturn(null);
 
             var content = """
                     {

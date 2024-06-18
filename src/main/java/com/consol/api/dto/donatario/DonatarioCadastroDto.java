@@ -1,6 +1,7 @@
 package com.consol.api.dto.donatario;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -16,8 +17,8 @@ public class DonatarioCadastroDto {
     @NotBlank(message = "O rg do donatário não pode estar em branco")
     private String rg;
 
+    @Size(min = 8, max = 8)
     @NotBlank(message = "O cpf do donatário não pode estar em branco")
-//    @Pattern(regexp = "\\d{5}-\\d{3}", message = "O CPF deve estar no formato 000-000-000-00")
     private String cpf;
 
     @NotBlank(message = "A data de nascimento não pode estar em branco")
@@ -38,7 +39,5 @@ public class DonatarioCadastroDto {
 
     private String ocupacao;
 
-    private String nomeFamilia;
-
-    private String cepFamilia;
+    private Integer idFamilia;
 }
