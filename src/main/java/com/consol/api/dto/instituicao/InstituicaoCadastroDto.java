@@ -1,6 +1,7 @@
 package com.consol.api.dto.instituicao;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -9,6 +10,7 @@ public class InstituicaoCadastroDto {
     private String nome;
 
     @NotBlank(message = "O CEP não pode estar em branco")
+    @Size(min = 8, max = 8)
     private String cep;
 
     @NotBlank(message = "O número do imóvel não pode estar em branco")

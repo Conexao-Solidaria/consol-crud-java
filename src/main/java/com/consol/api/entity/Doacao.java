@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Doacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_doacao")
     private Integer id;
 
     private Double peso;

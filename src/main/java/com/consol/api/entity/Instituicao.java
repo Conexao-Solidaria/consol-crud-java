@@ -1,7 +1,6 @@
 package com.consol.api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -13,11 +12,17 @@ import lombok.*;
 public class Instituicao {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_instituicao")
     private Integer id;
-    private String nome;
-    private String cep;
-    private String numeroImovel;
-    private String descricao;
-    private byte[] fotoPerfil;
 
+    private String nome;
+
+    private String cep;
+
+    private String numeroImovel;
+
+    private String descricao;
+
+    private byte[] fotoPerfil;
 }

@@ -11,5 +11,5 @@ public interface FamiliaRepository extends JpaRepository<Familia, Integer> {
     @Query("SELECT f FROM Familia f")
     Collection<Familia> encontrarTodos();
 
-    Familia findByNameAndCepEquals(String nome, String cep);
+    Familia findByNomeAndCepEquals(String nome, String cep);
 }

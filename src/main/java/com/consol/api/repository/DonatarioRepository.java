@@ -11,5 +11,5 @@ public interface DonatarioRepository extends JpaRepository<Donatario, Integer> {
     @Query("SELECT u FROM Donatario u")
     Collection<Donatario> encontrarTodos();
 
-    List<Donatario> findByNameLike(String nome);
+    List<Donatario> findByNomeContainsIgnoreCase(String nome);
 }
