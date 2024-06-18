@@ -28,7 +28,7 @@ public class DespesaService {
         return despesaRepository.findAll();
     }
 
-    public Despesa listarPorId(Integer id) {
+    public Despesa buscarPorId(Integer id) {
 
         return despesaRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)

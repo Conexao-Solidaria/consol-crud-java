@@ -97,7 +97,10 @@ class DonatarioControllerTest {
                     .ocupacao("Programador")
                     .build();
 
-            Mockito.when(donatarioService.salvar(Mockito.any(Donatario.class)))
+            Mockito.when(donatarioService.salvar(
+                    Mockito.any(Donatario.class),
+                    Mockito.any(Integer.class)
+                    ))
                     .thenReturn(donatario);
 
             var content = """
@@ -534,7 +537,7 @@ class DonatarioControllerTest {
 
     @Nested
     @DisplayName("GET /donatarios/{id}")
-    class listarPorId {
+    class porId {
 
         @Test
         @DisplayName("Se o donatário existir: " +
@@ -556,7 +559,7 @@ class DonatarioControllerTest {
                     .ocupacao("Programador")
                     .build();
 
-            Mockito.when(donatarioService.listarPorId(1))
+            Mockito.when(donatarioService.porId(1))
                     .thenReturn(donatario);
 
             mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
@@ -582,7 +585,7 @@ class DonatarioControllerTest {
                 "Deve retornar 404 e uma mensagem de erro")
         void deveRetornarErroDonatarioNaoEncontrado() throws Exception {
 
-                Mockito.when(donatarioService.listarPorId(1))
+                Mockito.when(donatarioService.porId(1))
                         .thenReturn(null);
 
                 mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
