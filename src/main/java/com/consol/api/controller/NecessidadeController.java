@@ -5,6 +5,8 @@ import com.consol.api.dto.necessidade.NecessidadeCriacaoDto;
 import com.consol.api.dto.necessidade.NecessidadeListagemDto;
 import com.consol.api.dto.necessidade.NecessidadeMapper;
 import com.consol.api.entity.Necessidade;
+import com.consol.api.fila_pilha.NecessidadeMapperPilha;
+import com.consol.api.fila_pilha.Pilha;
 import com.consol.api.service.NecessidadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NecessidadeController {
     private final NecessidadeService necessidadeService;
+    private Pilha pilha = new Pilha(50);
 
     @PostMapping()
     public ResponseEntity<NecessidadeListagemDto> criar(
@@ -62,7 +66,9 @@ public class NecessidadeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id){
+        Necessidade necessidade = necessidadeService.buscarPorId(id);
         necessidadeService.deletar(id);
+        pilha.push(necessidade);
 
         return ResponseEntity.noContent().build();
     }
@@ -77,4 +83,25 @@ public class NecessidadeController {
 
         return ResponseEntity.status(200).body(NecessidadeMapper.toDtos(necessidades));
     }
+
+    @PostMapping("/retroceder/{quantidadade}")
+    public List<NecessidadeListagemDto> retrocederAcao(@PathVariable Integer quantidade){
+        Necessidade necessidade;
+        List<Necessidade> necessidades = new ArrayList<>();
+
+        if(pilha.isEmpty()){
+            System.out.println("PILHA ESTÁ VAZIA");
+            return null;
+        }
+        for (int i = 0; i < quantidade; i++) {
+            if(pilha.isEmpty()){
+                break;
+            }
+            necessidade = pilha.pop();
+            necessidades.add(necessidadeService.cadastrar(NecessidadeMapper.toEntity(NecessidadeMapperPilha.toDto(necessidade, necessidade.getInstituicao().getId()))));
+        }
+
+        return NecessidadeMapper.toDtos(necessidades);
+    }
+
 }

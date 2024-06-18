@@ -2,6 +2,7 @@ package com.consol.api.controller;
 
 import com.consol.api.dto.usuario.*;
 import com.consol.api.entity.Usuario;
+import com.consol.api.fila_pilha.FilaCircular;
 import com.consol.api.repository.InstituicaoRepository;
 import com.consol.api.repository.UsuarioRepository;
 import com.consol.api.service.UsuarioService;
@@ -21,6 +22,8 @@ public class UsuarioController {
     private final UsuarioRepository usuarioRepository;
     private final InstituicaoRepository instituicaoRepository;
     private final UsuarioService usuarioService;
+    private FilaCircular fila = new FilaCircular(100);
+
 
     @PostMapping
     public ResponseEntity<UsuarioConsultaDto> criar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
@@ -62,8 +65,6 @@ public class UsuarioController {
 
         //O  java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
 
-        if(usuarioOptional.isEmpty()) return ResponseEntity.status(404).build();
-
         Usuario usuarioBuscado = usuarioOptional.get();
 
         Usuario usuario = UsuarioMapper.atualizarDtoParaUsuario(usuarioAtualizarDto, usuarioBuscado);
@@ -73,6 +74,8 @@ public class UsuarioController {
 
         UsuarioConsultaDto dto = UsuarioMapper.usuarioParaConsultaDto(eventoAtualizado);
 
+        fila.insert(dto.getId());
+      
         return ResponseEntity.status(200).body(dto);
     }
 
@@ -93,6 +96,12 @@ public class UsuarioController {
     ) {
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
         return ResponseEntity.ok(usuarioToken);
+    }
+
+
+    @GetMapping("/fila")
+    public UsuarioConsultaDto pegarUltimaAdicao(){
+        return UsuarioMapper.toDto(usuarioService.listarPorId(fila.peek()));
     }
 
     @PostMapping("/cadastro")
