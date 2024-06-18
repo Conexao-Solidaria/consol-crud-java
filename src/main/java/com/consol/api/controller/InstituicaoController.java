@@ -7,6 +7,7 @@ import com.consol.api.dto.instituicao.InstituicaoCadastroDto;
 import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
 import com.consol.api.dto.instituicao.InstituicaoMapper;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +17,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/instituicoes")
+@RequiredArgsConstructor
 public class InstituicaoController {
 
-    @Autowired
-    InstituicaoRepository repositoryInst;
+    private final InstituicaoRepository repositoryInst;
 
     @PostMapping
-    public ResponseEntity<InstituicaoConsultaDto> criar(@RequestBody @Valid InstituicaoCadastroDto instituicaoCadastroDto){
+    public ResponseEntity<InstituicaoConsultaDto> criar(
+            @RequestBody @Valid InstituicaoCadastroDto instituicaoCadastroDto
+    ){
         if(instituicaoCadastroDto == null) return ResponseEntity.status(400).build();
 
         Instituicao instituicaoSalvar = InstituicaoMapper.cadastroDtoToInstituicao(instituicaoCadastroDto);

@@ -8,13 +8,16 @@ public class InstituicaoMapper {
 
     // Converte uma entidade Instituicao para InstituicaoListagemDto
     public static InstituicaoConsultaDto instituicaoToListagemDto(Instituicao instituicao) {
+
         InstituicaoConsultaDto dto = new InstituicaoConsultaDto();
+
         dto.setId(instituicao.getId());
         dto.setNome(instituicao.getNome());
         dto.setCep(instituicao.getCep());
         dto.setNumeroImovel(instituicao.getNumeroImovel());
         dto.setDescricao(instituicao.getDescricao());
         dto.setFotoPerfil(instituicao.getFotoPerfil());
+
         return dto;
     }
 
