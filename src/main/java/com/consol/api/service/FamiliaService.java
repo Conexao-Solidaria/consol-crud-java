@@ -30,7 +30,7 @@ public class FamiliaService {
 
         familiaAtualizada.setCep(familia.getCep());
         familiaAtualizada.setNumeroCasa(familia.getNumeroCasa());
-        return familiaAtualizada;
+        return repository.save(familiaAtualizada);
     }
 
     public Familia salvar(Familia familia) {

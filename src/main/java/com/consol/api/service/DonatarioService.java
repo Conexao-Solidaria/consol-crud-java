@@ -53,7 +53,7 @@ public class DonatarioService {
         donatarioAtualizado.setBeneficio(donatario.getBeneficio());
         donatarioAtualizado.setOcupacao(donatario.getOcupacao());
 
-        return donatarioAtualizado;
+        return repository.save(donatarioAtualizado);
     }
 
     public void deletar(int id) {
