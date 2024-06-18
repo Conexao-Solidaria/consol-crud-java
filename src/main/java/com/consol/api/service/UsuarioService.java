@@ -1,68 +1,54 @@
 package com.consol.api.service;
 
-import com.consol.api.dto.usuario.UsuarioConsultaDto;
-import com.consol.api.entity.Familia;
-import com.consol.api.entity.Instituicao;
+import com.consol.api.configuration.security.jwt.GerenciadorTokenJwt;
+import com.consol.api.dto.usuario.UsuarioCadastroDto;
+import com.consol.api.dto.usuario.UsuarioLoginDto;
+import com.consol.api.dto.usuario.UsuarioMapper;
+import com.consol.api.dto.usuario.UsuarioTokenDto;
 import com.consol.api.entity.Usuario;
-import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
-import com.consol.api.repository.FamiliaRepository;
-import com.consol.api.repository.InstituicaoRepository;
 import com.consol.api.repository.UsuarioRepository;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UsuarioRepository usuarioRepository;
-    private final InstituicaoRepository instituicaoRepository; // alterar depois
+    private final GerenciadorTokenJwt gerenciadorTokenJwt;
+    private final AuthenticationManager authenticationManager;
 
-    public List<Usuario> listar(){
-        return usuarioRepository.findAll();
+    public void criar(UsuarioCadastroDto usuarioCadastroDto) {
+        final Usuario novoUsuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
+
+        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
+        novoUsuario.setSenha(senhaCriptografada);
+
+        this.usuarioRepository.save(novoUsuario);
     }
 
-    public Usuario listarPorId(int id){
-        return usuarioRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException()
-        );
-    }
+    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
 
-    public List<Usuario> porIdInstuicao(int id){
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
 
-        Instituicao instituicao = instituicaoRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException()
-        );
+        final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-       return usuarioRepository.findByInstituicao(instituicao);
-    }
+        Usuario usuarioAutenticado =
+                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
+                        .orElseThrow(
+                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        );
 
-    public Usuario salvar(Usuario usuario, int idInstituicao){
-        Instituicao instituicao = instituicaoRepository.findById(idInstituicao).orElseThrow(
-                () -> new EntidadeNaoEncontradaException()
-        );
-
-        usuario.setInstituicao(instituicao);
-
-        return usuarioRepository.save(usuario);
-    }
-
-    public Usuario atualizar(int id, Usuario usuario){
-        Usuario usuarioAtualizar = usuarioRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException()
-        );
-
-        if (usuario.getCoordenador() != null) usuarioAtualizar.setCoordenador(usuario.getCoordenador());
-        if (usuario.getEmail() != null) usuarioAtualizar.setEmail(usuario.getEmail());
-        if (usuario.getSenha() != null) usuarioAtualizar.setSenha(usuario.getSenha());
-
-        return usuarioRepository.save(usuarioAtualizar);
-    }
-
-    public void deletar(int id){
-        if (!usuarioRepository.existsById(id)) throw new EntidadeNaoEncontradaException();
-        usuarioRepository.deleteById(id);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+        return UsuarioMapper.of(usuarioAutenticado, token);
     }
 }

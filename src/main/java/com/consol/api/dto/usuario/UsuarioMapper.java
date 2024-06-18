@@ -2,67 +2,68 @@ package com.consol.api.dto.usuario;
 
 import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Usuario;
-import com.consol.api.repository.UsuarioRepository;
 
 import java.util.List;
 
 public class UsuarioMapper {
-    public static UsuarioConsultaDto toDto(Usuario entity){
-        if (entity == null) return null;
+    public static Usuario cadastrarDtoParaUsuario(UsuarioCadastroDto dto) {
+        Usuario usuario = new Usuario();
+        usuario.setNomeUsuario(dto.getNomeUsuario());
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha()); // Importante para cadastrar o usuário com a senha
+        usuario.setCpf(dto.getCpf());
+        usuario.setCoordenador(dto.getCoordenador());
+        Instituicao instituicao = new Instituicao();
+        instituicao.setId(dto.getFkInstituicao());
+        usuario.setInstituicao(instituicao);
+        return usuario;
+    }
 
+    public static UsuarioConsultaDto usuarioParaConsultaDto(Usuario usuario) {
         UsuarioConsultaDto dto = new UsuarioConsultaDto();
-        dto.setId(entity.getId());
-        dto.setCoordenador(entity.getCoordenador());
-        dto.setNomeUsuario(entity.getNomeUsuario());
-        dto.setEmail(entity.getEmail());
-        dto.setCpf(entity.getCpf());
-
-
-        if (entity.getInstituicao() != null) dto.setInstituicao(toDtoInstituicao(entity.getInstituicao()));
-
+        dto.setIdUsuario(usuario.getId());
+        dto.setNomeUsuario(usuario.getNomeUsuario());
+        dto.setEmail(usuario.getEmail());
+        dto.setCpf(usuario.getCpf());
+        dto.setCoordenador(usuario.isCoordenador());
+        if (usuario.getInstituicao() != null) {
+            dto.setFkInstituicao(usuario.getInstituicao().getId());
+        }
         return dto;
     }
 
+    public static Usuario atualizarDtoParaUsuario(UsuarioAtualizarDto dto, Usuario usuario) {
+        if (dto.getNomeUsuario() != null) {
+            usuario.setNomeUsuario(dto.getNomeUsuario());
+        }
 
+        if (dto.getEmail() != null) {
+            usuario.setEmail(dto.getEmail());
+        }
 
-    private static UsuarioConsultaDto.Instituicao toDtoInstituicao(Instituicao instituicao){
+        if (dto.getCoordenador() != null) {
+            usuario.setCoordenador(dto.getCoordenador());
+        }
 
-        UsuarioConsultaDto.Instituicao instituicaoDto = new UsuarioConsultaDto.Instituicao();
+        if (dto.getCpf() != null) {
+            usuario.setCpf(dto.getCpf());
+        }
 
-        instituicaoDto.setId(instituicao.getId());
-        instituicaoDto.setNome(instituicao.getNome());
-        instituicaoDto.setCep(instituicao.getCep());
-        instituicaoDto.setNumeroImovel(instituicao.getNumeroImovel());
-        instituicaoDto.setDescricao(instituicao.getDescricao());
-
-        return instituicaoDto;
-
+        return usuario;
     }
 
-    public static Usuario toEntity(UsuarioCriacaoDto dto){
-        Usuario entity = new Usuario();
-        entity.setCoordenador(dto.getCoordenador());
-        entity.setNomeUsuario(dto.getNomeUsuario());
-        entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());
-        entity.setCpf(dto.getCpf());
+    public static UsuarioTokenDto of(Usuario usuario, String token) {
+        UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
-        return entity;
+        usuarioTokenDto.setUserId(usuario.getId());
+        usuarioTokenDto.setEmail(usuario.getEmail());
+        usuarioTokenDto.setNome(usuario.getNomeUsuario());
+        usuarioTokenDto.setToken(token);
+
+        return usuarioTokenDto;
     }
 
-
-    public static Usuario toEntity(UsuarioAtualizacaoDto dto){
-        Usuario entity = new Usuario();
-        entity.setCoordenador(dto.getCoordenador());
-        entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());
-
-        return entity;
+    public static List<UsuarioConsultaDto> listagemDtoList(List<Usuario> usuarios){
+        return usuarios.stream().map(UsuarioMapper::usuarioParaConsultaDto).toList();
     }
-
-
-    public static List<UsuarioConsultaDto>  toDto(List<Usuario> entities){
-        return entities.stream().map(UsuarioMapper::toDto).toList();
-    }
-
 }

@@ -54,7 +54,7 @@ public class DespesaController {
     @GetMapping("/{id}")
     public ResponseEntity<DespesaConsultaDto> consultarPorId(@PathVariable Integer id) {
 
-        Despesa despesa = despesaService.listarPorId(id);
+        Despesa despesa = despesaService.buscarPorId(id);
 
         DespesaConsultaDto despesaConsultaDto = new DespesaConsultaDto();
 
@@ -65,7 +65,7 @@ public class DespesaController {
     public ResponseEntity<DespesaConsultaDto> atualizar(@RequestBody @Valid DespesaAtualizarDto despesaAtualizarDto,
                                                           @PathVariable Integer id) {
 
-        Despesa despesaBuscada = despesaService.listarPorId(id);;
+        Despesa despesaBuscada = despesaService.buscarPorId(id);;
 
         Despesa despesa = DespesaMapper.atualizacaoDtoToDespesa(despesaAtualizarDto);
 
