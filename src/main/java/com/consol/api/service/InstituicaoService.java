@@ -1,65 +1,52 @@
 package com.consol.api.service;
 
-import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
-import com.consol.api.dto.instituicao.InstituicaoCadastroDto;
-import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
-import com.consol.api.dto.instituicao.InstituicaoMapper;
+
 import com.consol.api.entity.Instituicao;
 import com.consol.api.repository.InstituicaoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class InstituicaoService {
 
-        @Autowired
-        private final InstituicaoRepository instituicaoRepository;
+        private final InstituicaoRepository repository;
 
-        public InstituicaoConsultaDto criar(InstituicaoCadastroDto instituicaoCadastroDto) {
-            if (instituicaoCadastroDto == null) return null;
-
-            Instituicao instituicaoSalvar = InstituicaoMapper.cadastroDtoToInstituicao(instituicaoCadastroDto);
-            Instituicao instituicaoSalvo = instituicaoRepository.save(instituicaoSalvar);
-
-            return InstituicaoMapper.instituicaoToListagemDto(instituicaoSalvo);
+        public Instituicao criar(Instituicao instituicao) {
+            return repository.save(instituicao);
         }
 
-        public List<InstituicaoConsultaDto> listarInstituicoes() {
-            List<Instituicao> instituicaos = instituicaoRepository.findAll();
-            return InstituicaoMapper.listagemDtoToInstituicaoLista(instituicaos);
+        public List<Instituicao> listarInstituicoes() {
+            return repository.findAll();
         }
 
-        public InstituicaoConsultaDto consultarPorId(Integer id) {
-            Optional<Instituicao> instituicaoBuscado = instituicaoRepository.findById(id);
-            return instituicaoBuscado.map(InstituicaoMapper::instituicaoToListagemDto).orElse(null);
+        public Instituicao consultarPorId(Integer id) {
+            return repository.findById(id).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+            );
         }
 
-        public InstituicaoConsultaDto atualizar(InstituicaoAtualizarDto instituicaoAtualizarDto, Integer id) {
-            Optional<Instituicao> instituicaoBuscadoOpt = instituicaoRepository.findById(id);
-            if (instituicaoBuscadoOpt.isEmpty()) return null;
+        public Instituicao atualizar(Integer id, Instituicao instituicao) {
+            Instituicao instituicaoAtualizada = consultarPorId(id);
 
-            Instituicao instituicaoBuscado = instituicaoBuscadoOpt.get();
-            Instituicao instituicao = InstituicaoMapper.atualizacaoDtoToInstituicao(instituicaoAtualizarDto);
-            instituicao.setId(id);
+            instituicaoAtualizada.setNome(instituicao.getNome());
+            instituicaoAtualizada.setCep(instituicao.getCep());
+            instituicaoAtualizada.setNumeroImovel(instituicao.getNumeroImovel());
+            instituicaoAtualizada.setDescricao(instituicao.getDescricao());
+            instituicaoAtualizada.setFotoPerfil(instituicao.getFotoPerfil());
 
-            if (instituicao.getCep() == null) instituicao.setCep(instituicaoBuscado.getCep());
-            if (instituicao.getNumeroImovel() == null) instituicao.setNumeroImovel(instituicaoBuscado.getNumeroImovel());
-            if (instituicao.getDescricao() == null) instituicao.setDescricao(instituicaoBuscado.getDescricao());
-            if (instituicao.getFotoPerfil() == null) instituicao.setFotoPerfil(instituicaoBuscado.getFotoPerfil());
-
-            Instituicao eventoAtualizado = instituicaoRepository.save(instituicao);
-            return InstituicaoMapper.instituicaoToListagemDto(eventoAtualizado);
+            return instituicaoAtualizada;
         }
 
-        public boolean apagarPorId(Integer id) {
-            if (!instituicaoRepository.existsById(id)) return false;
-            instituicaoRepository.deleteById(id);
-            return true;
+        public void apagarPorId(Integer id) {
+            if (!repository.existsById(id)){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+            repository.deleteById(id);
         }
     }
 
