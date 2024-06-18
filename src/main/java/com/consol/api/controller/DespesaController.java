@@ -39,17 +39,6 @@ public class DespesaController {
         return ResponseEntity.status(201).body(despesaConsultaDto);
     }
 
-    @GetMapping("/donatario/{idDonatario}")
-    public ResponseEntity<List<DespesaConsultaDto>> listarPorDonarario(@PathVariable Integer id){
-        List<Despesa> entities = despesaService.listarPorDonatario(id);
-
-        if (entities.isEmpty()) return ResponseEntity.status(204).build();
-
-        List<DespesaConsultaDto> dtos = DespesaMapper.despesaToListagemDto(entities);
-        return ResponseEntity.status(200).body(dtos);
-
-    }
-
     @GetMapping("/familia/{idFamilia}")
     public ResponseEntity<List<DespesaConsultaDto>> listarPorFamilia(@PathVariable int idFamilia){
         List<Despesa> entities = despesaService.listarPorFamilia(idFamilia);

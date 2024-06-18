@@ -12,7 +12,5 @@ public interface DonatarioRepository extends JpaRepository<Donatario, Integer> {
     @Query("SELECT u FROM Donatario u")
     Collection<Donatario> encontrarTodos();
 
-    List<Despesa> findByDonatario_id(Integer idDonatario);
-
     List<Despesa> findByFamilia_id(Integer idFamilia);
 }

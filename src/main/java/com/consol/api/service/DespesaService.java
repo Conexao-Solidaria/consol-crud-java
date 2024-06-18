@@ -20,11 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DespesaService {
 
-    @Autowired
     private final DespesaRepository despesaRepository;
-
-    @Autowired
-    private final DonatarioRepository donatarioRepository;
 
     private final FamiliaService familiaService;
 
@@ -45,12 +41,6 @@ public class DespesaService {
         Despesa despesaSalva = despesaRepository.save(despesa);
 
         return despesaSalva;
-    }
-
-    public List<Despesa> listarPorDonatario(int idDonatario) {
-        if (!donatarioRepository.existsById(idDonatario));
-        return donatarioRepository.findByDonatario_id(idDonatario);
-
     }
 
     public List<Despesa> listarPorFamilia(int idFamilia) {

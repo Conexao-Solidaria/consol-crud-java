@@ -13,8 +13,6 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
     @Query("SELECT d FROM Despesa d")
     Collection<Despesa> encontrarTodos();
 
-    List<Despesa> findByDonatarioId(Integer id);
-
     List<Despesa> findByFamiliaId(Integer id);
 
 }
