@@ -8,21 +8,18 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
 public class Despesa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_despesa")
-    private Integer idDespesa;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_familia")
-    private Familia familia;
+    private Integer id;
 
     private String tipo;
 
     private Double gasto;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_familia")
+    private Familia familia;
 }
