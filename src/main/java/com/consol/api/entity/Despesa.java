@@ -14,7 +14,7 @@ import lombok.*;
 public class Despesa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDespesa;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "fk_familia")
