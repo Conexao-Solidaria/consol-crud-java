@@ -47,6 +47,6 @@ public class Donatario {
     private List<Beneficio> beneficio;
 
     @ManyToOne
-    @JoinColumn(name = "fk_familiar")
+    @JoinColumn(name = "fk_familia")
     private Familia familia;
 }
