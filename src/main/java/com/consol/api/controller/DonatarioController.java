@@ -4,124 +4,87 @@ import com.consol.api.dto.donatario.DonatarioAtualizarDto;
 import com.consol.api.dto.donatario.DonatarioCadastroDto;
 import com.consol.api.dto.donatario.DonatarioConsultaDto;
 import com.consol.api.dto.donatario.DonatarioMapper;
-import com.consol.api.dto.familia.FamiliaConsultaDto;
 import com.consol.api.entity.Donatario;
-import com.consol.api.entity.Familia;
-import com.consol.api.repository.DonatarioRepository;
-import com.consol.api.repository.FamiliaRepository;
+import com.consol.api.service.DonatarioService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/donatarios")
+@RequiredArgsConstructor
 public class DonatarioController {
 
-    @Autowired
-    DonatarioRepository donatarioRepository;
-
-    @Autowired
-    FamiliaRepository familiaRepository;
+    private final DonatarioService service;
 
     @PostMapping
-    public ResponseEntity<DonatarioConsultaDto> criar(@RequestBody @Valid DonatarioCadastroDto donatarioCadastroDto) {
+    public ResponseEntity<DonatarioConsultaDto> criar(
+            @RequestBody @Valid DonatarioCadastroDto dto
+    ) {
+        Donatario donatario = DonatarioMapper.toEntity(dto);
+        Donatario donatarioSalvo = service.salvar(donatario, dto.getIdFamilia());
+        DonatarioConsultaDto donatarioConsultaDto = DonatarioMapper.toDto(donatarioSalvo);
 
-        if (donatarioCadastroDto == null) return ResponseEntity.status(400).build();
+        URI uri = URI.create("/donatarios/" + donatarioConsultaDto.getId());
 
-        Familia familia = familiaRepository.findByNameAndCepEquals(donatarioCadastroDto.getCepFamilia(), donatarioCadastroDto.getNomeFamilia());
-
-        if (familia == null) {
-            return ResponseEntity.status(404).body(null);
-        }
-
-        Donatario donatarioSalvar = DonatarioMapper.cadastroDtoToDonatario(donatarioCadastroDto);
-        donatarioSalvar.setFamilia(familia);
-
-        Donatario donatarioSalvo = donatarioRepository.save(donatarioSalvar);
-
-        DonatarioConsultaDto donatarioConsultaDto = DonatarioMapper.donatarioToListagemDto(donatarioSalvo);
-
-        return ResponseEntity.status(201).body(donatarioConsultaDto);
+        return ResponseEntity.created(uri).body(donatarioConsultaDto);
     }
 
     @GetMapping
     public ResponseEntity<List<DonatarioConsultaDto>> listagemDonatario() {
-        List<Donatario> donatarios = donatarioRepository.findAll();
+        List<Donatario> donatarios = service.listar();
 
-        if (donatarios.isEmpty()) return ResponseEntity.status(204).build();
+        if (donatarios.isEmpty()) return ResponseEntity.noContent().build();
 
-        return ResponseEntity.status(200).body(DonatarioMapper.listagemDtoToDonatario(donatarios));
+        List<DonatarioConsultaDto> dtos = DonatarioMapper.toDto(donatarios);
+
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DonatarioConsultaDto> consultarPorId(@PathVariable Integer id) {
-        Optional<Donatario> donatarioOptional = donatarioRepository.findById(id);
+    public ResponseEntity<DonatarioConsultaDto> consultarPorId(
+            @PathVariable Integer id
+    ) {
+        Donatario donatario = service.porId(id);
+        DonatarioConsultaDto dto = DonatarioMapper.toDto(donatario);
 
-        if (!donatarioOptional.isPresent()) {
-            return ResponseEntity.status(404).body(null); // Donatário não encontrado
-        }
+        return ResponseEntity.ok(dto);
+    }
 
-        Donatario donatario = donatarioOptional.get();
-        Familia familia = donatario.getFamilia();
+    @GetMapping("/filtro/por-nome")
+    public ResponseEntity<List<DonatarioConsultaDto>> consultarPorNome(
+            @RequestParam String nome
+    ) {
+        List<Donatario> donatarios = service.listarPorNome(nome);
 
-        FamiliaConsultaDto familiaDto = new FamiliaConsultaDto();
-        DonatarioConsultaDto donatarioConsultaDto = new DonatarioConsultaDto();
+        if (donatarios.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<DonatarioConsultaDto> dto = DonatarioMapper.toDto(donatarios);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<DonatarioConsultaDto> atualizar(
+            @RequestBody @Valid DonatarioAtualizarDto dto,
+            @PathVariable Integer id
+    ) {
+        Donatario donatario = DonatarioMapper.toEntity(dto);
+        Donatario donatarioAtualizado = service.atualizar(id, donatario);
+        DonatarioConsultaDto donatarioConsultaDto = DonatarioMapper.toDto(donatarioAtualizado);
 
         return ResponseEntity.ok(donatarioConsultaDto);
     }
 
-    @GetMapping("/filtro")
-    public ResponseEntity<List<DonatarioConsultaDto>> consultarPorNome(@RequestParam String nome) {
-        List<Donatario> donatarios = donatarioRepository.findByNameLike(nome);
-
-        if (donatarios.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        List<DonatarioConsultaDto> donatarioConsultaDto = DonatarioMapper.listagemDtoToDonatario(donatarios);
-        return ResponseEntity.status(200).body(donatarioConsultaDto);
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<DonatarioConsultaDto> atualizar(@RequestBody @Valid DonatarioAtualizarDto donatarioAtualizarDto,
-                                                          @PathVariable Integer id) {
-
-        Optional<Donatario> donatarioBuscadoOpt = donatarioRepository.findById(id);
-
-        if (donatarioBuscadoOpt.isEmpty()) return ResponseEntity.status(404).build();
-
-        Donatario donatarioBuscado = donatarioBuscadoOpt.get();
-
-        Donatario donatario = DonatarioMapper.atualizacaoDtoToDonatario(donatarioAtualizarDto);
-
-        donatario.setId(id);
-        if (donatario.getNome() == null) donatario.setNome(donatarioBuscado.getNome());
-        if (donatario.getTelefone1() == null) donatario.setTelefone1(donatarioBuscado.getTelefone1());
-        if (donatario.getTelefone2() == null) donatario.setTelefone2(donatarioBuscado.getTelefone2());
-        if (donatario.getEstadoCivil() == null) donatario.setEstadoCivil(donatarioBuscado.getEstadoCivil());
-        if (donatario.getEscolaridade() == null) donatario.setEscolaridade(donatarioBuscado.getEscolaridade());
-        if (donatario.getTrabalhando() == null) donatario.setTrabalhando(donatarioBuscado.getTrabalhando());
-        if (donatario.getOcupacao() == null) donatario.setOcupacao(donatarioBuscado.getOcupacao());
-
-        Donatario eventoAtualizado = donatarioRepository.save(donatario);
-
-        DonatarioConsultaDto dto = DonatarioMapper.donatarioToListagemDto(eventoAtualizado);
-
-        return ResponseEntity.status(200).body(dto);
-    }
-
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> apagarPorId(@PathVariable Integer id) {
-        if (!donatarioRepository.existsById(id)) {
-            return ResponseEntity.status(404).build();
-        }
-
-        donatarioRepository.deleteById(id);
-
-        return ResponseEntity.ok(null);
+    public ResponseEntity<Void> apagarPorId(
+            @PathVariable Integer id
+    ) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

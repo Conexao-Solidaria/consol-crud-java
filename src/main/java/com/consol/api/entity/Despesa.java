@@ -14,6 +14,7 @@ import lombok.*;
 public class Despesa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_despesa")
     private Integer idDespesa;
 
     @ManyToOne

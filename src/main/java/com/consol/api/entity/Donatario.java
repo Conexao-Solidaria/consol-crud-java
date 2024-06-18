@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,7 +14,8 @@ import java.time.LocalDate;
 @Builder
 public class Donatario {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_donatario")
     private Integer id;
 
     private LocalDate dataCadastro;
@@ -42,7 +44,7 @@ public class Donatario {
 
     @OneToMany
     @JoinColumn(name = "fk_beneficio")
-    private Beneficio beneficio;
+    private List<Beneficio> beneficio;
 
     @ManyToOne
     @JoinColumn(name = "fk_familiar")

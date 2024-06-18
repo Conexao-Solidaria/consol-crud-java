@@ -6,9 +6,11 @@ import java.util.List;
 
 public class DonatarioMapper {
 
-    public static DonatarioConsultaDto donatarioToListagemDto(Donatario donatario) {
+    public static DonatarioConsultaDto toDto(Donatario donatario) {
+        if (donatario == null) return null;
 
         DonatarioConsultaDto dto = new DonatarioConsultaDto();
+
         dto.setId(donatario.getId());
         dto.setDataCadastro(donatario.getDataCadastro());
         dto.setNome(donatario.getNome());
@@ -21,11 +23,15 @@ public class DonatarioMapper {
         dto.setEscolaridade(donatario.getEscolaridade());
         dto.setTrabalhando(donatario.getTrabalhando());
         dto.setOcupacao(donatario.getOcupacao());
+
         return dto;
     }
 
-    public static Donatario cadastroDtoToDonatario(DonatarioCadastroDto dto) {
+    public static Donatario toEntity(DonatarioCadastroDto dto) {
+        if (dto == null) return null;
+
         Donatario donatario = new Donatario();
+
         donatario.setDataCadastro(dto.getDataCadastro());
         donatario.setNome(dto.getNome());
         donatario.setRg(dto.getRg());
@@ -40,8 +46,11 @@ public class DonatarioMapper {
         return donatario;
     }
 
-    public static Donatario atualizacaoDtoToDonatario(DonatarioAtualizarDto dto) {
+    public static Donatario toEntity(DonatarioAtualizarDto dto) {
+        if (dto == null) return null;
+
         Donatario donatario = new Donatario();
+
         donatario.setNome(dto.getNome());
         donatario.setTelefone1(dto.getTelefone1());
         donatario.setTelefone2(dto.getTelefone2());
@@ -49,10 +58,12 @@ public class DonatarioMapper {
         donatario.setEscolaridade(dto.getEscolaridade());
         donatario.setTrabalhando(dto.getTrabalhando());
         donatario.setOcupacao(dto.getOcupacao());
+
         return donatario;
     }
 
-    public static List<DonatarioConsultaDto> listagemDtoToDonatario(List<Donatario> donatarios) {
-        return donatarios.stream().map(DonatarioMapper::donatarioToListagemDto).toList();
+    public static List<DonatarioConsultaDto> toDto(List<Donatario> donatarios){
+        return donatarios.stream().map(DonatarioMapper::toDto).toList();
     }
+
 }
