@@ -14,7 +14,7 @@ import lombok.*;
 public class Beneficio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idBeneficio;
+    private Integer id;
 
     private String nome;
 

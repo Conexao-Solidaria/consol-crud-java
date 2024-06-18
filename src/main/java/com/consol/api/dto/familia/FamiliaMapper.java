@@ -37,7 +37,7 @@ public class FamiliaMapper {
 
         for (Donatario donatarioAtual : donatarios) {
             FamiliaConsultaDto.DonatarioDto donatarioDto = new FamiliaConsultaDto.DonatarioDto();
-            donatarioDto.setId(donatarioAtual.getIdDonatario());
+            donatarioDto.setId(donatarioAtual.getId());
             donatarioDto.setEstadoCivil(donatarioAtual.getEstadoCivil());
             donatarioDto.setEscolaridade(donatarioAtual.getEscolaridade());
             donatarioDto.setTrabalhando(donatarioAtual.getTrabalhando());

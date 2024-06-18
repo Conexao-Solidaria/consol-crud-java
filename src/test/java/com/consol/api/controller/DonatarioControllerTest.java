@@ -83,7 +83,7 @@ class DonatarioControllerTest {
         void deveSalvarDonatario() throws Exception {
 
             Donatario donatario = Donatario.builder()
-                    .idDonatario(1)
+                    .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
                     .rg("123456")
@@ -542,7 +542,7 @@ class DonatarioControllerTest {
         void deveRetornarDonatario() throws Exception {
 
             Donatario donatario = Donatario.builder()
-                    .idDonatario(1)
+                    .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
                     .rg("123456")
@@ -605,11 +605,11 @@ class DonatarioControllerTest {
                 Mockito.when(donatarioService.listarPorNome("Donatário"))
                         .thenReturn(List.of(
                                 Donatario.builder()
-                                        .idDonatario(1)
+                                        .id(1)
                                         .nome("Donatário 1")
                                         .build(),
                                 Donatario.builder()
-                                        .idDonatario(2)
+                                        .id(2)
                                         .nome("Donatário 2")
                                         .build()));
 
@@ -652,7 +652,7 @@ class DonatarioControllerTest {
         void deveAtualizarDonatario() throws Exception {
 
                 Donatario donatario = Donatario.builder()
-                        .idDonatario(1)
+                        .id(1)
                         .dataCadastro(LocalDate.now())
                         .nome("Donatário 1")
                         .rg("123456")

@@ -8,20 +8,24 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
-public class Necessidade {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id_usuario")
+    private Integer id;
 
-    private String tipo;
+    private Integer coordenador;
 
-    private String descricao;
+    private String nomeUsuario;
+
+    private String email;
+
+    private String senha;
+
+    private String cpf;
 
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")
     private Instituicao instituicao;
-
 }
