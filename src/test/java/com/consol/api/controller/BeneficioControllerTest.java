@@ -201,16 +201,21 @@ public class BeneficioControllerTest {
                     "Deve retornar 200 e uma lista de benefícios por família")
             void deveRetornarBeneficioPorFamilia() throws Exception {
 
-                Familia familia = Familia.builder()
-                        .id(1)
-                        .nome("Famíla X")
-                        .cep("09120640")
-                        .numeroCasa(26)
-                        .renda(2.500)
-                        .build();
+                List<Beneficio> beneficios = List.of(
+                        Beneficio.builder()
+                                .idBeneficio(1)
+                                .nome("Benefício X")
+                                .valor(50.0)
+                                .build(),
+                        Beneficio.builder()
+                                .idBeneficio(2)
+                                .nome("Benefício Y")
+                                .valor(100.0)
+                                .build()
+                );
 
                 Mockito.when(beneficioService.listarPorFamilia(1))
-                        .thenReturn((List<Beneficio>) familia);
+                        .thenReturn(beneficios);
 
                 mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_ID.PATH, 1)
                                 .contentType("application/json"))
