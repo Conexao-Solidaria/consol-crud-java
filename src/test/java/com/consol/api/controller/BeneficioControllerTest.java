@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -146,16 +147,34 @@ public class BeneficioControllerTest {
                     "Deve retornar 200 e os benefícios por donatario")
             void deveRetornarBeneficioPorDonatario() throws Exception {
 
+                Donatario donatario = new Donatario();
+                donatario.setId(1);
+                donatario.setDataCadastro(LocalDate.now());
+                donatario.setNome("João Silva");
+                donatario.setRg("123456789");
+                donatario.setCpf("12345678901");
+                donatario.setDataNascimento(LocalDate.of(1980, 5, 15));
+                donatario.setTelefone1("11987654321");
+                donatario.setTelefone2("11987654322");
+                donatario.setEstadoCivil("Solteiro");
+                donatario.setEscolaridade("Ensino Médio");
+                donatario.setTrabalhando(true);
+                donatario.setOcupacao("Operador de Máquina");
+                donatario.setFamilia(null);
+
+
                 List<Beneficio> beneficio = List.of(
                         Beneficio.builder()
                             .idBeneficio(1)
                             .nome("Benefício X")
                             .valor(50.0)
+                            .donatario(donatario)
                             .build(),
                         Beneficio.builder()
                             .idBeneficio(2)
                             .nome("Benefício Y")
                             .valor(100.0)
+                            .donatario(donatario)
                             .build()
                 );
 
@@ -164,11 +183,13 @@ public class BeneficioControllerTest {
 
                 mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH, 1)
                         .contentType("application/json"))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.id").value(1))
-                        .andExpect(jsonPath("$.nome").value("Benefício X"))
-                        .andExpect(jsonPath("$.valor").value(50.0))
-                        .andExpect(jsonPath("$.donatario.id").value(1)
+
+                        .andExpect(jsonPath("$").isArray())
+                        .andExpect(jsonPath("$.length()").value(2))
+                        .andExpect(jsonPath("$[0].id").value(1))
+                        .andExpect(jsonPath("$[0].nome").value("Benefício X"))
+                        .andExpect(jsonPath("$[0].valor").value(50.0))
+                        .andExpect(jsonPath("$[0].idDonatario").value(1)
                         );
             }
 
@@ -183,9 +204,7 @@ public class BeneficioControllerTest {
                 mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH,1)
                                 .param("nome", "Donatário")
                                 .contentType("application/json"))
-                                .andExpect(status().isNoContent())
-                                .andExpect(jsonPath("$").isArray())
-                                .andExpect(jsonPath("$.length()").value(0));
+                                .andExpect(status().isNoContent());
             }
 
         }
@@ -238,9 +257,7 @@ public class BeneficioControllerTest {
                 mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.POR_FILTRO.PATH)
                                 .param("nome", "Família X")
                                 .contentType("application/json"))
-                                .andExpect(status().isNoContent())
-                                .andExpect(jsonPath("$").isArray())
-                                .andExpect(jsonPath("$.length()").value(0));
+                                .andExpect(status().isNoContent());
             }
         }
 

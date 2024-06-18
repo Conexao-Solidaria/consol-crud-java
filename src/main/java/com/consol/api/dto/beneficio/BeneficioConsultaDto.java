@@ -12,6 +12,7 @@ public class BeneficioConsultaDto {
     private Integer id;
     private String nome;
     private Double valor;
+    private Integer idDonatario;
 
 
 }
