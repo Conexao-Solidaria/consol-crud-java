@@ -16,6 +16,11 @@ public class DespesaMapper {
         return dto;
     }
 
+    public static List<DespesaConsultaDto> despesaToListagemDto (List<Despesa> despesas) {
+        return despesas.stream().map(DespesaMapper::despesaToListagemDto).toList();
+
+    }
+
     public static Despesa cadastroDtoToDespesa(DespesaCadastroDto dto) {
         Despesa despesa = new Despesa();
         despesa.setTipo(dto.getTipo());

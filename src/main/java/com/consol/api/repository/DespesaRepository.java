@@ -15,6 +15,6 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
 
     List<Despesa> findByDonatarioId(Integer id);
 
-    List<Familia> findByFamiliaId(Integer id);
+    List<Despesa> findByFamiliaId(Integer id);
 
 }

@@ -55,7 +55,7 @@ public class FamiliaMapper {
 
         for (Despesa despesaAtual : despesas) {
             FamiliaConsultaDto.DespesaDto despesaDto = new FamiliaConsultaDto.DespesaDto();
-            despesaDto.setId(despesaAtual.getIdDespesa());
+            despesaDto.setId(despesaAtual.getId());
             despesaDto.setTipo(despesaAtual.getTipo());
             despesaDto.setGasto(despesaAtual.getGasto());
 

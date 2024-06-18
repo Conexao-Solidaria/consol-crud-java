@@ -6,9 +6,12 @@ import com.consol.api.dto.despesa.DespesaConsultaDto;
 import com.consol.api.dto.despesa.DespesaMapper;
 import com.consol.api.entity.Despesa;
 import com.consol.api.repository.DespesaRepository;
+import com.consol.api.repository.DonatarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,48 +23,57 @@ public class DespesaService {
     @Autowired
     private final DespesaRepository despesaRepository;
 
-    public List<DespesaConsultaDto> listar() {
-        List<Despesa> despesas = despesaRepository.findAll();
-        return DespesaMapper.listagemDtoToDespesa(despesas);
+    @Autowired
+    private final DonatarioRepository donatarioRepository;
+
+    private final FamiliaService familiaService;
+
+    public List<Despesa> listar() {
+        return despesaRepository.findAll();
     }
 
-    public DespesaConsultaDto salvar(DespesaCadastroDto despesaCadastroDto) {
-        if (despesaCadastroDto == null) return null;
+    public Despesa listarPorId(Integer id) {
 
-        Despesa despesaSalvar = DespesaMapper.cadastroDtoToDespesa(despesaCadastroDto);
-        Despesa despesaSalva = despesaRepository.save(despesaSalvar);
-
-        return DespesaMapper.despesaToListagemDto(despesaSalva);
+        return despesaRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
     }
 
-    public List<Despesa> buscarDespesasPorDonatario(String nomeDonatario){
-        return null;
+    public Despesa salvar(Despesa despesa) {
+        if (despesa == null) return null;
+
+        Despesa despesaSalva = despesaRepository.save(despesa);
+
+        return despesaSalva;
     }
 
-    public List<Despesa> buscarDespesasPorFamilia(String nomeFamilia){
-        return null;
+    public List<Despesa> listarPorDonatario(int idDonatario) {
+        if (!donatarioRepository.existsById(idDonatario));
+        return donatarioRepository.findByDonatario_id(idDonatario);
+
     }
 
-    public DespesaConsultaDto atualizarDespesa(Integer id, DespesaAtualizarDto despesaAtualizarDto){
+    public List<Despesa> listarPorFamilia(int idFamilia) {
+        familiaService.porId(idFamilia);
+        return despesaRepository.findByFamiliaId(idFamilia);
+    }
+
+    public Despesa atualizarDespesa(Integer id, Despesa despesa){
         Optional<Despesa> despesaBuscadaOpt = despesaRepository.findById(id);
         if (despesaBuscadaOpt.isEmpty()) return null;
 
         Despesa despesaBuscada = despesaBuscadaOpt.get();
-        Despesa despesa = DespesaMapper.atualizacaoDtoToDespesa(despesaAtualizarDto);
         despesa.setId(id);
 
         if (despesa.getTipo() == null) despesa.setTipo(despesaBuscada.getTipo());
         if (despesa.getGasto() == null) despesa.setGasto(despesaBuscada.getGasto());
 
 
-        Despesa eventoAtualizado = despesaRepository.save(despesa);
-        return DespesaMapper.despesaToListagemDto(eventoAtualizado);
+        return despesaRepository.save(despesa);
     }
 
-    public Boolean deletarDespesa(Integer id)   {
-        if (!despesaRepository.existsById(id)) return false;
+    public void deletarPorId(Integer id) {
+        if (!despesaRepository.existsById(id));
         despesaRepository.deleteById(id);
-        return true;
     }
-
 }
