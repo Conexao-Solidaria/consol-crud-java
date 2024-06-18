@@ -91,7 +91,7 @@ public class BeneficioController {
         Beneficio entity = BeneficioMapper.toEntity(beneficioAtualizacao);
         Beneficio atualizado = beneficioService.atualizar(idBeneficio,entity);
         BeneficioConsultaDto dto = BeneficioMapper.toDto(atualizado);
-        return ResponseEntity.status(200).body(dto);
+        return ResponseEntity.status(201).body(dto);
 
     }
 

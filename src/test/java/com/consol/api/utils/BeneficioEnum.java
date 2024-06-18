@@ -5,7 +5,9 @@ public enum BeneficioEnum {
     POR_ID("/beneficios/{id}"),
     POR_FILTRO("/beneficios/donatario/{id}"),
 
-    CRIAR("/beneficios/donatario/{id}");
+    CRIAR("/beneficios/donatario/{id}"),
+
+    POR_FAMILIA("/beneficios/familia/{id}");
 
 
     BeneficioEnum(String PATH) { this.PATH = PATH; }
