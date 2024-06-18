@@ -5,6 +5,7 @@ import com.consol.api.dto.usuario.UsuarioConsultaDto;
 import com.consol.api.dto.usuario.UsuarioCriacaoDto;
 import com.consol.api.dto.usuario.UsuarioMapper;
 import com.consol.api.entity.Usuario;
+import com.consol.api.fila_pilha.FilaCircular;
 import com.consol.api.service.UsuarioService;
 import jakarta.persistence.GeneratedValue;
 import jakarta.validation.Valid;
@@ -22,6 +23,8 @@ import java.util.List;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private FilaCircular fila = new FilaCircular(100);
+
 
     @GetMapping
     public ResponseEntity <List<UsuarioConsultaDto>> listar() {
@@ -64,6 +67,8 @@ public class UsuarioController {
         Usuario salvo = usuarioService.salvar(entity,id);
         UsuarioConsultaDto dto = UsuarioMapper.toDto(salvo);
 
+        fila.insert(dto.getId());
+
         return ResponseEntity.status(201).body(dto);
 
     }
@@ -88,4 +93,8 @@ public class UsuarioController {
         return ResponseEntity.status(204).build();
     }
 
+    @GetMapping("/fila")
+    public UsuarioConsultaDto pegarUltimaAdicao(){
+        return UsuarioMapper.toDto(usuarioService.listarPorId(fila.peek()));
+    }
 }
