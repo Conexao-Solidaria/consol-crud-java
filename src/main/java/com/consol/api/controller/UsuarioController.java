@@ -74,7 +74,7 @@ public class UsuarioController {
 
         UsuarioConsultaDto dto = UsuarioMapper.usuarioParaConsultaDto(eventoAtualizado);
 
-        fila.insert(dto.getId());
+        fila.insert(dto.getIdUsuario());
       
         return ResponseEntity.status(200).body(dto);
     }
@@ -101,7 +101,8 @@ public class UsuarioController {
 
     @GetMapping("/fila")
     public UsuarioConsultaDto pegarUltimaAdicao(){
-        return UsuarioMapper.toDto(usuarioService.listarPorId(fila.peek()));
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById((fila.peek()));
+        return usuarioOptional.map(UsuarioMapper::usuarioParaConsultaDto).orElse(null);
     }
 
     @PostMapping("/cadastro")
@@ -109,6 +110,7 @@ public class UsuarioController {
             @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
     ) {
         if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
+
         if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
 
         usuarioService.criar(usuarioCadastroDto);
