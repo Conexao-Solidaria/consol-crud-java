@@ -1,10 +1,10 @@
 package com.consol.api.service;
 
 import com.consol.api.configuration.security.jwt.GerenciadorTokenJwt;
-import com.consol.api.dto.UsuarioCadastroDto;
-import com.consol.api.dto.UsuarioLoginDto;
-import com.consol.api.dto.UsuarioMapper;
-import com.consol.api.dto.UsuarioTokenDto;
+import com.consol.api.dto.usuario.UsuarioCadastroDto;
+import com.consol.api.dto.usuario.UsuarioLoginDto;
+import com.consol.api.dto.usuario.UsuarioMapper;
+import com.consol.api.dto.usuario.UsuarioTokenDto;
 import com.consol.api.entity.Usuario;
 import com.consol.api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

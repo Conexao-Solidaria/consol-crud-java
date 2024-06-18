@@ -1,6 +1,6 @@
 package com.consol.api.controller;
 
-import com.consol.api.dto.*;
+import com.consol.api.dto.usuario.*;
 import com.consol.api.entity.Usuario;
 import com.consol.api.repository.InstituicaoRepository;
 import com.consol.api.repository.UsuarioRepository;

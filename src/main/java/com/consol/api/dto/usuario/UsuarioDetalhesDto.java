@@ -1,4 +1,4 @@
-package com.consol.api.dto;
+package com.consol.api.dto.usuario;
 
 import com.consol.api.entity.Usuario;
 import lombok.Data;

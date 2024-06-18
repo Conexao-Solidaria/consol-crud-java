@@ -1,10 +1,9 @@
 package com.consol.api.service;
 
-import com.consol.api.dto.UsuarioDetalhesDto;
+import com.consol.api.dto.usuario.UsuarioDetalhesDto;
 import com.consol.api.entity.Usuario;
 import com.consol.api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
