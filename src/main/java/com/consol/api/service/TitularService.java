@@ -1,9 +1,8 @@
 package com.consol.api.service;
 
-import com.consol.api.dto.donatario.DonatarioMapper;
 import com.consol.api.entity.Donatario;
 import com.consol.api.entity.Familia;
-import com.consol.api.repository.DonatarioRepository;
+import com.consol.api.repository.TitularRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DonatarioService {
 
-    private final DonatarioRepository repository;
+    private final TitularRepository repository;
 
     private final FamiliaService familiaService;
 
