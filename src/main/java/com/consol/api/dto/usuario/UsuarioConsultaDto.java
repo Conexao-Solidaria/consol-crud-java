@@ -9,5 +9,6 @@ public class UsuarioConsultaDto {
     private String nomeUsuario;
     private String email;
     private String cpf;
+    private Integer flagAprovado;
     private Integer fkInstituicao;
 }

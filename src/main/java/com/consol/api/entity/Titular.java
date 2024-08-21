@@ -12,10 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Donatario {
+public class Titular {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_donatario")
+    @Column(name = "id_titular")
     private Integer id;
 
     private LocalDate dataCadastro;

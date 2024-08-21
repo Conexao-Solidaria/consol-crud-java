@@ -1,9 +1,12 @@
 package com.consol.api.controller;
 
-import com.consol.api.dto.doacao.DoacaoCadastroDto;
-import com.consol.api.dto.doacao.DoacaoConsultaDto;
-import com.consol.api.dto.doacao.DoacaoMapper;
+import com.consol.api.dto.doacao.*;
+import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
+import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
+import com.consol.api.dto.instituicao.InstituicaoMapper;
+import com.consol.api.entity.Despesa;
 import com.consol.api.entity.Doacao;
+import com.consol.api.entity.Instituicao;
 import com.consol.api.service.DoacaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/doacoes")
@@ -83,5 +87,29 @@ public class DoacaoController {
         URI uri = URI.create("/doacoes/" + doacaoConsultaDto.getId());
 
         return ResponseEntity.created(uri).body(doacaoConsultaDto);
+    }
+
+    @PutMapping("/atualizar-flag/{id}")
+    public ResponseEntity<DoacaoConsultaDto> atualizarFlag(
+            @RequestBody @Valid DoacaoAtualizarFlagDto dto,
+            @PathVariable Integer id
+    ){
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoAtualizada = service.atualizarFlag(id, doacao);
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
+
+        return ResponseEntity.ok(doacaoConsultaDto);
+    }
+
+    @PutMapping("/atualizar-status/{id}")
+    public ResponseEntity<DoacaoConsultaDto> atualizarStatus(
+            @RequestBody @Valid DoacaoAtualizarStatusDto dto,
+            @PathVariable Integer id
+    ){
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoAtualizada = service.atualizarStatus(id, doacao);
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
+
+        return ResponseEntity.ok(doacaoConsultaDto);
     }
 }

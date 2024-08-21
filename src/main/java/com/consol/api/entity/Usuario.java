@@ -31,6 +31,9 @@ public class Usuario {
     @Column(name = "cpf")
     private String cpf;
 
+    @Column(name = "flag_aprovado")
+    private Integer flagAprovado;
+
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")
     private Instituicao instituicao;

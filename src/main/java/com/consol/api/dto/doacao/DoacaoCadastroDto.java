@@ -1,5 +1,6 @@
 package com.consol.api.dto.doacao;
 
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -8,10 +9,9 @@ import java.time.LocalDate;
 @Data
 public class DoacaoCadastroDto {
 
-    @Positive(message = "O peso está inválido")
-    @DecimalMin(value = "6.0", message = "O peso está inválido")
-    @NotNull(message = "O peso é obrigatório")
-    private Double peso;
+    @Min(0)
+    @Max(1)
+    private Integer statusDoacao = 0;
 
     @NotBlank(message = "A descricao é obrigatória")
     @NotNull(message = "A descrição está nula")
@@ -24,4 +24,6 @@ public class DoacaoCadastroDto {
     private Integer instituicaoId;
 
     private Integer donatarioId;
+
+    private Integer flagDoacaoEntregue = 0;
 }

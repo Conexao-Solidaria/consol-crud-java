@@ -18,4 +18,6 @@ public class FamiliaCadastroDto {
 
     @NotNull(message = "A renda não pode ser nula")
     private Double renda;
+
+    private Integer flagRetirada = 0;
 }

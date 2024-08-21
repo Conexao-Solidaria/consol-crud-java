@@ -18,18 +18,20 @@ public class Doacao {
     @Column(name = "id_doacao")
     private Integer id;
 
-    private Double peso;
+    private Integer statusDoacao;
+
+    private LocalDate dataDoacao;
 
     private String descricao;
 
-    private LocalDate dataDoacao;
+    private Integer flagDoacaoEntregue;
 
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")
     private Instituicao instituicao;
 
     @ManyToOne
-    @JoinColumn(name = "fk_donatario")
-    private Donatario donatario;
+    @JoinColumn(name = "fk_titular")
+    private Titular titular;
 
 }

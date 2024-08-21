@@ -1,11 +1,8 @@
 package com.consol.api.controller;
 
-import com.consol.api.dto.familia.FamiliaAtualizarDto;
-import com.consol.api.dto.familia.FamiliaMapper;
+import com.consol.api.dto.familia.*;
 import com.consol.api.entity.Familia;
 import com.consol.api.service.FamiliaService;
-import com.consol.api.dto.familia.FamiliaCadastroDto;
-import com.consol.api.dto.familia.FamiliaConsultaDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +60,17 @@ public class FamiliaController {
     ) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("atualizar-flag/{id}")
+    public ResponseEntity<FamiliaConsultaDto> atualizarFlag(
+            @PathVariable int id,
+            @RequestBody FamiliaAtualizarFlagDto dto
+    ) {
+        Familia familia = FamiliaMapper.toEntity(dto);
+        Familia familiaAtualizada = service.atualizarFlag(id, familia);
+        FamiliaConsultaDto familiaConsultaDto = FamiliaMapper.toDto(familiaAtualizada);
+
+        return ResponseEntity.ok(familiaConsultaDto);
     }
 }

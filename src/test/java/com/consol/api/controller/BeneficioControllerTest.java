@@ -1,7 +1,6 @@
 package com.consol.api.controller;
 import com.consol.api.entity.Beneficio;
-import com.consol.api.entity.Donatario;
-import com.consol.api.entity.Familia;
+import com.consol.api.entity.Titular;
 import com.consol.api.service.BeneficioService;
 import com.consol.api.utils.BeneficioEnum;
 import org.junit.jupiter.api.DisplayName;
@@ -51,13 +50,13 @@ public class BeneficioControllerTest {
                                     .id(1)
                                     .nome("Bolsa família")
                                     .valor(150.0)
-                                    .donatario(new Donatario()).build(),
+                                    .titular(new Titular()).build(),
 
                             Beneficio.builder()
                                     .id(2)
                                     .nome("Auxílio Emergencial")
                                     .valor(500.0)
-                                    .donatario(new Donatario()).build()
+                                    .titular(new Titular()).build()
                     ));
 
             mockMvc.perform(MockMvcRequestBuilders.get(BeneficioEnum.BASE_URL.PATH)
@@ -101,13 +100,13 @@ public class BeneficioControllerTest {
                 Beneficio novoBeneficio = Beneficio.builder()
                         .nome("Bolsa família")
                         .valor(150.0)
-                        .donatario(new Donatario()).build();
+                        .titular(new Titular()).build();
 
                 Beneficio beneficioCadastrado = Beneficio.builder()
                         .id(1)
                         .nome("Bolsa família")
                         .valor(150.0)
-                        .donatario(new Donatario()).build();
+                        .titular(new Titular()).build();
 
                 Mockito.when(beneficioService.salvar(Mockito.any(Beneficio.class), Mockito.any(Integer.class)))
                         .thenReturn(beneficioCadastrado);
@@ -116,14 +115,14 @@ public class BeneficioControllerTest {
                     {
                         "nome": "Bolsa familia",
                         "valor": 150.0,
-                        "donatario": {}
+                        "titular": {}
                     }""";
 
                 mockMvc.perform(MockMvcRequestBuilders.post(BeneficioEnum.CRIAR.PATH,1)
                                 .contentType("application/json")
                                 .content(content))
                                 .andExpect(status().isCreated())
-                                .andExpect(header().string("Location", "/beneficios/donatario/1"))
+                                .andExpect(header().string("Location", "/beneficios/titular/1"))
                                 .andExpect(jsonPath("$.id")
                                         .value(1))
                                 .andExpect(jsonPath("$.nome")
@@ -139,28 +138,28 @@ public class BeneficioControllerTest {
 
         @Nested
         @DisplayName("GET /beneficios/filtro")
-        class listarPorDonatario {
+        class listarPorTitular {
             // Se existir donatário, 200 e o benefício
 
             @Test
             @DisplayName("Se o benefício existir: " +
-                    "Deve retornar 200 e os benefícios por donatario")
+                    "Deve retornar 200 e os benefícios por titular")
             void deveRetornarBeneficioPorDonatario() throws Exception {
 
-                Donatario donatario = new Donatario();
-                donatario.setId(1);
-                donatario.setDataCadastro(LocalDate.now());
-                donatario.setNome("João Silva");
-                donatario.setRg("123456789");
-                donatario.setCpf("12345678901");
-                donatario.setDataNascimento(LocalDate.of(1980, 5, 15));
-                donatario.setTelefone1("11987654321");
-                donatario.setTelefone2("11987654322");
-                donatario.setEstadoCivil("Solteiro");
-                donatario.setEscolaridade("Ensino Médio");
-                donatario.setTrabalhando(true);
-                donatario.setOcupacao("Operador de Máquina");
-                donatario.setFamilia(null);
+                Titular titular = new Titular();
+                titular.setId(1);
+                titular.setDataCadastro(LocalDate.now());
+                titular.setNome("João Silva");
+                titular.setRg("123456789");
+                titular.setCpf("12345678901");
+                titular.setDataNascimento(LocalDate.of(1980, 5, 15));
+                titular.setTelefone1("11987654321");
+                titular.setTelefone2("11987654322");
+                titular.setEstadoCivil("Solteiro");
+                titular.setEscolaridade("Ensino Médio");
+                titular.setTrabalhando(true);
+                titular.setOcupacao("Operador de Máquina");
+                titular.setFamilia(null);
 
 
                 List<Beneficio> beneficio = List.of(
@@ -168,13 +167,13 @@ public class BeneficioControllerTest {
                             .id(1)
                             .nome("Benefício X")
                             .valor(50.0)
-                            .donatario(donatario)
+                            .titular(titular)
                             .build(),
                         Beneficio.builder()
                             .id(2)
                             .nome("Benefício Y")
                             .valor(100.0)
-                            .donatario(donatario)
+                            .titular(titular)
                             .build()
                 );
 

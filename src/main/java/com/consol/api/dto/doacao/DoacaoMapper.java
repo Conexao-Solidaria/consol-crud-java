@@ -1,7 +1,7 @@
 package com.consol.api.dto.doacao;
 
 import com.consol.api.entity.Doacao;
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 import com.consol.api.entity.Instituicao;
 
 import java.util.List;
@@ -14,13 +14,14 @@ public class DoacaoMapper {
         DoacaoConsultaDto dto = new DoacaoConsultaDto();
 
         dto.setId(doacao.getId());
-        dto.setPeso(doacao.getPeso());
+        dto.setStatus(doacao.getStatusDoacao());
         dto.setDescricao(doacao.getDescricao());
         dto.setDataDoacao(doacao.getDataDoacao());
+        dto.setFlagDoacaoEntregue(dto.getFlagDoacaoEntregue());
 
         dto.setInstituicao(toInstituicaoDto(doacao.getInstituicao()));
 
-        dto.setDonatario(toDonatarioDto(doacao.getDonatario()));
+        dto.setDonatario(toDonatarioDto(doacao.getTitular()));
 
         return dto;
     }
@@ -30,9 +31,10 @@ public class DoacaoMapper {
 
         Doacao doacao = new Doacao();
 
-        doacao.setPeso(dto.getPeso());
+        doacao.setStatusDoacao(dto.getStatusDoacao());
         doacao.setDescricao(dto.getDescricao());
         doacao.setDataDoacao(dto.getDataDoacao());
+        doacao.setFlagDoacaoEntregue(dto.getFlagDoacaoEntregue());
 
         return doacao;
     }
@@ -54,19 +56,37 @@ public class DoacaoMapper {
         return instituicaoDto;
     }
 
-    private static DoacaoConsultaDto.DonatarioDto toDonatarioDto(Donatario donatario) {
-        if (donatario == null) return null;
+    private static DoacaoConsultaDto.DonatarioDto toDonatarioDto(Titular titular) {
+        if (titular == null) return null;
 
         DoacaoConsultaDto.DonatarioDto donatarioDto = new DoacaoConsultaDto.DonatarioDto();
-        donatarioDto.setId(donatario.getId());
-        donatarioDto.setDataCadastro(donatario.getDataCadastro());
-        donatarioDto.setNome(donatario.getNome());
-        donatarioDto.setRg(donatario.getRg());
-        donatarioDto.setCpf(donatario.getCpf());
-        donatarioDto.setDataNascimento(donatario.getDataNascimento());
-        donatarioDto.setTelefone1(donatario.getTelefone1());
-        donatarioDto.setTelefone2(donatario.getTelefone2());
+        donatarioDto.setId(titular.getId());
+        donatarioDto.setDataCadastro(titular.getDataCadastro());
+        donatarioDto.setNome(titular.getNome());
+        donatarioDto.setRg(titular.getRg());
+        donatarioDto.setCpf(titular.getCpf());
+        donatarioDto.setDataNascimento(titular.getDataNascimento());
+        donatarioDto.setTelefone1(titular.getTelefone1());
+        donatarioDto.setTelefone2(titular.getTelefone2());
 
         return donatarioDto;
+    }
+
+    public static Doacao toEntity(DoacaoAtualizarFlagDto dto){
+        if (dto == null) return null;
+
+        Doacao entity = new Doacao();
+        entity.setFlagDoacaoEntregue(dto.getFlagDoacaoEntregue());
+
+        return entity;
+    }
+
+    public static Doacao toEntity(DoacaoAtualizarStatusDto dto){
+        if (dto == null) return null;
+
+        Doacao entity = new Doacao();
+        entity.setStatusDoacao(dto.getStatus());
+
+        return entity;
     }
 }

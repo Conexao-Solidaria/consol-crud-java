@@ -1,4 +1,4 @@
-package com.consol.api.dto.donatario;
+package com.consol.api.dto.titular;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class DonatarioConsultaDto {
+public class TitularConsultaDto {
 
     private Integer id;
 

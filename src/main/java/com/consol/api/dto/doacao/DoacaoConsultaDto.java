@@ -8,11 +8,12 @@ import java.time.LocalDate;
 public class DoacaoConsultaDto {
 
     private Integer id;
-    private Double peso;
+    private Integer status;
     private String descricao;
     private LocalDate dataDoacao;
     private InstituicaoDto instituicao;
     private DonatarioDto donatario;
+    private Integer flagDoacaoEntregue;
 
     @Data
     public static class InstituicaoDto {

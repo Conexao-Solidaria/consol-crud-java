@@ -1,13 +1,11 @@
 package com.consol.api.controller;
 
-import com.consol.api.entity.Beneficio;
 import com.consol.api.entity.Doacao;
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 import com.consol.api.entity.Instituicao;
 import com.consol.api.service.DoacaoService;
 import com.consol.api.utils.BeneficioEnum;
 import com.consol.api.utils.DoacaoEnum;
-import com.consol.api.utils.DonatarioEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -52,7 +50,7 @@ public class DoacaoControllerTest {
                             .descricao("Doação 1")
                             .dataDoacao(LocalDate.parse("2024-05-04"))
                             .instituicao(new Instituicao())
-                            .donatario(new Donatario())
+                            .titular(new Titular())
                             .build(),
                     Doacao.builder()
                             .id(2)
@@ -60,7 +58,7 @@ public class DoacaoControllerTest {
                             .descricao("Doação 2")
                             .dataDoacao(LocalDate.parse("2024-06-03"))
                             .instituicao(new Instituicao())
-                            .donatario(new Donatario())
+                            .titular(new Titular())
                             .build()
                     ));
 
@@ -108,7 +106,7 @@ public class DoacaoControllerTest {
                     .descricao("Doação 1")
                     .dataDoacao(LocalDate.parse("2024-05-04"))
                     .instituicao(new Instituicao())
-                    .donatario(new Donatario())
+                    .titular(new Titular())
                     .build();
 
             Doacao doacaoCadastrada = Doacao.builder()
@@ -117,7 +115,7 @@ public class DoacaoControllerTest {
                     .descricao("Doação 1")
                     .dataDoacao(LocalDate.parse("2024-05-04"))
                     .instituicao(new Instituicao())
-                    .donatario(new Donatario())
+                    .titular(new Titular())
                     .build();
 
             Mockito.when(doacaoService.salvar(Mockito.any(Doacao.class)))
@@ -128,7 +126,7 @@ public class DoacaoControllerTest {
                         "peso": 5.0,
                         "descricao": "Doação 1",
                         "dataDoacao": "2024-05-04",
-                        "donatario": {},
+                        "titular": {},
                         "instituicao": {}
                     }""";
 
@@ -145,8 +143,8 @@ public class DoacaoControllerTest {
                             .value("Doação 1"))
                     .andExpect(jsonPath("$.dataDoacao")
                                     .value("2024-05-04"))
-                    .andExpect(jsonPath("$.donatario")
-                            .value(new Donatario()))
+                    .andExpect(jsonPath("$.titular")
+                            .value(new Titular()))
                     .andExpect(jsonPath("$.instituicao")
                             .value(new Instituicao())
 
@@ -180,7 +178,7 @@ public class DoacaoControllerTest {
                         "descricao": "Doação de roupas",
                         "dataDoacao": "2024-05-04",
                         "instituicao": ,
-                        "donatario":
+                        "titular":
                     }
                     """;
 
@@ -204,7 +202,7 @@ public class DoacaoControllerTest {
                         "descricao": "",
                         "dataDoacao": "2024-05-04",
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -228,7 +226,7 @@ public class DoacaoControllerTest {
                         "descricao": "Doação de roupas",
                         "dataDoacao": "",
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -252,7 +250,7 @@ public class DoacaoControllerTest {
                         "descricao": "Doação de roupas",
                         "dataDoacao": "2024-05-04",
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -276,7 +274,7 @@ public class DoacaoControllerTest {
                         "descricao": 5,
                         "dataDoacao": "2024-05-04",
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -301,7 +299,7 @@ public class DoacaoControllerTest {
                         "descricao": "Doação de roupas",
                         "dataDoacao": 5,
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -325,7 +323,7 @@ public class DoacaoControllerTest {
                         "descricao": null,
                         "dataDoacao": "2024-05-04",
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -349,7 +347,7 @@ public class DoacaoControllerTest {
                         "descricao": "Doação de roupas",
                         "dataDoacao": null,
                         "instituicao": ,
-                        "donatario": 
+                        "titular": 
                     }
                     """;
 
@@ -376,7 +374,7 @@ public class DoacaoControllerTest {
                     .descricao("Doação 1")
                     .dataDoacao(LocalDate.parse("2024-05-04"))
                     .instituicao(new Instituicao())
-                    .donatario(new Donatario())
+                    .titular(new Titular())
                     .build();
 
             Mockito.when(doacaoService.listarPorId(1))
@@ -390,7 +388,7 @@ public class DoacaoControllerTest {
                     .andExpect(jsonPath("$.descricao").value("Doação 1"))
                     .andExpect(jsonPath("$.dataDoacao").value("2024-05-04"))
                     .andExpect(jsonPath("$.instituicao").value(new Instituicao()))
-                    .andExpect(jsonPath("$.donatario").value(new Donatario()));
+                    .andExpect(jsonPath("$.titular").value(new Titular()));
         }
     }
 

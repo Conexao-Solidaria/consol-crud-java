@@ -1,9 +1,8 @@
 package com.consol.api.controller;
 
-import com.consol.api.entity.Donatario;
-import com.consol.api.service.DonatarioService;
+import com.consol.api.entity.Titular;
+import com.consol.api.service.TitularService;
 import com.consol.api.utils.DonatarioEnum;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.server.ResponseStatusException;
 
 
 import java.time.LocalDate;
@@ -27,15 +24,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(DonatarioController.class)
+@WebMvcTest(TitularController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class DonatarioControllerTest {
+class TitularControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private DonatarioService donatarioService;
+    private TitularService titularService;
 
     @Nested
     @DisplayName("GET /donatarios")
@@ -46,10 +43,10 @@ class DonatarioControllerTest {
                 "Deve retornar 200 e listar todos os donatários")
         void deveListarTodosOsDonatarios() throws Exception {
 
-            Mockito.when(donatarioService.listar()).thenReturn(
+            Mockito.when(titularService.listar()).thenReturn(
                     List.of(
-                            new Donatario(),
-                            new Donatario()));
+                            new Titular(),
+                            new Titular()));
 
             mockMvc.perform(MockMvcRequestBuilders.get("/donatarios")
                             .contentType("application/json"))
@@ -63,7 +60,7 @@ class DonatarioControllerTest {
                 "Deve retornar 204 e uma lista vazia")
         void deveRetornarListaVazia() throws Exception {
 
-            Mockito.when(donatarioService.listar()).thenReturn(Collections.emptyList());
+            Mockito.when(titularService.listar()).thenReturn(Collections.emptyList());
 
             mockMvc.perform(MockMvcRequestBuilders.get("/donatarios")
                             .contentType("application/json"))
@@ -82,7 +79,7 @@ class DonatarioControllerTest {
                 "Deve retornar 201, a URI e salvar o donatário")
         void deveSalvarDonatario() throws Exception {
 
-            Donatario donatario = Donatario.builder()
+            Titular titular = Titular.builder()
                     .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
@@ -97,11 +94,11 @@ class DonatarioControllerTest {
                     .ocupacao("Programador")
                     .build();
 
-            Mockito.when(donatarioService.salvar(
-                    Mockito.any(Donatario.class),
+            Mockito.when(titularService.salvar(
+                    Mockito.any(Titular.class),
                     Mockito.any(Integer.class)
                     ))
-                    .thenReturn(donatario);
+                    .thenReturn(titular);
 
             var content = """
                     {
@@ -544,7 +541,7 @@ class DonatarioControllerTest {
                 "Deve retornar 200 e o donatário")
         void deveRetornarDonatario() throws Exception {
 
-            Donatario donatario = Donatario.builder()
+            Titular titular = Titular.builder()
                     .id(1)
                     .dataCadastro(LocalDate.now())
                     .nome("Donatário 1")
@@ -559,8 +556,8 @@ class DonatarioControllerTest {
                     .ocupacao("Programador")
                     .build();
 
-            Mockito.when(donatarioService.porId(1))
-                    .thenReturn(donatario);
+            Mockito.when(titularService.porId(1))
+                    .thenReturn(titular);
 
             mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
                             .contentType("application/json"))
@@ -585,7 +582,7 @@ class DonatarioControllerTest {
                 "Deve retornar 404 e uma mensagem de erro")
         void deveRetornarErroDonatarioNaoEncontrado() throws Exception {
 
-                Mockito.when(donatarioService.porId(1))
+                Mockito.when(titularService.porId(1))
                         .thenReturn(null);
 
                 mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.POR_ID.PATH, 1)
@@ -605,13 +602,13 @@ class DonatarioControllerTest {
                 "Deve retornar 200 e os donatários")
         void deveRetornarDonatarios() throws Exception {
 
-                Mockito.when(donatarioService.listarPorNome("Donatário"))
+                Mockito.when(titularService.listarPorNome("Donatário"))
                         .thenReturn(List.of(
-                                Donatario.builder()
+                                Titular.builder()
                                         .id(1)
                                         .nome("Donatário 1")
                                         .build(),
-                                Donatario.builder()
+                                Titular.builder()
                                         .id(2)
                                         .nome("Donatário 2")
                                         .build()));
@@ -633,7 +630,7 @@ class DonatarioControllerTest {
                 "Deve retornar 204 e uma lista vazia")
         void deveRetornarListaVazia() throws Exception {
 
-            Mockito.when(donatarioService.listarPorNome("Donatário"))
+            Mockito.when(titularService.listarPorNome("Donatário"))
                     .thenReturn(Collections.emptyList());
 
             mockMvc.perform(MockMvcRequestBuilders.get(DonatarioEnum.FILTRO.PATH)
@@ -654,7 +651,7 @@ class DonatarioControllerTest {
                 "Deve retornar 200 e atualizar o donatário")
         void deveAtualizarDonatario() throws Exception {
 
-                Donatario donatario = Donatario.builder()
+                Titular titular = Titular.builder()
                         .id(1)
                         .dataCadastro(LocalDate.now())
                         .nome("Donatário 1")
@@ -669,8 +666,8 @@ class DonatarioControllerTest {
                         .ocupacao("Programador")
                         .build();
 
-                Mockito.when(donatarioService.atualizar(1, new Donatario()))
-                        .thenReturn(donatario);
+                Mockito.when(titularService.atualizar(1, new Titular()))
+                        .thenReturn(titular);
 
                 var content = """
                         {
@@ -711,7 +708,7 @@ class DonatarioControllerTest {
                 "Deve retornar 404 e uma mensagem de erro")
         void deveRetornarErroIdNaoEncontrado() throws Exception {
 
-            Mockito.when(donatarioService.atualizar(1, new Donatario()))
+            Mockito.when(titularService.atualizar(1, new Titular()))
                     .thenReturn(null);
 
             var content = """

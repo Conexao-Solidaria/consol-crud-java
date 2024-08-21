@@ -21,8 +21,8 @@ public class RegistroVisita {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "fk_donatario")
-    private Donatario donatario;
+    @JoinColumn(name = "fk_titular")
+    private Titular titular;
 
     @CreationTimestamp
     private LocalDate dataVisita;

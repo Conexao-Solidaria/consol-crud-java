@@ -1,10 +1,10 @@
 package com.consol.api.service;
 
 import com.consol.api.entity.Beneficio;
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.BeneficioRepository;
-import com.consol.api.repository.DonatarioRepository;
+import com.consol.api.repository.TitularRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +16,17 @@ import java.util.Optional;
 public class BeneficioService {
 
     private final BeneficioRepository beneficioRepository;
-    private final DonatarioRepository donatarioRepository;
+    private final TitularRepository titularRepository;
     private final FamiliaService familiaService;
 
     public Beneficio salvar(Beneficio beneficio, int idDonatario) {
-        Optional<Donatario> donatario = donatarioRepository.findById(idDonatario);
+        Optional<Titular> donatario = titularRepository.findById(idDonatario);
 
         if (donatario.isEmpty()){
             throw new EntidadeNaoEncontradaException();
         }
 
-        beneficio.setDonatario(donatario.get());
+        beneficio.setTitular(donatario.get());
         return beneficioRepository.save(beneficio);
     }
 
@@ -41,14 +41,14 @@ public class BeneficioService {
     }
 
     public List<Beneficio> listarPorDonatario(int idDonatario) {
-        if (!donatarioRepository.existsById(idDonatario)) throw new EntidadeNaoEncontradaException();
-        return beneficioRepository.findByDonatario_id(idDonatario);
+        if (!titularRepository.existsById(idDonatario)) throw new EntidadeNaoEncontradaException();
+        return beneficioRepository.findByTitularId(idDonatario);
 
     }
 
     public List<Beneficio> listarPorFamilia(int idFamilia) {
        familiaService.porId(idFamilia);
-        return beneficioRepository.findByDonatario_Familia_id(idFamilia);
+        return beneficioRepository.findByTitularFamiliaId(idFamilia);
     }
 
 
@@ -57,7 +57,7 @@ public class BeneficioService {
         if (beneficio.isEmpty()) throw new EntidadeNaoEncontradaException();
 
         beneficioAtualizado.setId(beneficio.get().getId());
-        beneficioAtualizado.setDonatario(beneficio.get().getDonatario());
+        beneficioAtualizado.setTitular(beneficio.get().getTitular());
 
         return beneficioRepository.save(beneficioAtualizado);
     }

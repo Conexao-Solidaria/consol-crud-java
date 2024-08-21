@@ -1,7 +1,7 @@
 package com.consol.api.service;
 
 import com.consol.api.entity.Despesa;
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 import com.consol.api.entity.Familia;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.FamiliaRepository;
@@ -62,7 +62,7 @@ public class FamiliaServiceTest {
                             .cep("123456")
                             .numeroCasa(1)
                             .renda(1000.0)
-                            .donatarios(new ArrayList<Donatario>())
+                            .titulars(new ArrayList<Titular>())
                             .despesas(new ArrayList<Despesa>())
                             .build(),
                     Familia.builder()
@@ -71,7 +71,7 @@ public class FamiliaServiceTest {
                             .cep("123456")
                             .numeroCasa(2)
                             .renda(2000.0)
-                            .donatarios(new ArrayList<Donatario>())
+                            .titulars(new ArrayList<Titular>())
                             .despesas(new ArrayList<Despesa>())
                             .build(),
                     Familia.builder()
@@ -80,7 +80,7 @@ public class FamiliaServiceTest {
                             .cep("123456")
                             .numeroCasa(3)
                             .renda(3000.0)
-                            .donatarios(new ArrayList<Donatario>())
+                            .titulars(new ArrayList<Titular>())
                             .despesas(new ArrayList<Despesa>())
                             .build()
             );
@@ -109,7 +109,7 @@ public class FamiliaServiceTest {
                     .cep("123456")
                     .numeroCasa(1)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -122,7 +122,7 @@ public class FamiliaServiceTest {
             assertEquals(familia.getCep(), familiaRetorno.getCep());
             assertEquals(familia.getNumeroCasa(), familiaRetorno.getNumeroCasa());
             assertEquals(familia.getRenda(), familiaRetorno.getRenda());
-            assertEquals(familia.getDonatarios(), familiaRetorno.getDonatarios());
+            assertEquals(familia.getTitulars(), familiaRetorno.getTitulars());
             assertEquals(familia.getDespesas(), familiaRetorno.getDespesas());
 
             Mockito.verify(repository, Mockito.times(1)).findById(1);
@@ -160,7 +160,7 @@ public class FamiliaServiceTest {
                     .cep("123456")
                     .numeroCasa(1)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -170,7 +170,7 @@ public class FamiliaServiceTest {
                     .cep("654321")
                     .numeroCasa(2)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -183,7 +183,7 @@ public class FamiliaServiceTest {
             assertEquals(familiaAtualizada.getCep(), familiaRetorno.getCep());
             assertEquals(familiaAtualizada.getNumeroCasa(), familiaRetorno.getNumeroCasa());
             assertEquals(familiaAtualizada.getRenda(), familiaRetorno.getRenda());
-            assertEquals(familiaAtualizada.getDonatarios(), familiaRetorno.getDonatarios());
+            assertEquals(familiaAtualizada.getTitulars(), familiaRetorno.getTitulars());
             assertEquals(familiaAtualizada.getDespesas(), familiaRetorno.getDespesas());
 
             Mockito.verify(repository, Mockito.times(1)).findById(1);
@@ -199,7 +199,7 @@ public class FamiliaServiceTest {
                     .cep("654321")
                     .numeroCasa(2)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -224,7 +224,7 @@ public class FamiliaServiceTest {
                     .cep("123456")
                     .numeroCasa(1)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -234,7 +234,7 @@ public class FamiliaServiceTest {
                     .cep("654321")
                     .numeroCasa(2)
                     .renda(2000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -263,7 +263,7 @@ public class FamiliaServiceTest {
                     .cep("123456")
                     .numeroCasa(1)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 
@@ -276,7 +276,7 @@ public class FamiliaServiceTest {
             assertEquals(familia.getCep(), familiaRetorno.getCep());
             assertEquals(familia.getNumeroCasa(), familiaRetorno.getNumeroCasa());
             assertEquals(familia.getRenda(), familiaRetorno.getRenda());
-            assertEquals(familia.getDonatarios(), familiaRetorno.getDonatarios());
+            assertEquals(familia.getTitulars(), familiaRetorno.getTitulars());
             assertEquals(familia.getDespesas(), familiaRetorno.getDespesas());
 
             Mockito.verify(repository, Mockito.times(1)).save(familia);
@@ -297,7 +297,7 @@ public class FamiliaServiceTest {
                     .cep("123456")
                     .numeroCasa(1)
                     .renda(1000.0)
-                    .donatarios(new ArrayList<Donatario>())
+                    .titulars(new ArrayList<Titular>())
                     .despesas(new ArrayList<Despesa>())
                     .build();
 

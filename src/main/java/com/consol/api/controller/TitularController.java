@@ -4,8 +4,8 @@ import com.consol.api.dto.titular.TitularAtualizarDto;
 import com.consol.api.dto.titular.TitularCadastroDto;
 import com.consol.api.dto.titular.TitularConsultaDto;
 import com.consol.api.dto.titular.TitularMapper;
-import com.consol.api.entity.Donatario;
-import com.consol.api.service.DonatarioService;
+import com.consol.api.entity.Titular;
+import com.consol.api.service.TitularService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,32 +15,32 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/donatarios")
+@RequestMapping("/titulares")
 @RequiredArgsConstructor
-public class DonatarioController {
+public class TitularController {
 
-    private final DonatarioService service;
+    private final TitularService service;
 
     @PostMapping
     public ResponseEntity<TitularConsultaDto> criar(
             @RequestBody @Valid TitularCadastroDto dto
     ) {
-        Donatario donatario = TitularMapper.toEntity(dto);
-        Donatario donatarioSalvo = service.salvar(donatario, dto.getIdFamilia());
-        TitularConsultaDto titularConsultaDto = TitularMapper.toDto(donatarioSalvo);
+        Titular titular = TitularMapper.toEntity(dto);
+        Titular titularSalvo = service.salvar(titular, dto.getIdFamilia());
+        TitularConsultaDto titularConsultaDto = TitularMapper.toDto(titularSalvo);
 
-        URI uri = URI.create("/donatarios/" + titularConsultaDto.getId());
+        URI uri = URI.create("/titulares/" + titularConsultaDto.getId());
 
         return ResponseEntity.created(uri).body(titularConsultaDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<TitularConsultaDto>> listagemDonatario() {
-        List<Donatario> donatarios = service.listar();
+    public ResponseEntity<List<TitularConsultaDto>> listagemTitular() {
+        List<Titular> titulars = service.listar();
 
-        if (donatarios.isEmpty()) return ResponseEntity.noContent().build();
+        if (titulars.isEmpty()) return ResponseEntity.noContent().build();
 
-        List<TitularConsultaDto> dtos = TitularMapper.toDto(donatarios);
+        List<TitularConsultaDto> dtos = TitularMapper.toDto(titulars);
 
         return ResponseEntity.ok(dtos);
     }
@@ -49,8 +49,8 @@ public class DonatarioController {
     public ResponseEntity<TitularConsultaDto> consultarPorId(
             @PathVariable Integer id
     ) {
-        Donatario donatario = service.porId(id);
-        TitularConsultaDto dto = TitularMapper.toDto(donatario);
+        Titular titular = service.porId(id);
+        TitularConsultaDto dto = TitularMapper.toDto(titular);
 
         return ResponseEntity.ok(dto);
     }
@@ -59,11 +59,11 @@ public class DonatarioController {
     public ResponseEntity<List<TitularConsultaDto>> consultarPorNome(
             @RequestParam String nome
     ) {
-        List<Donatario> donatarios = service.listarPorNome(nome);
+        List<Titular> titulars = service.listarPorNome(nome);
 
-        if (donatarios.isEmpty()) return ResponseEntity.noContent().build();
+        if (titulars.isEmpty()) return ResponseEntity.noContent().build();
 
-        List<TitularConsultaDto> dto = TitularMapper.toDto(donatarios);
+        List<TitularConsultaDto> dto = TitularMapper.toDto(titulars);
 
         return ResponseEntity.ok(dto);
     }
@@ -73,9 +73,9 @@ public class DonatarioController {
             @RequestBody @Valid TitularAtualizarDto dto,
             @PathVariable Integer id
     ) {
-        Donatario donatario = TitularMapper.toEntity(dto);
-        Donatario donatarioAtualizado = service.atualizar(id, donatario);
-        TitularConsultaDto titularConsultaDto = TitularMapper.toDto(donatarioAtualizado);
+        Titular titular = TitularMapper.toEntity(dto);
+        Titular titularAtualizado = service.atualizar(id, titular);
+        TitularConsultaDto titularConsultaDto = TitularMapper.toDto(titularAtualizado);
 
         return ResponseEntity.ok(titularConsultaDto);
     }

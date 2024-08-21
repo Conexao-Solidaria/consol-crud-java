@@ -1,14 +1,8 @@
 package com.consol.api.service;
 
-import com.consol.api.dto.despesa.DespesaAtualizarDto;
-import com.consol.api.dto.despesa.DespesaCadastroDto;
-import com.consol.api.dto.despesa.DespesaConsultaDto;
-import com.consol.api.dto.despesa.DespesaMapper;
 import com.consol.api.entity.Despesa;
 import com.consol.api.repository.DespesaRepository;
-import com.consol.api.repository.DonatarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

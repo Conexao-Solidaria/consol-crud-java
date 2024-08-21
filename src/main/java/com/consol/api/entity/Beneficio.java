@@ -21,6 +21,6 @@ public class Beneficio {
     private Double valor;
 
     @ManyToOne
-    @JoinColumn(name = "fk_donatario")
-    private Donatario donatario;
+    @JoinColumn(name = "fk_titular")
+    private Titular titular;
 }

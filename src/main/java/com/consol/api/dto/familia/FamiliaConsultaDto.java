@@ -1,6 +1,8 @@
 package com.consol.api.dto.familia;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class FamiliaConsultaDto {
     private String cep;
     private Integer numeroCasa;
     private Double renda;
+    private Integer flagRetirada;
     private List<DonatarioDto> donatarios;
     private List<DespesaDto> despesas;
 
@@ -22,6 +25,7 @@ public class FamiliaConsultaDto {
         private String escolaridade;
         private Boolean trabalhando;
         private String ocupacao;
+
     }
 
     @Data

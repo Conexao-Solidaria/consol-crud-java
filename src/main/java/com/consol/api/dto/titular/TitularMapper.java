@@ -1,69 +1,69 @@
-package com.consol.api.dto.donatario;
+package com.consol.api.dto.titular;
 
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 
 import java.util.List;
 
-public class DonatarioMapper {
+public class TitularMapper {
 
-    public static DonatarioConsultaDto toDto(Donatario donatario) {
-        if (donatario == null) return null;
+    public static TitularConsultaDto toDto(Titular titular) {
+        if (titular == null) return null;
 
-        DonatarioConsultaDto dto = new DonatarioConsultaDto();
+        TitularConsultaDto dto = new TitularConsultaDto();
 
-        dto.setId(donatario.getId());
-        dto.setDataCadastro(donatario.getDataCadastro());
-        dto.setNome(donatario.getNome());
-        dto.setRg(donatario.getRg());
-        dto.setCpf(donatario.getCpf());
-        dto.setDataNascimento(donatario.getDataNascimento());
-        dto.setTelefone1(donatario.getTelefone1());
-        dto.setTelefone2(donatario.getTelefone2());
-        dto.setEstadoCivil(donatario.getEstadoCivil());
-        dto.setEscolaridade(donatario.getEscolaridade());
-        dto.setTrabalhando(donatario.getTrabalhando());
-        dto.setOcupacao(donatario.getOcupacao());
+        dto.setId(titular.getId());
+        dto.setDataCadastro(titular.getDataCadastro());
+        dto.setNome(titular.getNome());
+        dto.setRg(titular.getRg());
+        dto.setCpf(titular.getCpf());
+        dto.setDataNascimento(titular.getDataNascimento());
+        dto.setTelefone1(titular.getTelefone1());
+        dto.setTelefone2(titular.getTelefone2());
+        dto.setEstadoCivil(titular.getEstadoCivil());
+        dto.setEscolaridade(titular.getEscolaridade());
+        dto.setTrabalhando(titular.getTrabalhando());
+        dto.setOcupacao(titular.getOcupacao());
 
         return dto;
     }
 
-    public static Donatario toEntity(DonatarioCadastroDto dto) {
+    public static Titular toEntity(TitularCadastroDto dto) {
         if (dto == null) return null;
 
-        Donatario donatario = new Donatario();
+        Titular titular = new Titular();
 
-        donatario.setDataCadastro(dto.getDataCadastro());
-        donatario.setNome(dto.getNome());
-        donatario.setRg(dto.getRg());
-        donatario.setCpf(dto.getCpf());
-        donatario.setDataNascimento(dto.getDataNascimento());
-        donatario.setTelefone1(dto.getTelefone1());
-        donatario.setTelefone2(dto.getTelefone2());
-        donatario.setEstadoCivil(dto.getEstadoCivil());
-        donatario.setEscolaridade(dto.getEscolaridade());
-        donatario.setTrabalhando(dto.getTrabalhando());
-        donatario.setOcupacao(dto.getOcupacao());
-        return donatario;
+        titular.setDataCadastro(dto.getDataCadastro());
+        titular.setNome(dto.getNome());
+        titular.setRg(dto.getRg());
+        titular.setCpf(dto.getCpf());
+        titular.setDataNascimento(dto.getDataNascimento());
+        titular.setTelefone1(dto.getTelefone1());
+        titular.setTelefone2(dto.getTelefone2());
+        titular.setEstadoCivil(dto.getEstadoCivil());
+        titular.setEscolaridade(dto.getEscolaridade());
+        titular.setTrabalhando(dto.getTrabalhando());
+        titular.setOcupacao(dto.getOcupacao());
+        return titular;
     }
 
-    public static Donatario toEntity(DonatarioAtualizarDto dto) {
+    public static Titular toEntity(TitularAtualizarDto dto) {
         if (dto == null) return null;
 
-        Donatario donatario = new Donatario();
+        Titular titular = new Titular();
 
-        donatario.setNome(dto.getNome());
-        donatario.setTelefone1(dto.getTelefone1());
-        donatario.setTelefone2(dto.getTelefone2());
-        donatario.setEstadoCivil(dto.getEstadoCivil());
-        donatario.setEscolaridade(dto.getEscolaridade());
-        donatario.setTrabalhando(dto.getTrabalhando());
-        donatario.setOcupacao(dto.getOcupacao());
+        titular.setNome(dto.getNome());
+        titular.setTelefone1(dto.getTelefone1());
+        titular.setTelefone2(dto.getTelefone2());
+        titular.setEstadoCivil(dto.getEstadoCivil());
+        titular.setEscolaridade(dto.getEscolaridade());
+        titular.setTrabalhando(dto.getTrabalhando());
+        titular.setOcupacao(dto.getOcupacao());
 
-        return donatario;
+        return titular;
     }
 
-    public static List<DonatarioConsultaDto> toDto(List<Donatario> donatarios){
-        return donatarios.stream().map(DonatarioMapper::toDto).toList();
+    public static List<TitularConsultaDto> toDto(List<Titular> titulars){
+        return titulars.stream().map(TitularMapper::toDto).toList();
     }
 
 }

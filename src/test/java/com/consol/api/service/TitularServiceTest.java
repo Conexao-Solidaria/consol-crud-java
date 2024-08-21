@@ -10,10 +10,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Service - Donatario")
-public class DonatarioServiceTest {
+public class TitularServiceTest {
 
     @InjectMocks
-    private DonatarioService service;
+    private TitularService service;
 
     @Mock
     private TitularRepository repository;

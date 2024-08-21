@@ -1,6 +1,17 @@
 package com.consol.api.controller;
 
+import com.consol.api.dto.beneficio.BeneficioConsultaDto;
+import com.consol.api.dto.beneficio.BeneficioMapper;
+import com.consol.api.dto.familia.FamiliaAtualizarFlagDto;
+import com.consol.api.dto.familia.FamiliaConsultaDto;
+import com.consol.api.dto.familia.FamiliaMapper;
+import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
+import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
+import com.consol.api.dto.instituicao.InstituicaoMapper;
 import com.consol.api.dto.usuario.*;
+import com.consol.api.entity.Beneficio;
+import com.consol.api.entity.Familia;
+import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Usuario;
 import com.consol.api.fila_pilha.FilaCircular;
 import com.consol.api.repository.InstituicaoRepository;
@@ -11,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,76 +30,60 @@ import java.util.Optional;
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
-
-    private final UsuarioRepository usuarioRepository;
-    private final InstituicaoRepository instituicaoRepository;
     private final UsuarioService usuarioService;
-    private FilaCircular fila = new FilaCircular(100);
+    // private FilaCircular fila = new FilaCircular(100);
 
+    @PostMapping("/{idInstituicao}")
+    public ResponseEntity<UsuarioConsultaDto> criar(
+            @PathVariable int idInstituicao,
+            @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
+    ){
+        Usuario usuarioCadastrar = UsuarioMapper.toEntity(usuarioCadastroDto);
 
-    @PostMapping
-    public ResponseEntity<UsuarioConsultaDto> criar(@RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto){
-        if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
-        if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
+        Usuario usuarioCadastrado = usuarioService.criar(usuarioCadastrar, idInstituicao);
 
-        Usuario usuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
-
-        Usuario usuarioSalvar = usuarioRepository.save(usuario);
-
-        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuarioSalvar);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toDto(usuarioCadastrado);
 
         return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 
     @GetMapping
     public ResponseEntity<List<UsuarioConsultaDto>> listagemUsuarios(){
-        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<Usuario> entities = usuarioService.listar();
 
-        if(usuarios.isEmpty()) return ResponseEntity.status(204).build();
+        if (entities.isEmpty()) return ResponseEntity.status(204).build();
 
-        return ResponseEntity.status(200).body(UsuarioMapper.listagemDtoList(usuarios));
+        List<UsuarioConsultaDto> dtos = UsuarioMapper.toDto(entities);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioConsultaDto> consultarPorId(@PathVariable Integer id){
-        Optional<Usuario> usuarioBuscado = usuarioRepository.findById(id);
+        Usuario usuario = usuarioService.porId(id);
 
-        if(usuarioBuscado.isEmpty()) return ResponseEntity.status(404).build();
-
-        UsuarioConsultaDto dto = UsuarioMapper.usuarioParaConsultaDto(usuarioBuscado.get());
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuario);
 
         return ResponseEntity.status(200).body(dto);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UsuarioConsultaDto> atualizar(@RequestBody @Valid UsuarioAtualizarDto usuarioAtualizarDto, @PathVariable Integer id){
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+    public ResponseEntity<UsuarioConsultaDto> atualizar(
+            @RequestBody @Valid UsuarioAtualizarDto dto,
+            @PathVariable Integer id
+    ){
+        Usuario usuario = UsuarioMapper.toEntity(dto);
+        Usuario usuarioAtualizado = usuarioService.atualizar(id, usuario);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toDto(usuarioAtualizado);
 
-        //O  java por algum motivo quando atualiza o banco muda a variavel, esse foi o metodo que achei
-
-        Usuario usuarioBuscado = usuarioOptional.get();
-
-        Usuario usuario = UsuarioMapper.atualizarDtoParaUsuario(usuarioAtualizarDto, usuarioBuscado);
-
-
-        Usuario eventoAtualizado = usuarioRepository.save(usuario);
-
-        UsuarioConsultaDto dto = UsuarioMapper.usuarioParaConsultaDto(eventoAtualizado);
-
-        fila.insert(dto.getIdUsuario());
-      
-        return ResponseEntity.status(200).body(dto);
+        return ResponseEntity.ok(usuarioConsultaDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> apagarPorId(@PathVariable Integer id){
-        if(!usuarioRepository.existsById(id)){
-            return ResponseEntity.status(404).build();
-        }
-
-        usuarioRepository.deleteById(id);
-
-        return ResponseEntity.ok(null);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> apagarPorId(
+            @PathVariable Integer id
+    ){
+        usuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")
@@ -99,25 +95,21 @@ public class UsuarioController {
     }
 
 
-    @GetMapping("/fila")
-    public UsuarioConsultaDto pegarUltimaAdicao(){
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById((fila.peek()));
-        return usuarioOptional.map(UsuarioMapper::usuarioParaConsultaDto).orElse(null);
-    }
+    //@GetMapping("/fila")
+    //public UsuarioConsultaDto pegarUltimaAdicao(){
+    //    Optional<Usuario> usuarioOptional = usuarioRepository.findById((fila.peek()));
+    //    return usuarioOptional.map(UsuarioMapper::usuarioParaConsultaDto).orElse(null);
+    //}
 
-    @PostMapping("/cadastro")
-    public ResponseEntity<UsuarioConsultaDto> cadastrar(
-            @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
+    @PutMapping("atualizar-flag/{id}")
+    public ResponseEntity<UsuarioConsultaDto> atualizarFlag(
+            @PathVariable int id,
+            @RequestBody UsuarioAtualizarFlagDto dto
     ) {
-        if(usuarioCadastroDto == null) return ResponseEntity.status(400).build();
+        Usuario usuario = UsuarioMapper.toEntity(dto);
+        Usuario usuarioAtualizado = usuarioService.atualizarFlag(id, usuario);
+        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toDto(usuarioAtualizado);
 
-        if(!instituicaoRepository.existsById(usuarioCadastroDto.getFkInstituicao())) return ResponseEntity.status(400).build();
-
-        usuarioService.criar(usuarioCadastroDto);
-
-        Usuario usuario = UsuarioMapper.cadastrarDtoParaUsuario(usuarioCadastroDto);
-        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.usuarioParaConsultaDto(usuario);
-
-        return ResponseEntity.status(201).body(usuarioConsultaDto);
+        return ResponseEntity.ok(usuarioConsultaDto);
     }
 }

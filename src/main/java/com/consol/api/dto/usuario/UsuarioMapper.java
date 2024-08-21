@@ -1,17 +1,21 @@
 package com.consol.api.dto.usuario;
 
+import com.consol.api.dto.familia.FamiliaAtualizarFlagDto;
+import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
+import com.consol.api.entity.Familia;
 import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Usuario;
 
 import java.util.List;
 
 public class UsuarioMapper {
-    public static Usuario cadastrarDtoParaUsuario(UsuarioCadastroDto dto) {
+    public static Usuario toEntity(UsuarioCadastroDto dto) {
         Usuario usuario = new Usuario();
         usuario.setNomeUsuario(dto.getNomeUsuario());
         usuario.setEmail(dto.getEmail());
         usuario.setSenha(dto.getSenha()); // Importante para cadastrar o usuário com a senha
         usuario.setCpf(dto.getCpf());
+        usuario.setFlagAprovado(dto.getFlagAprovado());
         usuario.setCoordenador(dto.getCoordenador());
         Instituicao instituicao = new Instituicao();
         instituicao.setId(dto.getFkInstituicao());
@@ -19,35 +23,29 @@ public class UsuarioMapper {
         return usuario;
     }
 
-    public static UsuarioConsultaDto usuarioParaConsultaDto(Usuario usuario) {
+    public static UsuarioConsultaDto toDto(Usuario usuario) {
         UsuarioConsultaDto dto = new UsuarioConsultaDto();
         dto.setIdUsuario(usuario.getId());
         dto.setNomeUsuario(usuario.getNomeUsuario());
         dto.setEmail(usuario.getEmail());
         dto.setCpf(usuario.getCpf());
         dto.setCoordenador(usuario.isCoordenador());
+        dto.setFlagAprovado(usuario.getFlagAprovado());
         if (usuario.getInstituicao() != null) {
             dto.setFkInstituicao(usuario.getInstituicao().getId());
         }
         return dto;
     }
 
-    public static Usuario atualizarDtoParaUsuario(UsuarioAtualizarDto dto, Usuario usuario) {
-        if (dto.getNomeUsuario() != null) {
-            usuario.setNomeUsuario(dto.getNomeUsuario());
-        }
+    public static Usuario toEntity(UsuarioAtualizarDto dto) {
+        if (dto == null) return null;
 
-        if (dto.getEmail() != null) {
-            usuario.setEmail(dto.getEmail());
-        }
+        Usuario usuario = new Usuario();
 
-        if (dto.getCoordenador() != null) {
-            usuario.setCoordenador(dto.getCoordenador());
-        }
-
-        if (dto.getCpf() != null) {
-            usuario.setCpf(dto.getCpf());
-        }
+        usuario.setNomeUsuario(dto.getNomeUsuario());
+        usuario.setCpf(dto.getCpf());
+        usuario.setEmail(dto.getEmail());
+        usuario.setCoordenador(dto.getCoordenador());
 
         return usuario;
     }
@@ -63,7 +61,16 @@ public class UsuarioMapper {
         return usuarioTokenDto;
     }
 
-    public static List<UsuarioConsultaDto> listagemDtoList(List<Usuario> usuarios){
-        return usuarios.stream().map(UsuarioMapper::usuarioParaConsultaDto).toList();
+    public static List<UsuarioConsultaDto> toDto(List<Usuario> usuarios){
+        return usuarios.stream().map(UsuarioMapper::toDto).toList();
+    }
+
+    public static Usuario toEntity(UsuarioAtualizarFlagDto dto){
+        if (dto == null) return null;
+
+        Usuario usuario = new Usuario();
+        usuario.setFlagAprovado(dto.getFlagAprovado());
+
+        return usuario;
     }
 }

@@ -43,4 +43,11 @@ public class FamiliaService {
         }
         repository.deleteById(id);
     }
+
+    public Familia atualizarFlag(int id, Familia familia){
+        Familia familiaAtualizar = porId(id);
+
+        familiaAtualizar.setFlagRetirada(familia.getFlagRetirada());
+        return repository.save(familiaAtualizar);
+    }
 }

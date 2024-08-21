@@ -23,5 +23,7 @@ public class UsuarioCadastroDto {
 
     private Boolean coordenador;
 
+    private Integer flagAprovado = 0;
+
     private Integer fkInstituicao;
 }

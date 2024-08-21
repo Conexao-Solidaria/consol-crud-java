@@ -25,8 +25,10 @@ public class Familia {
 
     private Double renda;
 
+    private Integer flagRetirada;
+
     @OneToMany(mappedBy = "familia")
-    private List<Donatario> donatarios;
+    private List<Titular> titulars;
 
     @OneToMany(mappedBy = "familia")
     private List<Despesa> despesas;

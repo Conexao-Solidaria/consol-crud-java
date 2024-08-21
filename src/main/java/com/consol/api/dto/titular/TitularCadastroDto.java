@@ -1,4 +1,4 @@
-package com.consol.api.dto.donatario;
+package com.consol.api.dto.titular;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class DonatarioCadastroDto {
+public class TitularCadastroDto {
 
     private LocalDate dataCadastro;
 
