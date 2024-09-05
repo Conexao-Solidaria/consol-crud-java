@@ -23,7 +23,7 @@ public class BeneficioService {
         Optional<Titular> donatario = titularRepository.findById(idDonatario);
 
         if (donatario.isEmpty()){
-            throw new EntidadeNaoEncontradaException();
+            throw new EntidadeNaoEncontradaException("Benefício");
         }
 
         beneficio.setTitular(donatario.get());
@@ -36,12 +36,12 @@ public class BeneficioService {
 
     public Beneficio listarPorId(int id) {
         return beneficioRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException()
+                () -> new EntidadeNaoEncontradaException("Benefício")
         );
     }
 
     public List<Beneficio> listarPorDonatario(int idDonatario) {
-        if (!titularRepository.existsById(idDonatario)) throw new EntidadeNaoEncontradaException();
+        if (!titularRepository.existsById(idDonatario)) throw new EntidadeNaoEncontradaException("Titular");
         return beneficioRepository.findByTitularId(idDonatario);
 
     }
@@ -54,7 +54,7 @@ public class BeneficioService {
 
     public Beneficio atualizar(int idBenefico, Beneficio beneficioAtualizado) {
         Optional<Beneficio> beneficio = beneficioRepository.findById(idBenefico);
-        if (beneficio.isEmpty()) throw new EntidadeNaoEncontradaException();
+        if (beneficio.isEmpty()) throw new EntidadeNaoEncontradaException("Beneficio");
 
         beneficioAtualizado.setId(beneficio.get().getId());
         beneficioAtualizado.setTitular(beneficio.get().getTitular());
@@ -63,7 +63,7 @@ public class BeneficioService {
     }
 
     public void deletar(int idBenefico) {
-        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException();
+        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException("Beneficio");
         beneficioRepository.deleteById(idBenefico);
     }
 }
