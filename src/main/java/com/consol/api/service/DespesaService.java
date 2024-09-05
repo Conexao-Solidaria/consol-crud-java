@@ -2,6 +2,7 @@ package com.consol.api.service;
 
 import com.consol.api.entity.Despesa;
 import com.consol.api.entity.Familia;
+import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.DespesaRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +30,17 @@ public class DespesaService {
         return despesaSalva;
     }
 
+    public Despesa buscarPorId(Integer id) {
+        return despesaRepository.findById(id).orElseThrow(
+                () -> new EntidadeNaoEncontradaException("Despesa")
+        );
+    }
+
     public List<Despesa> listar() {
         return despesaRepository.findAll();
     }
 
-    public Despesa buscarPorId(Integer id) {
 
-        return despesaRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-    }
 
 
 

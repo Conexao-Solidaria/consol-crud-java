@@ -41,6 +41,18 @@ public class DespesaController {
         return ResponseEntity.status(201).body(dto);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DespesaConsultaDto> consultarPorId(@PathVariable Integer id) {
+
+        Despesa despesa = despesaService.buscarPorId(id);
+
+        DespesaConsultaDto despesaConsultaDto = DespesaMapper.toDto(despesa);
+
+        return ResponseEntity.ok(despesaConsultaDto);
+    }
+
+
+
     @GetMapping("/familia/{idFamilia}")
     public ResponseEntity<List<DespesaConsultaDto>> listarPorFamilia(@PathVariable int idFamilia){
         List<Despesa> entities = despesaService.listarPorFamilia(idFamilia);
@@ -53,15 +65,6 @@ public class DespesaController {
 
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DespesaConsultaDto> consultarPorId(@PathVariable Integer id) {
-
-        Despesa despesa = despesaService.buscarPorId(id);
-
-        DespesaConsultaDto despesaConsultaDto = new DespesaConsultaDto();
-
-        return ResponseEntity.ok(despesaConsultaDto);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<DespesaConsultaDto> atualizar(@RequestBody @Valid DespesaAtualizarDto despesaAtualizarDto,
