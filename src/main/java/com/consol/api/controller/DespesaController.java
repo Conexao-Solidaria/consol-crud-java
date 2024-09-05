@@ -51,15 +51,13 @@ public class DespesaController {
         return ResponseEntity.ok(despesaConsultaDto);
     }
 
-
-
     @GetMapping("/familia/{idFamilia}")
     public ResponseEntity<List<DespesaConsultaDto>> listarPorFamilia(@PathVariable int idFamilia){
         List<Despesa> entities = despesaService.listarPorFamilia(idFamilia);
 
         if (entities.isEmpty()) return ResponseEntity.status(204).build();
 
-        List<DespesaConsultaDto> dtos = DespesaMapper.despesaToListagemDto(entities);
+        List<DespesaConsultaDto> dtos = DespesaMapper.toDto(entities);
         return ResponseEntity.status(200).body(dtos);
     }
 
@@ -80,7 +78,7 @@ public class DespesaController {
 
         Despesa eventoAtualizado = despesaService.salvar(despesa,id);
 
-        DespesaConsultaDto dto = DespesaMapper.despesaToListagemDto(eventoAtualizado);
+        DespesaConsultaDto dto = DespesaMapper.toDto(eventoAtualizado);
 
         return ResponseEntity.status(200).body(dto);
     }

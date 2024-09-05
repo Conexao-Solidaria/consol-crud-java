@@ -39,17 +39,8 @@ public class DespesaMapper {
         return dto;
     }
 
-    public static DespesaConsultaDto despesaToListagemDto(Despesa despesa) {
-
-        DespesaConsultaDto dto = new DespesaConsultaDto();
-        dto.setId(despesa.getId());
-        dto.setTipo(despesa.getTipo());
-        dto.setGasto(despesa.getGasto());
-        return dto;
-    }
-
-    public static List<DespesaConsultaDto> despesaToListagemDto (List<Despesa> despesas) {
-        return despesas.stream().map(DespesaMapper::despesaToListagemDto).toList();
+    public static List<DespesaConsultaDto> toDto (List<Despesa> despesas) {
+        return despesas.stream().map(DespesaMapper::toDto).toList();
 
     }
 
@@ -62,6 +53,6 @@ public class DespesaMapper {
     }
 
     public static List<DespesaConsultaDto> listagemDtoToDespesa(List<Despesa> despesas) {
-        return despesas.stream().map(DespesaMapper::despesaToListagemDto).toList();
+        return despesas.stream().map(DespesaMapper::toDto).toList();
     }
 }

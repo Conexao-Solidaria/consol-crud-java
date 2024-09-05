@@ -40,10 +40,6 @@ public class DespesaService {
         return despesaRepository.findAll();
     }
 
-
-
-
-
     public List<Despesa> listarPorFamilia(int idFamilia) {
         familiaService.porId(idFamilia);
         return despesaRepository.findByFamiliaId(idFamilia);
