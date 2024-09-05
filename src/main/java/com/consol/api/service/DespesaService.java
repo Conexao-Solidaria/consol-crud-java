@@ -26,11 +26,6 @@ public class DespesaService {
 
         despesa.setFamilia(familia);
         Despesa despesaSalva = despesaRepository.save(despesa);
-        System.out.println(despesaSalva.getFamilia().getId());
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
         return despesaSalva;
     }
 
