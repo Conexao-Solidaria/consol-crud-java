@@ -7,6 +7,38 @@ import java.util.List;
 
 public class DespesaMapper {
 
+    public static Despesa toEntity(DespesaCadastroDto dto) {
+        Despesa despesa = new Despesa();
+        despesa.setTipo(dto.getTipo());
+        despesa.setGasto(dto.getGasto());
+
+        return despesa;
+    }
+
+    public static DespesaConsultaDto toDto(Despesa entity){
+        DespesaConsultaDto dto = new DespesaConsultaDto();
+        dto.setId(entity.getId());
+        dto.setTipo(entity.getTipo());
+        dto.setGasto(entity.getGasto());
+
+        if (entity.getFamilia() != null){
+            dto.setFamiliaDto(toDtoFamilia(entity.getFamilia()));
+        }
+
+        return dto;
+    }
+
+
+    public static DespesaConsultaDto.FamiliaDto toDtoFamilia(Familia entity){
+        DespesaConsultaDto.FamiliaDto dto = new DespesaConsultaDto.FamiliaDto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setCep(entity.getCep());
+        dto.setNumeroCasa(entity.getNumeroCasa());
+        dto.setRenda(entity.getRenda());
+        return dto;
+    }
+
     public static DespesaConsultaDto despesaToListagemDto(Despesa despesa) {
 
         DespesaConsultaDto dto = new DespesaConsultaDto();
@@ -21,21 +53,6 @@ public class DespesaMapper {
 
     }
 
-    public static Despesa cadastroDtoToDespesa(DespesaCadastroDto dto) {
-        Despesa despesa = new Despesa();
-        despesa.setTipo(dto.getTipo());
-        despesa.setGasto(dto.getGasto());
-
-        Familia familia = Familia.builder()
-                        .id(dto.getFamiliaDto().getId())
-                        .nome(dto.getFamiliaDto().getNome())
-                        .cep(dto.getFamiliaDto().getCep())
-                        .numeroCasa(dto.getFamiliaDto().getNumeroCasa())
-                        .renda(dto.getFamiliaDto().getRenda()).build();
-
-        despesa.setFamilia(familia);
-        return despesa;
-    }
 
     public static Despesa atualizacaoDtoToDespesa(DespesaAtualizarDto dto) {
         Despesa despesa = new Despesa();

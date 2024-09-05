@@ -1,5 +1,6 @@
 package com.consol.api.dto.despesa;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,21 +11,8 @@ public class DespesaCadastroDto {
     @NotBlank
     public String tipo;
     @NotNull
+    @Min(1)
     public Double gasto;
-    @NotNull
-    public DespesaConsultaDto.FamiliaDto familiaDto;
 
-    @Data
-    public static class FamiliaDto{
-        @NotNull
-        private int id;
-        @NotBlank
-        private String nome;
-        @NotBlank
-        private String cep;
-        @NotBlank
-        private Integer numeroCasa;
-        @NotNull
-        private Double renda;
-    }
+
 }

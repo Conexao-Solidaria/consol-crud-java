@@ -6,6 +6,7 @@ import com.consol.api.dto.despesa.DespesaConsultaDto;
 import com.consol.api.dto.despesa.DespesaMapper;
 import com.consol.api.entity.Despesa;
 import com.consol.api.entity.Familia;
+import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.DespesaRepository;
 import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.service.DespesaService;
@@ -26,17 +27,18 @@ public class DespesaController {
 
     private final DespesaService despesaService;
 
-    @PostMapping
-    public ResponseEntity<DespesaConsultaDto> criar(@RequestBody @Valid DespesaCadastroDto despesaCadastroDto) {
-        if (despesaCadastroDto == null) return ResponseEntity.status(400).build();
+    @PostMapping("/familia/{idFamilia}")
+    public ResponseEntity<DespesaConsultaDto> criar(@RequestBody @Valid DespesaCadastroDto despesaCadastroDto,
+        @PathVariable int idFamilia
+    ) {
+        if (despesaCadastroDto == null) throw new RequisicaoIncorretaException("Despesa");
 
-        Despesa despesaSalvar = DespesaMapper.cadastroDtoToDespesa(despesaCadastroDto);
+        Despesa entity = DespesaMapper.toEntity(despesaCadastroDto);
+        Despesa despesaSalva = despesaService.salvar(entity,idFamilia);
 
-        Despesa despesaSalva = despesaService.salvar(despesaSalvar);
+        DespesaConsultaDto dto = DespesaMapper.toDto(despesaSalva);
 
-        DespesaConsultaDto despesaConsultaDto = DespesaMapper.despesaToListagemDto(despesaSalva);
-
-        return ResponseEntity.status(201).body(despesaConsultaDto);
+        return ResponseEntity.status(201).body(dto);
     }
 
     @GetMapping("/familia/{idFamilia}")
@@ -73,7 +75,7 @@ public class DespesaController {
         if (despesa.getTipo() == null) despesa.setTipo(despesaBuscada.getTipo());
         if (despesa.getGasto() == null) despesa.setGasto(despesaBuscada.getGasto());
 
-        Despesa eventoAtualizado = despesaService.salvar(despesa);
+        Despesa eventoAtualizado = despesaService.salvar(despesa,id);
 
         DespesaConsultaDto dto = DespesaMapper.despesaToListagemDto(eventoAtualizado);
 
