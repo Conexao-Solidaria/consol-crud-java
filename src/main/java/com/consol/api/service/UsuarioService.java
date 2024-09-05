@@ -55,7 +55,15 @@ public class UsuarioService {
 
     public Usuario atualizar(int idUsuario, Usuario usuario) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
-        if (usuarioOptional.isEmpty()) throw new EntidadeNaoEncontradaException();
+        if (usuarioOptional.isEmpty()) throw new EntidadeNaoEncontradaException("Usuario");
+
+        if (usuario.getNomeUsuario() == null) {
+            usuario.setNomeUsuario(usuarioOptional.get().getNomeUsuario());
+        }
+        if (usuario.getEmail() == null){
+            usuario.setEmail(usuarioOptional.get().getEmail());
+        }
+
 
         usuario.setId(usuarioOptional.get().getId());
         usuario.setInstituicao(usuarioOptional.get().getInstituicao());
@@ -64,7 +72,7 @@ public class UsuarioService {
     }
 
     public void deletar(int idUsuario) {
-        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException();
+        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
         usuarioRepository.deleteById(idUsuario);
     }
 

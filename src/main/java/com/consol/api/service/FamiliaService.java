@@ -1,6 +1,7 @@
 package com.consol.api.service;
 
 import com.consol.api.entity.Familia;
+import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.FamiliaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class FamiliaService {
 
     public Familia porId(int id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                () -> new EntidadeNaoEncontradaException("Familia")
         );
     }
 
