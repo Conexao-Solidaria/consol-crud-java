@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,24 +62,15 @@ public class DespesaController {
         return ResponseEntity.status(200).body(dtos);
     }
 
-
-
-
     @PutMapping("/{id}")
     public ResponseEntity<DespesaConsultaDto> atualizar(@RequestBody @Valid DespesaAtualizarDto despesaAtualizarDto,
-                                                          @PathVariable Integer id) {
+                                                        @PathVariable Integer id) {
 
-        Despesa despesaBuscada = despesaService.buscarPorId(id);;
+        if (despesaAtualizarDto == null) return ResponseEntity.status(400).build();
 
-        Despesa despesa = DespesaMapper.atualizacaoDtoToDespesa(despesaAtualizarDto);
-
-        despesa.setId(id);
-        if (despesa.getTipo() == null) despesa.setTipo(despesaBuscada.getTipo());
-        if (despesa.getGasto() == null) despesa.setGasto(despesaBuscada.getGasto());
-
-        Despesa eventoAtualizado = despesaService.salvar(despesa,id);
-
-        DespesaConsultaDto dto = DespesaMapper.toDto(eventoAtualizado);
+        Despesa entity = DespesaMapper.toEntity(despesaAtualizarDto);
+        Despesa despesaAtualizada = despesaService.atualizarDespesa(entity,id);
+        DespesaConsultaDto dto = DespesaMapper.toDto(despesaAtualizada);
 
         return ResponseEntity.status(200).body(dto);
     }

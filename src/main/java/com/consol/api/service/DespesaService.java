@@ -36,27 +36,28 @@ public class DespesaService {
         );
     }
 
-    public List<Despesa> listar() {
-        return despesaRepository.findAll();
-    }
+//    public List<Despesa> listar() {
+//        return despesaRepository.findAll();
+//    }
 
     public List<Despesa> listarPorFamilia(int idFamilia) {
         familiaService.porId(idFamilia);
         return despesaRepository.findByFamiliaId(idFamilia);
     }
 
-    public Despesa atualizarDespesa(Integer id, Despesa despesa){
-        Optional<Despesa> despesaBuscadaOpt = despesaRepository.findById(id);
-        if (despesaBuscadaOpt.isEmpty()) return null;
+    public Despesa atualizarDespesa(Despesa despesa, Integer id){
+        Optional <Despesa> despesaBanco = despesaRepository.findById(id);
 
-        Despesa despesaBuscada = despesaBuscadaOpt.get();
-        despesa.setId(id);
+        if (despesaBanco == null) throw new EntidadeNaoEncontradaException("Despesa");
 
-        if (despesa.getTipo() == null) despesa.setTipo(despesaBuscada.getTipo());
-        if (despesa.getGasto() == null) despesa.setGasto(despesaBuscada.getGasto());
+        Despesa despesaAtualizar = despesaBanco.get();
+
+        if (despesa.getTipo() != null && !despesa.getTipo().equals("") && !despesa.getTipo().equals(" ")) despesaAtualizar.setTipo(despesa.getTipo());
+        if (despesa.getGasto() != null) despesaAtualizar.setGasto(despesa.getGasto());
 
 
-        return despesaRepository.save(despesa);
+        return despesaRepository.save(despesaAtualizar);
+
     }
 
     public void deletarPorId(Integer id) {

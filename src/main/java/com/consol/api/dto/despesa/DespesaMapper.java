@@ -15,6 +15,24 @@ public class DespesaMapper {
         return despesa;
     }
 
+    public static Despesa toEntity(DespesaAtualizarDto dto){
+        if (dto == null) return null;
+
+        Despesa entity = new Despesa();
+        entity.setGasto(dto.getGasto());
+        entity.setTipo(dto.getTipo());
+
+        return entity;
+
+    }
+
+    public static Despesa atualizacaoDtoToDespesa(DespesaAtualizarDto dto) {
+        Despesa despesa = new Despesa();
+        despesa.setTipo(dto.getTipo());
+        despesa.setGasto(dto.getGasto());
+        return despesa;
+    }
+
     public static DespesaConsultaDto toDto(Despesa entity){
         DespesaConsultaDto dto = new DespesaConsultaDto();
         dto.setId(entity.getId());
@@ -44,13 +62,6 @@ public class DespesaMapper {
 
     }
 
-
-    public static Despesa atualizacaoDtoToDespesa(DespesaAtualizarDto dto) {
-        Despesa despesa = new Despesa();
-        despesa.setTipo(dto.getTipo());
-        despesa.setGasto(dto.getGasto());
-        return despesa;
-    }
 
     public static List<DespesaConsultaDto> listagemDtoToDespesa(List<Despesa> despesas) {
         return despesas.stream().map(DespesaMapper::toDto).toList();
