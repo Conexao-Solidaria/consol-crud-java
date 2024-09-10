@@ -7,6 +7,7 @@ import com.consol.api.dto.despesa.DespesaMapper;
 import com.consol.api.entity.Despesa;
 import com.consol.api.entity.Familia;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
+import com.consol.api.hashTable.HashTable;
 import com.consol.api.repository.DespesaRepository;
 import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.service.DespesaService;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,8 @@ public class DespesaController {
 
     private final DespesaService despesaService;
 
+    private HashTable hashTable = new HashTable(3);
+
     @PostMapping("/familia/{idFamilia}")
     public ResponseEntity<DespesaConsultaDto> criar(@RequestBody @Valid DespesaCadastroDto despesaCadastroDto,
         @PathVariable int idFamilia
@@ -39,6 +43,8 @@ public class DespesaController {
         Despesa despesaSalva = despesaService.salvar(entity,idFamilia);
 
         DespesaConsultaDto dto = DespesaMapper.toDto(despesaSalva);
+
+        hashTable.insere(dto);
 
         return ResponseEntity.status(201).body(dto);
     }
@@ -88,11 +94,19 @@ public class DespesaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagarPorId(@PathVariable Integer id) {
-
         despesaService.deletarPorId(id);
 
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/pesquisaHash/{valor}")
+    public ResponseEntity<List<DespesaConsultaDto>> pesquisaHash(@PathVariable double valor){
+        List<DespesaConsultaDto> retorno = hashTable.pesquisaValor(valor);
 
+        if(retorno.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(retorno);
+    }
 }
