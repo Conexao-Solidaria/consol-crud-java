@@ -22,9 +22,8 @@ public class BeneficioService {
     public Beneficio salvar(Beneficio beneficio, int idTitular) {
         Optional<Titular> titular = titularRepository.findById(idTitular);
 
-        if (titular.isEmpty()){
-            throw new EntidadeNaoEncontradaException("Benefício");
-        }
+        if (titular.isEmpty()) throw new EntidadeNaoEncontradaException("Benefício");
+
 
         beneficio.setTitular(titular.get());
         return beneficioRepository.save(beneficio);
@@ -40,9 +39,9 @@ public class BeneficioService {
         );
     }
 
-    public List<Beneficio> listarPorDonatario(int idDonatario) {
-        if (!titularRepository.existsById(idDonatario)) throw new EntidadeNaoEncontradaException("Titular");
-        return beneficioRepository.findByTitularId(idDonatario);
+    public List<Beneficio> listarPorTitular(int idTitular) {
+        if (!titularRepository.existsById(idTitular)) throw new EntidadeNaoEncontradaException("Titular");
+        return beneficioRepository.findByTitularId(idTitular);
 
     }
 

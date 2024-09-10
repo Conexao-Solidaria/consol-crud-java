@@ -54,9 +54,9 @@ public class BeneficioController {
         return ResponseEntity.status(200).body(dto);
     }
 
-    @GetMapping("/donatario/{idDonatario}")
-    public ResponseEntity<List<BeneficioConsultaDto>> listarPorDonarario(@PathVariable int idDonatario){
-        List<Beneficio> entities = beneficioService.listarPorDonatario(idDonatario);
+    @GetMapping("/titular/{idTitular}")
+    public ResponseEntity<List<BeneficioConsultaDto>> listarPorDonarario(@PathVariable int idTitular){
+        List<Beneficio> entities = beneficioService.listarPorTitular(idTitular);
 
         if (entities.isEmpty()) return ResponseEntity.status(204).build();
 
