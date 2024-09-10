@@ -36,10 +36,6 @@ public class DespesaService {
         );
     }
 
-//    public List<Despesa> listar() {
-//        return despesaRepository.findAll();
-//    }
-
     public List<Despesa> listarPorFamilia(int idFamilia) {
         familiaService.porId(idFamilia);
         return despesaRepository.findByFamiliaId(idFamilia);
@@ -66,5 +62,9 @@ public class DespesaService {
         if (!exist) throw new EntidadeNaoEncontradaException("Despesa");
         despesaRepository.deleteById(id);
 
+    }
+
+    public List<Despesa> listar(){
+        return despesaRepository.findAll();
     }
 }

@@ -10,6 +10,7 @@ import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.DespesaRepository;
 import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.service.DespesaService;
+import jakarta.validation.Constraint;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,16 @@ public class DespesaController {
         DespesaConsultaDto dto = DespesaMapper.toDto(despesaSalva);
 
         return ResponseEntity.status(201).body(dto);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<DespesaConsultaDto>> listar(){
+        List<Despesa> entities = despesaService.listar();
+
+        if (entities.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<DespesaConsultaDto> dtos = DespesaMapper.toDto(entities);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @GetMapping("/{id}")
@@ -82,4 +93,6 @@ public class DespesaController {
 
         return ResponseEntity.noContent().build();
     }
+
+
 }
