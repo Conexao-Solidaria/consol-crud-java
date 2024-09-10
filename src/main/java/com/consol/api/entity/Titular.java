@@ -42,10 +42,6 @@ public class Titular {
 
     private String ocupacao;
 
-    @OneToMany
-    @JoinColumn(name = "fk_beneficio")
-    private List<Beneficio> beneficio;
-
     @ManyToOne
     @JoinColumn(name = "fk_familia")
     private Familia familia;

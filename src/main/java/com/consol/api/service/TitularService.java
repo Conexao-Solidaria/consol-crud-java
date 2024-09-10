@@ -49,7 +49,6 @@ public class TitularService {
         titularAtualizado.setTelefone1(titular.getTelefone1());
         titularAtualizado.setTelefone2(titular.getTelefone2());
         titularAtualizado.setTrabalhando(titular.getTrabalhando());
-        titularAtualizado.setBeneficio(titular.getBeneficio());
         titularAtualizado.setOcupacao(titular.getOcupacao());
 
         return repository.save(titularAtualizado);
