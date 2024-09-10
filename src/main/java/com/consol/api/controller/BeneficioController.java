@@ -20,25 +20,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BeneficioController {
 
-    // enity = trocado de id para idBenefico, para seguir padrão do banco
-    //  RequestMapping = trocado de /benefico para /beneficios para seguir boa prática
-    // Alterar de donatário Repository para donatario service, após a service de donatário estar completa
-    // Buscar por Donatario =  trocado do nome do donatário para o id, pois pode ter mais de um donatário com o mesmo nome
-    // Busca por Familia =  trocado de nome família para o id, mesma questão do busca por donatário
-    // atualizar beneficio = atualizar o nome e o valor faz sentido? ou deveria apenas atualizar o valor?
-
     private final BeneficioService beneficioService;
 
-    @PostMapping("/donatario/{idDonatario}")
+    @PostMapping("/titular/{idTitular}")
     public ResponseEntity<BeneficioConsultaDto> salvar(
-            @PathVariable int idDonatario,
+            @PathVariable int idTitular,
             @RequestBody @Valid BeneficoCriacaoDto benefico){
 
         Beneficio entity = BeneficioMapper.toEntity(benefico);
-        Beneficio salvo = beneficioService.salvar(entity,idDonatario);
+        Beneficio salvo = beneficioService.salvar(entity,idTitular);
         BeneficioConsultaDto dto = BeneficioMapper.toDto(salvo);
 
-        URI uri = URI.create("/beneficios/donatario/" + idDonatario);
+        URI uri = URI.create("/beneficios/donatario/" + idTitular);
 
         return ResponseEntity.created(uri).body(dto);
     }

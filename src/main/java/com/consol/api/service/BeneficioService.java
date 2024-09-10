@@ -19,14 +19,14 @@ public class BeneficioService {
     private final TitularRepository titularRepository;
     private final FamiliaService familiaService;
 
-    public Beneficio salvar(Beneficio beneficio, int idDonatario) {
-        Optional<Titular> donatario = titularRepository.findById(idDonatario);
+    public Beneficio salvar(Beneficio beneficio, int idTitular) {
+        Optional<Titular> titular = titularRepository.findById(idTitular);
 
-        if (donatario.isEmpty()){
+        if (titular.isEmpty()){
             throw new EntidadeNaoEncontradaException("Benefício");
         }
 
-        beneficio.setTitular(donatario.get());
+        beneficio.setTitular(titular.get());
         return beneficioRepository.save(beneficio);
     }
 
