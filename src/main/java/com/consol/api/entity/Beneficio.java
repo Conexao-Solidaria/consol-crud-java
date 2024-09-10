@@ -14,6 +14,7 @@ import lombok.*;
 public class Beneficio {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_beneficio")
     private Integer id;
 
     private String nome;
