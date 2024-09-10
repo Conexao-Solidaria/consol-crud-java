@@ -61,7 +61,10 @@ public class DespesaService {
     }
 
     public void deletarPorId(Integer id) {
-        if (!despesaRepository.existsById(id));
+        Boolean exist = despesaRepository.existsById(id);
+
+        if (!exist) throw new EntidadeNaoEncontradaException("Despesa");
         despesaRepository.deleteById(id);
+
     }
 }
