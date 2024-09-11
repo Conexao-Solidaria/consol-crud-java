@@ -51,14 +51,19 @@ public class BeneficioService {
         return beneficioRepository.findByTitularFamiliaId(idFamilia);
     }
 
-    public Beneficio atualizar(int idBenefico, Beneficio beneficioAtualizado) {
-        Optional<Beneficio> beneficio = beneficioRepository.findById(idBenefico);
-        if (beneficio.isEmpty()) throw new EntidadeNaoEncontradaException("Beneficio");
+    public Beneficio atualizar(int idBenefico, Beneficio beneficio) {
+        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException("Beneficio");
 
-        beneficioAtualizado.setId(beneficio.get().getId());
-        beneficioAtualizado.setTitular(beneficio.get().getTitular());
+        Optional <Beneficio> beneficioBanco = beneficioRepository.findById(idBenefico);
+        Beneficio beneficioAtualizar = beneficioBanco.get();
 
-        return beneficioRepository.save(beneficioAtualizado);
+        if (beneficio.getValor() != null) beneficioAtualizar.setValor(beneficio.getValor());
+        if (beneficio.getNome() != null && !beneficio.getNome().equals("") && !beneficio.getNome().equals(" ") ) {
+            beneficioAtualizar.setNome(beneficio.getNome());
+        }
+
+
+        return beneficioRepository.save(beneficioAtualizar);
     }
 
     public void deletar(int idBenefico) {
