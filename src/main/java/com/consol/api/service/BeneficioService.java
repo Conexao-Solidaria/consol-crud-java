@@ -8,6 +8,7 @@ import com.consol.api.repository.TitularRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,10 +47,9 @@ public class BeneficioService {
     }
 
     public List<Beneficio> listarPorFamilia(int idFamilia) {
-       familiaService.porId(idFamilia);
+        if (!familiaService.familiaExiste(idFamilia)) throw new EntidadeNaoEncontradaException("Familia");
         return beneficioRepository.findByTitularFamiliaId(idFamilia);
     }
-
 
     public Beneficio atualizar(int idBenefico, Beneficio beneficioAtualizado) {
         Optional<Beneficio> beneficio = beneficioRepository.findById(idBenefico);
