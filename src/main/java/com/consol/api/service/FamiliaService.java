@@ -51,4 +51,9 @@ public class FamiliaService {
         familiaAtualizar.setFlagRetirada(familia.getFlagRetirada());
         return repository.save(familiaAtualizar);
     }
+
+    public Boolean familiaExiste(int id){
+        return repository.existsById(id);
+    }
+
 }
