@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,13 +19,13 @@ public class Doacao {
     @Column(name = "id_doacao")
     private Integer id;
 
-    private Integer statusDoacao;
-
-    private LocalDate dataDoacao;
-
     private String descricao;
 
-    private Integer flagDoacaoEntregue;
+    private Byte statusDoacao;
+
+    private LocalDateTime dataDoacao;
+
+    private Byte flagDoacaoEntregue;
 
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")
