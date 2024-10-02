@@ -2,6 +2,7 @@ package com.consol.api.service;
 
 
 import com.consol.api.entity.Instituicao;
+import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.InstituicaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,10 @@ public class InstituicaoService {
             }
             repository.deleteById(id);
         }
+
+        public boolean existById(int id){
+            return repository.existsById(id);
+        }
+
     }
 

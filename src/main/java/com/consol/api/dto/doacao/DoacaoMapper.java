@@ -17,7 +17,7 @@ public class DoacaoMapper {
         dto.setStatus(doacao.getStatusDoacao());
         dto.setDescricao(doacao.getDescricao());
         dto.setDataDoacao(doacao.getDataDoacao());
-        dto.setFlagDoacaoEntregue(dto.getFlagDoacaoEntregue());
+        dto.setFlagDoacaoEntregue(doacao.getFlagDoacaoEntregue());
 
         dto.setInstituicao(toInstituicaoDto(doacao.getInstituicao()));
 
@@ -30,12 +30,10 @@ public class DoacaoMapper {
         if (dto == null) return null;
 
         Doacao doacao = new Doacao();
-
-        doacao.setStatusDoacao(dto.getStatusDoacao());
         doacao.setDescricao(dto.getDescricao());
         doacao.setDataDoacao(dto.getDataDoacao());
-        doacao.setFlagDoacaoEntregue(dto.getFlagDoacaoEntregue());
-
+        doacao.setFlagDoacaoEntregue((byte) 0);
+        doacao.setStatusDoacao((byte) 0);
         return doacao;
     }
 
@@ -76,7 +74,7 @@ public class DoacaoMapper {
         if (dto == null) return null;
 
         Doacao entity = new Doacao();
-        entity.setFlagDoacaoEntregue(dto.getFlagDoacaoEntregue());
+        entity.setFlagDoacaoEntregue( dto.getFlagDoacaoEntregue());
 
         return entity;
     }
@@ -85,7 +83,7 @@ public class DoacaoMapper {
         if (dto == null) return null;
 
         Doacao entity = new Doacao();
-        entity.setStatusDoacao(dto.getStatus());
+//        entity.setStatusDoacao(dto.getStatus());
 
         return entity;
     }

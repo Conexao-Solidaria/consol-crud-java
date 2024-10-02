@@ -8,5 +8,5 @@ import lombok.Data;
 public class DoacaoAtualizarFlagDto {
     @Size(min = 0, max = 1)
     @NotBlank(message = "A flag doacao entrega não pode estar em branco")
-    private Integer flagDoacaoEntregue;
+    private Byte flagDoacaoEntregue;
 }

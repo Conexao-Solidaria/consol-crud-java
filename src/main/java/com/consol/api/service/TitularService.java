@@ -60,4 +60,8 @@ public class TitularService {
         }
         repository.deleteById(id);
     }
+
+    public Boolean existById(int id){
+        return repository.existsById(id);
+    }
 }

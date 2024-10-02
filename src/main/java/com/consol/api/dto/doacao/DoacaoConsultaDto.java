@@ -3,17 +3,18 @@ package com.consol.api.dto.doacao;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class DoacaoConsultaDto {
 
     private Integer id;
-    private Integer status;
+    private Byte status;
     private String descricao;
-    private LocalDate dataDoacao;
+    private LocalDateTime dataDoacao;
     private InstituicaoDto instituicao;
     private DonatarioDto donatario;
-    private Integer flagDoacaoEntregue;
+    private Byte flagDoacaoEntregue;
 
     @Data
     public static class InstituicaoDto {

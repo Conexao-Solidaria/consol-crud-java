@@ -8,5 +8,5 @@ import lombok.Data;
 public class DoacaoAtualizarStatusDto {
     @Size(min = 0, max = 1)
     @NotBlank(message = "O status da doação não valida")
-    private Integer status;
+    private Byte status;
 }

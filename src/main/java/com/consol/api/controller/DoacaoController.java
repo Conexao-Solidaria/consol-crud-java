@@ -25,6 +25,25 @@ public class DoacaoController {
 
     private final DoacaoService service;
 
+    @PostMapping("/titular/{id}/instituicao/{idInstituicao}") // vai ser sempre 1
+    private ResponseEntity<DoacaoConsultaDto> criar(
+            @RequestBody @Valid DoacaoCadastroDto dto,
+            @PathVariable int id,
+            @PathVariable int idInstituicao
+
+    ) {
+
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoSalva = service.salvar(doacao,id, idInstituicao);
+
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoSalva);
+
+        URI uri = URI.create("/doacoes/" + doacaoConsultaDto.getId());
+
+        return ResponseEntity.created(uri).body(doacaoConsultaDto);
+    }
+
+
     @GetMapping
     private ResponseEntity<List<DoacaoConsultaDto>> listar() {
         List<Doacao> doacoes = service.listar();
@@ -73,21 +92,6 @@ public class DoacaoController {
         return ResponseEntity.ok(dtos);
     }
 
-    @PostMapping
-    private ResponseEntity<DoacaoConsultaDto> criar(
-            @RequestBody @Valid DoacaoCadastroDto dto
-    ) {
-        Doacao doacao = DoacaoMapper.toEntity(dto);
-        Doacao doacaoSalva = service.salvar(doacao
-                //dto.getInstituicaoId(),
-                //dto.getDonatarioId()
-        );
-        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoSalva);
-
-        URI uri = URI.create("/doacoes/" + doacaoConsultaDto.getId());
-
-        return ResponseEntity.created(uri).body(doacaoConsultaDto);
-    }
 
     @PutMapping("/atualizar-flag/{id}")
     public ResponseEntity<DoacaoConsultaDto> atualizarFlag(

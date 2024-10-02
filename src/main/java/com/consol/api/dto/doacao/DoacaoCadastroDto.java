@@ -1,17 +1,15 @@
 package com.consol.api.dto.doacao;
 
-import jakarta.persistence.ManyToOne;
+import com.consol.api.dto.Deserializer.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class DoacaoCadastroDto {
-
-    @Min(0)
-    @Max(1)
-    private Integer statusDoacao = 0;
 
     @NotBlank(message = "A descricao é obrigatória")
     @NotNull(message = "A descrição está nula")
@@ -19,11 +17,8 @@ public class DoacaoCadastroDto {
 
     @NotNull(message = "A data da doação está nula")
     @PastOrPresent(message = "A data da doação está inválida")
-    private LocalDate dataDoacao;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime dataDoacao;
 
-    private Integer instituicaoId;
 
-    private Integer donatarioId;
-
-    private Integer flagDoacaoEntregue = 0;
 }
