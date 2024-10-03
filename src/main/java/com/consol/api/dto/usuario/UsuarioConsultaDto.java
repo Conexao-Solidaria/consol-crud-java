@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class UsuarioConsultaDto {
     private Integer idUsuario;
-    private Boolean coordenador;
+    private Byte coordenador;
     private String nomeUsuario;
     private String email;
     private String cpf;
-    private Integer flagAprovado;
+    private Byte flagAprovado;
     private Integer fkInstituicao;
 }

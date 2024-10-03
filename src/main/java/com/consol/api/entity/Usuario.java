@@ -16,23 +16,19 @@ public class Usuario {
     @Column(name = "id_usuario")
     private int id;
 
-    @Column(name = "coordenador")
-    private boolean coordenador;
+    private Byte coordenador;
 
     @Column(name = "nome_usuario")
     private String nomeUsuario;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "senha")
     private String senha;
 
-    @Column(name = "cpf")
     private String cpf;
 
     @Column(name = "flag_aprovado")
-    private Integer flagAprovado;
+    private Byte flagAprovado;
 
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")

@@ -6,6 +6,7 @@ import com.consol.api.dto.usuario.UsuarioLoginDto;
 import com.consol.api.dto.usuario.UsuarioMapper;
 import com.consol.api.dto.usuario.UsuarioTokenDto;
 import com.consol.api.entity.*;
+import com.consol.api.entity.exception.ConflitoException;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.repository.UsuarioRepository;
@@ -27,77 +28,84 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UsuarioRepository usuarioRepository;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
+
     private final UsuarioRepository repository;
     private final InstituicaoService instituicaoService;
-
-    public Usuario porId(int id) {
-        return repository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-    }
-
-    public List<Usuario> listar() {
-        return usuarioRepository.findAll();
-    }
 
     public Usuario criar(Usuario usuario, int idInstituicao) {
         Instituicao instituicao = instituicaoService.consultarPorId(idInstituicao);
 
+        if (repository.existsByEmail(usuario.getEmail())) throw new ConflitoException("");
+        if (repository.existsByCpf(usuario.getCpf())) throw new ConflitoException("");
+
         usuario.setInstituicao(instituicao);
+        usuario.setCoordenador((byte) 0);
+        usuario.setFlagAprovado((byte) 0);
 
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 
-        return this.usuarioRepository.save(usuario);
+        return repository.save(usuario);
     }
 
-    public Usuario atualizar(int idUsuario, Usuario usuario) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
-        if (usuarioOptional.isEmpty()) throw new EntidadeNaoEncontradaException("Usuario");
+//    public Usuario porId(int id) {
+//        return repository.findById(id).orElseThrow(
+//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+//        );
+//    }
+//
+//    public List<Usuario> listar() {
+//        return usuarioRepository.findAll();
+//    }
 
-        if (usuario.getNomeUsuario() == null) {
-            usuario.setNomeUsuario(usuarioOptional.get().getNomeUsuario());
-        }
-        if (usuario.getEmail() == null){
-            usuario.setEmail(usuarioOptional.get().getEmail());
-        }
 
 
-        usuario.setId(usuarioOptional.get().getId());
-        usuario.setInstituicao(usuarioOptional.get().getInstituicao());
-
-        return usuarioRepository.save(usuario);
-    }
-
-    public void deletar(int idUsuario) {
-        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
-        usuarioRepository.deleteById(idUsuario);
-    }
-
-    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
-
-        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
-                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
-
-        final Authentication authentication = this.authenticationManager.authenticate(credentials);
-
-        Usuario usuarioAutenticado =
-                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
-                        .orElseThrow(
-                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
-                        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        final String token = gerenciadorTokenJwt.generateToken(authentication);
-        return UsuarioMapper.of(usuarioAutenticado, token);
-    }
-
-    public Usuario atualizarFlag(int id, Usuario usuario){
-        Usuario usuarioAtualizar = porId(id);
-
-        usuarioAtualizar.setFlagAprovado(usuario.getFlagAprovado());
-        return repository.save(usuarioAtualizar);
-    }
+//    public Usuario atualizar(int idUsuario, Usuario usuario) {
+//        Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
+//        if (usuarioOptional.isEmpty()) throw new EntidadeNaoEncontradaException("Usuario");
+//
+//        if (usuario.getNomeUsuario() == null) {
+//            usuario.setNomeUsuario(usuarioOptional.get().getNomeUsuario());
+//        }
+//        if (usuario.getEmail() == null){
+//            usuario.setEmail(usuarioOptional.get().getEmail());
+//        }
+//
+//
+//        usuario.setId(usuarioOptional.get().getId());
+//        usuario.setInstituicao(usuarioOptional.get().getInstituicao());
+//
+//        return usuarioRepository.save(usuario);
+//    }
+//
+//    public void deletar(int idUsuario) {
+//        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
+//        usuarioRepository.deleteById(idUsuario);
+//    }
+//
+//    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
+//
+//        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+//                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
+//
+//        final Authentication authentication = this.authenticationManager.authenticate(credentials);
+//
+//        Usuario usuarioAutenticado =
+//                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
+//                        .orElseThrow(
+//                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+//                        );
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        final String token = gerenciadorTokenJwt.generateToken(authentication);
+//        return UsuarioMapper.of(usuarioAutenticado, token);
+//    }
+//
+//    public Usuario atualizarFlag(int id, Usuario usuario){
+//        Usuario usuarioAtualizar = porId(id);
+//
+//        usuarioAtualizar.setFlagAprovado(usuario.getFlagAprovado());
+//        return repository.save(usuarioAtualizar);
+//    }
 }

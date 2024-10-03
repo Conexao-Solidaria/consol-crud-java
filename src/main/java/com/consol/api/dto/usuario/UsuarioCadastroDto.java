@@ -1,29 +1,30 @@
 package com.consol.api.dto.usuario;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Data
 public class UsuarioCadastroDto {
-    @NotBlank(message = "O nome do usuário não pode estar em branco")
+    @NotBlank()
     private String nomeUsuario;
 
-    @NotBlank(message = "O e-mail não pode estar em branco")
-    @Email(message = "O e-mail deve ser válido")
+    @Email()
     private String email;
 
-    @NotBlank(message = "A senha não pode estar em branco")
-    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
+    @Size(min = 8)
     private String senha;
 
-    @NotBlank(message = "O CPF não pode estar em branco")
+    @CPF
     private String cpf;
 
-    private Boolean coordenador;
+    @Min(0)
+    @Max(1)
+    private Byte coordenador;
 
-    private Integer flagAprovado = 0;
+    @Min(0)
+    @Max(1)
+    private Byte flagAprovado;
 
     private Integer fkInstituicao;
 }
