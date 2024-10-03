@@ -46,36 +46,34 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<UsuarioConsultaDto>> listagemUsuarios(){
-//        List<Usuario> entities = usuarioService.listar();
-//
-//        if (entities.isEmpty()) return ResponseEntity.status(204).build();
-//
-//        List<UsuarioConsultaDto> dtos = UsuarioMapper.toDto(entities);
-//        return ResponseEntity.status(200).body(dtos);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<UsuarioConsultaDto> consultarPorId(@PathVariable Integer id){
-//        Usuario usuario = usuarioService.porId(id);
-//
-//        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuario);
-//
-//        return ResponseEntity.status(200).body(dto);
-//    }
-//
-//    @PutMapping("{id}")
-//    public ResponseEntity<UsuarioConsultaDto> atualizar(
-//            @RequestBody @Valid UsuarioAtualizarDto dto,
-//            @PathVariable Integer id
-//    ){
-//        Usuario usuario = UsuarioMapper.toEntity(dto);
-//        Usuario usuarioAtualizado = usuarioService.atualizar(id, usuario);
-//        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toDto(usuarioAtualizado);
-//
-//        return ResponseEntity.ok(usuarioConsultaDto);
-//    }
+        @PostMapping("/login")
+    public ResponseEntity<UsuarioTokenDto> login(
+            @RequestBody UsuarioLoginDto usuarioLoginDto
+    ) {
+        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
+        return ResponseEntity.ok(usuarioToken);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioConsultaDto>> listagemUsuarios(){
+        List<Usuario> entities = usuarioService.listar();
+
+        if (entities.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<UsuarioConsultaDto> dtos = UsuarioMapper.toDto(entities);
+        return ResponseEntity.status(200).body(dtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioConsultaDto> consultarPorId(@PathVariable Integer id){
+        Usuario usuario = usuarioService.porId(id);
+
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuario);
+
+        return ResponseEntity.status(200).body(dto);
+    }
+
 //
 //    @DeleteMapping("{id}")
 //    public ResponseEntity<Void> apagarPorId(
@@ -85,13 +83,7 @@ public class UsuarioController {
 //        return ResponseEntity.noContent().build();
 //    }
 //
-//    @PostMapping("/login")
-//    public ResponseEntity<UsuarioTokenDto> login(
-//            @RequestBody UsuarioLoginDto usuarioLoginDto
-//    ) {
-//        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
-//        return ResponseEntity.ok(usuarioToken);
-//    }
+
 //
 //
 //    //@GetMapping("/fila")

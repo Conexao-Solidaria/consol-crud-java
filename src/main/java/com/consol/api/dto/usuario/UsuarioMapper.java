@@ -36,20 +36,7 @@ public class UsuarioMapper {
 
         return dto;
     }
-//
-//    public static Usuario toEntity(UsuarioAtualizarDto dto) {
-//        if (dto == null) return null;
-//
-//        Usuario usuario = new Usuario();
-//
-//        usuario.setNomeUsuario(dto.getNomeUsuario());
-//        usuario.setCpf(dto.getCpf());
-//        usuario.setEmail(dto.getEmail());
-//        usuario.setCoordenador(dto.getCoordenador());
-//
-//        return usuario;
-//    }
-//
+
     public static UsuarioTokenDto of(Usuario usuario, String token) {
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
@@ -60,10 +47,11 @@ public class UsuarioMapper {
 
         return usuarioTokenDto;
     }
-//
-//    public static List<UsuarioConsultaDto> toDto(List<Usuario> usuarios){
-//        return usuarios.stream().map(UsuarioMapper::toDto).toList();
-//    }
+
+    public static List<UsuarioConsultaDto> toDto(List<Usuario> usuarios){
+        return usuarios.stream().map(UsuarioMapper::toDto).toList();
+    }
+
 //
 //    public static Usuario toEntity(UsuarioAtualizarFlagDto dto){
 //        if (dto == null) return null;

@@ -49,63 +49,48 @@ public class UsuarioService {
         return repository.save(usuario);
     }
 
-//    public Usuario porId(int id) {
-//        return repository.findById(id).orElseThrow(
-//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-//        );
-//    }
-//
-//    public List<Usuario> listar() {
-//        return usuarioRepository.findAll();
-//    }
+    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
 
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
 
+        final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-//    public Usuario atualizar(int idUsuario, Usuario usuario) {
-//        Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
-//        if (usuarioOptional.isEmpty()) throw new EntidadeNaoEncontradaException("Usuario");
+        Usuario usuarioAutenticado =
+                repository.findByEmail(usuarioLoginDto.getEmail())
+                        .orElseThrow(
+                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+        return UsuarioMapper.of(usuarioAutenticado, token);
+    }
+
+    public List<Usuario> listar() {
+        return repository.findAll();
+    }
+
+    public Usuario porId(int id) {
+        return repository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
 //
-//        if (usuario.getNomeUsuario() == null) {
-//            usuario.setNomeUsuario(usuarioOptional.get().getNomeUsuario());
-//        }
-//        if (usuario.getEmail() == null){
-//            usuario.setEmail(usuarioOptional.get().getEmail());
-//        }
-//
-//
-//        usuario.setId(usuarioOptional.get().getId());
-//        usuario.setInstituicao(usuarioOptional.get().getInstituicao());
-//
-//        return usuarioRepository.save(usuario);
-//    }
-//
-//    public void deletar(int idUsuario) {
-//        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
-//        usuarioRepository.deleteById(idUsuario);
-//    }
-//
-//    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
-//
-//        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
-//                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
-//
-//        final Authentication authentication = this.authenticationManager.authenticate(credentials);
-//
-//        Usuario usuarioAutenticado =
-//                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
-//                        .orElseThrow(
-//                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
-//                        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        final String token = gerenciadorTokenJwt.generateToken(authentication);
-//        return UsuarioMapper.of(usuarioAutenticado, token);
-//    }
-//
-//    public Usuario atualizarFlag(int id, Usuario usuario){
+
+//        public Usuario atualizarFlag(int id, Usuario usuario){
 //        Usuario usuarioAtualizar = porId(id);
 //
 //        usuarioAtualizar.setFlagAprovado(usuario.getFlagAprovado());
 //        return repository.save(usuarioAtualizar);
 //    }
+
+    
+//    public void deletar(int idUsuario) {
+//        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
+//        usuarioRepository.deleteById(idUsuario);
+//    }
+//
+
+//
+
 }
