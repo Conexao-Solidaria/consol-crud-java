@@ -52,13 +52,22 @@ public class UsuarioMapper {
         return usuarios.stream().map(UsuarioMapper::toDto).toList();
     }
 
-//
-//    public static Usuario toEntity(UsuarioAtualizarFlagDto dto){
-//        if (dto == null) return null;
-//
-//        Usuario usuario = new Usuario();
-//        usuario.setFlagAprovado(dto.getFlagAprovado());
-//
-//        return usuario;
-//    }
+    public static Usuario toEntity(UsuarioAtualizarFlagDto dto){
+        if (dto == null) return null;
+
+        Usuario usuario = new Usuario();
+        usuario.setFlagAprovado(dto.getFlagAprovado());
+
+        return usuario;
+    }
+
+    public static Usuario toEntity(UsuarioAtualizarCoordenadorDto dto){
+        if (dto == null) return null;
+
+        Usuario usuario = new Usuario();
+        usuario.setCoordenador(dto.getCoordenador());
+
+        return usuario;
+    }
+
 }

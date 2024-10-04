@@ -81,16 +81,17 @@ public class UsuarioService {
         repository.deleteById(idUsuario);
     }
 
+    public Usuario atualizarFlag(int id, Usuario usuario){
+        Usuario usuarioAtualizar = porId(id);
+        usuarioAtualizar.setFlagAprovado(usuario.getFlagAprovado());
+        return repository.save(usuarioAtualizar);
+    }
 
-
-
-//        public Usuario atualizarFlag(int id, Usuario usuario){
-//        Usuario usuarioAtualizar = porId(id);
-//
-//        usuarioAtualizar.setFlagAprovado(usuario.getFlagAprovado());
-//        return repository.save(usuarioAtualizar);
-//    }
-
+    public Usuario atualizarCoordenador(int id, Usuario Usuario){
+        Usuario usuarioAtualizar = porId(id);
+        usuarioAtualizar.setFlagAprovado(usuarioAtualizar.getFlagAprovado());
+        return repository.save(usuarioAtualizar);
+    }
 
 
 

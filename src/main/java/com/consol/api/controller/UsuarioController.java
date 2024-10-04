@@ -39,17 +39,15 @@ public class UsuarioController {
             @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
     ){
 
-        Usuario usuarioCadastrar = UsuarioMapper.toEntity(usuarioCadastroDto);
-        Usuario usuarioCadastrado = usuarioService.criar(usuarioCadastrar, idInstituicao);
-        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toDto(usuarioCadastrado);
+        Usuario entity = UsuarioMapper.toEntity(usuarioCadastroDto);
+        Usuario usuarioCadastrado = usuarioService.criar(entity, idInstituicao);
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioCadastrado);
 
-        return ResponseEntity.status(201).body(usuarioConsultaDto);
+        return ResponseEntity.status(201).body(dto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UsuarioTokenDto> login(
-            @RequestBody UsuarioLoginDto usuarioLoginDto
-    ) {
+    public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
         return ResponseEntity.ok(usuarioToken);
     }
@@ -67,21 +65,41 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioConsultaDto> consultarPorId(@PathVariable Integer id){
-        Usuario usuario = usuarioService.porId(id);
-
-        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuario);
+        Usuario entity = usuarioService.porId(id);
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(entity);
 
         return ResponseEntity.status(200).body(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> apagarPorId(
-            @PathVariable Integer id
-    ){
+    public ResponseEntity<Void> apagarPorId( @PathVariable Integer id){
         usuarioService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("atualizar-flag/{id}")
+    public ResponseEntity<UsuarioConsultaDto> atualizarFlag(
+            @PathVariable int id,
+            @RequestBody UsuarioAtualizarFlagDto usuarioAtualizarFlagDto
+    ){
+        Usuario entity = UsuarioMapper.toEntity(usuarioAtualizarFlagDto);
+        Usuario usuarioAtualizado = usuarioService.atualizarFlag(id,entity);
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioAtualizado);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/atualizar-coordenador/{id}")
+    public ResponseEntity<UsuarioConsultaDto> atualizarCoordenador(
+            @RequestBody UsuarioAtualizarCoordenadorDto atualizarCoordenadorDto,
+            @PathVariable int id
+    ){
+        Usuario entity = UsuarioMapper.toEntity(atualizarCoordenadorDto);
+        Usuario usuarioAtualizado = usuarioService.atualizarCoordenador(id,entity);
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioAtualizado);
+
+        return ResponseEntity.ok(dto);
+    }
 
 //
 //
@@ -91,15 +109,5 @@ public class UsuarioController {
 //    //    return usuarioOptional.map(UsuarioMapper::usuarioParaConsultaDto).orElse(null);
 //    //}
 //
-//    @PutMapping("atualizar-flag/{id}")
-//    public ResponseEntity<UsuarioConsultaDto> atualizarFlag(
-//            @PathVariable int id,
-//            @RequestBody UsuarioAtualizarFlagDto dto
-//    ) {
-//        Usuario usuario = UsuarioMapper.toEntity(dto);
-//        Usuario usuarioAtualizado = usuarioService.atualizarFlag(id, usuario);
-//        UsuarioConsultaDto usuarioConsultaDto = UsuarioMapper.toDto(usuarioAtualizado);
-//
-//        return ResponseEntity.ok(usuarioConsultaDto);
-//    }
+
 }
