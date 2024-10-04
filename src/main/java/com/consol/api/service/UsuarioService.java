@@ -87,9 +87,9 @@ public class UsuarioService {
         return repository.save(usuarioAtualizar);
     }
 
-    public Usuario atualizarCoordenador(int id, Usuario Usuario){
+    public Usuario atualizarCoordenador(int id, Usuario usuario){
         Usuario usuarioAtualizar = porId(id);
-        usuarioAtualizar.setFlagAprovado(usuarioAtualizar.getFlagAprovado());
+        usuarioAtualizar.setCoordenador(usuario.getCoordenador());
         return repository.save(usuarioAtualizar);
     }
 
