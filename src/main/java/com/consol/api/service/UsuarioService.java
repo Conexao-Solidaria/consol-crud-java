@@ -75,7 +75,14 @@ public class UsuarioService {
         return repository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
-//
+
+    public void deletar(int idUsuario) {
+        if (!repository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
+        repository.deleteById(idUsuario);
+    }
+
+
+
 
 //        public Usuario atualizarFlag(int id, Usuario usuario){
 //        Usuario usuarioAtualizar = porId(id);
@@ -84,13 +91,7 @@ public class UsuarioService {
 //        return repository.save(usuarioAtualizar);
 //    }
 
-    
-//    public void deletar(int idUsuario) {
-//        if (!usuarioRepository.existsById(idUsuario)) throw new EntidadeNaoEncontradaException("Usuario");
-//        usuarioRepository.deleteById(idUsuario);
-//    }
-//
 
-//
+
 
 }

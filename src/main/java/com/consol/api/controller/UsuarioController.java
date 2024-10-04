@@ -33,7 +33,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     // private FilaCircular fila = new FilaCircular(100);
 
-    @PostMapping("/{idInstituicao}")
+    @PostMapping("/instituicao/{idInstituicao}")
     public ResponseEntity<UsuarioConsultaDto> criar(
             @PathVariable int idInstituicao,
             @RequestBody @Valid UsuarioCadastroDto usuarioCadastroDto
@@ -46,7 +46,7 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(usuarioConsultaDto);
     }
 
-        @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(
             @RequestBody UsuarioLoginDto usuarioLoginDto
     ) {
@@ -74,15 +74,14 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(dto);
     }
 
-//
-//    @DeleteMapping("{id}")
-//    public ResponseEntity<Void> apagarPorId(
-//            @PathVariable Integer id
-//    ){
-//        usuarioService.deletar(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> apagarPorId(
+            @PathVariable Integer id
+    ){
+        usuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 //
 //
