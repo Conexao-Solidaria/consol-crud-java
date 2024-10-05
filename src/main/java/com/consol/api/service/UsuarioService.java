@@ -8,6 +8,7 @@ import com.consol.api.dto.usuario.UsuarioTokenDto;
 import com.consol.api.entity.*;
 import com.consol.api.entity.exception.ConflitoException;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
+import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class UsuarioService {
         Usuario usuarioAutenticado =
                 repository.findByEmail(usuarioLoginDto.getEmail())
                         .orElseThrow(
-                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                            () -> new RequisicaoIncorretaException("Usuario")
                         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -73,7 +74,8 @@ public class UsuarioService {
 
     public Usuario porId(int id) {
         return repository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                () -> new EntidadeNaoEncontradaException("Usuario")
+        );
     }
 
     public void deletar(int idUsuario) {
@@ -92,7 +94,5 @@ public class UsuarioService {
         usuarioAtualizar.setCoordenador(usuario.getCoordenador());
         return repository.save(usuarioAtualizar);
     }
-
-
 
 }
