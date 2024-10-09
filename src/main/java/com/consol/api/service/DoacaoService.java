@@ -52,11 +52,5 @@ public class DoacaoService {
         doacaoAtualizar.setFlagDoacaoEntregue(doacao.getFlagDoacaoEntregue());
         return repository.save(doacaoAtualizar);
     }
-
-    public Doacao atualizarStatus(int id, Doacao doacao){
-        Doacao doacaoAtualizar = listarPorId(id);
-
-        doacaoAtualizar.setStatusDoacao(doacao.getStatusDoacao());
-        return repository.save(doacaoAtualizar);
-    }
+    
 }

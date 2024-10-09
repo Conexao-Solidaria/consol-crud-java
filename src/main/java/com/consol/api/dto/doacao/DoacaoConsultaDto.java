@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class DoacaoConsultaDto {
 
     private Integer id;
-    private Byte status;
     private String descricao;
     private LocalDateTime dataDoacao;
     private InstituicaoDto instituicao;

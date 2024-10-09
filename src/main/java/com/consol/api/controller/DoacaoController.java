@@ -39,7 +39,7 @@ public class DoacaoController {
     ) {
 
         Doacao doacao = DoacaoMapper.toEntity(dto);
-        Doacao doacaoSalva = service.salvar(doacao,id, idInstituicao);
+        Doacao doacaoSalva = service.salvar(doacao,id,idInstituicao);
 
         DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoSalva);
 
@@ -110,17 +110,7 @@ public class DoacaoController {
         return ResponseEntity.ok(doacaoConsultaDto);
     }
 
-    @PutMapping("/atualizar-status/{id}")
-    public ResponseEntity<DoacaoConsultaDto> atualizarStatus(
-            @RequestBody @Valid DoacaoAtualizarStatusDto dto,
-            @PathVariable Integer id
-    ){
-        Doacao doacao = DoacaoMapper.toEntity(dto);
-        Doacao doacaoAtualizada = service.atualizarStatus(id, doacao);
-        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
 
-        return ResponseEntity.ok(doacaoConsultaDto);
-    }
     @GetMapping("/baixar-csv/{nomeArq}")
     public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
         List<Doacao> doacoes = service.listar();
@@ -160,7 +150,7 @@ public class DoacaoController {
                 saida.format("%d;%s;%d;%s;%d;%s,%s\n",
                         doacao.getId(),
                         doacao.getDescricao(),
-                        doacao.getStatusDoacao(),
+//                        doacao.getStatusDoacao(),    ---------- REMOVER - EDU
                         doacao.getDataDoacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
                         doacao.getFlagDoacaoEntregue(),
                         doacao.getInstituicao(),
@@ -219,7 +209,7 @@ public class DoacaoController {
             corpo += String.format("%-50.50s", a.getDescricao());
             corpo += String.format("%-5.5s", a.getId());
             corpo += String.format("%-8.8s", a.getFlagDoacaoEntregue());
-            corpo += String.format("%-40.40s", a.getStatusDoacao());
+//            corpo += String.format("%-40.40s", a.getStatusDoacao()); ---- REMOVER - EDU
             corpo += String.format("%5.2s", a.getDataDoacao());
             corpo += String.format("%2.2s", a.getInstituicao());
 
@@ -292,7 +282,7 @@ public class DoacaoController {
         String descricao;
         int titularId;
         int instituicaoId;
-        Byte statusDoacao, flagDoacaoEntregue;
+        Byte flagDoacaoEntregue;
         Integer id;
         LocalDateTime dataDoacao;
         int contaRegistroDados = 0;
@@ -329,7 +319,7 @@ public class DoacaoController {
                     System.out.println("É UM REGISTRO DE DADOS");
                     id = Integer.parseInt(registro.substring(2, 5).trim());
                     descricao = registro.substring(10, 65).trim();
-                    statusDoacao = Byte.parseByte(registro.substring(5, 10).trim());
+//                    statusDoacao = Byte.parseByte(registro.substring(5, 10).trim()); ---- REMOVER - EDU
                     dataDoacao = LocalDateTime.parse(registro.substring(65, 75).trim());
                     flagDoacaoEntregue = Byte.parseByte(registro.substring(75, 80).trim());
 
@@ -342,8 +332,7 @@ public class DoacaoController {
 
                     contaRegistroDados++;
                     // Agora instanciamos Doacao com as entidades corretas
-                    Doacao doacoes = new Doacao(id, descricao, statusDoacao, dataDoacao,
-                            flagDoacaoEntregue, instituicao, titular);
+                    Doacao doacoes = new Doacao(id, descricao, dataDoacao, flagDoacaoEntregue, instituicao, titular);
                     System.out.println("DOACAO ADICIONADA: " + doacoes);
                 } else {
                     System.out.println("É UM REGISTRO INVÁLIDO");

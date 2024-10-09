@@ -8,13 +8,23 @@ import java.util.List;
 
 public class DoacaoMapper {
 
+    public static Doacao toEntity(DoacaoCadastroDto dto) {
+        if (dto == null) return null;
+
+        Doacao doacao = new Doacao();
+        doacao.setDescricao(dto.getDescricao());
+        doacao.setDataDoacao(dto.getDataDoacao());
+        doacao.setFlagDoacaoEntregue((byte) 0);
+        return doacao;
+    }
+
     public static DoacaoConsultaDto toDto(Doacao doacao) {
         if (doacao == null) return null;
 
         DoacaoConsultaDto dto = new DoacaoConsultaDto();
 
         dto.setId(doacao.getId());
-        dto.setStatus(doacao.getStatusDoacao());
+
         dto.setDescricao(doacao.getDescricao());
         dto.setDataDoacao(doacao.getDataDoacao());
         dto.setFlagDoacaoEntregue(doacao.getFlagDoacaoEntregue());
@@ -24,17 +34,6 @@ public class DoacaoMapper {
         dto.setDonatario(toDonatarioDto(doacao.getTitular()));
 
         return dto;
-    }
-
-    public static Doacao toEntity(DoacaoCadastroDto dto) {
-        if (dto == null) return null;
-
-        Doacao doacao = new Doacao();
-        doacao.setDescricao(dto.getDescricao());
-        doacao.setDataDoacao(dto.getDataDoacao());
-        doacao.setFlagDoacaoEntregue((byte) 0);
-        doacao.setStatusDoacao((byte) 0);
-        return doacao;
     }
 
     public static List<DoacaoConsultaDto> toDto(List<Doacao> doacoes) {
@@ -79,12 +78,5 @@ public class DoacaoMapper {
         return entity;
     }
 
-    public static Doacao toEntity(DoacaoAtualizarStatusDto dto){
-        if (dto == null) return null;
 
-        Doacao entity = new Doacao();
-//        entity.setStatusDoacao(dto.getStatus());
-
-        return entity;
-    }
 }
