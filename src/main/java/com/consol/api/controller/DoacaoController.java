@@ -30,7 +30,7 @@ public class DoacaoController {
 
     private final DoacaoService service;
 
-    @PostMapping("/titular/{id}/instituicao/{idInstituicao}") // vai ser sempre 1
+    @PostMapping("/titular/{id}/instituicao/{idInstituicao}") // idInstituicao será sempre 1
     private ResponseEntity<DoacaoConsultaDto> criar(
             @RequestBody @Valid DoacaoCadastroDto dto,
             @PathVariable int id,

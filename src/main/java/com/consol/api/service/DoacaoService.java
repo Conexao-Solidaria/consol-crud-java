@@ -52,5 +52,5 @@ public class DoacaoService {
         doacaoAtualizar.setFlagDoacaoEntregue(doacao.getFlagDoacaoEntregue());
         return repository.save(doacaoAtualizar);
     }
-    
+
 }

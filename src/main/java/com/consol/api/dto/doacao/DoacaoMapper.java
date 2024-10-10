@@ -29,8 +29,6 @@ public class DoacaoMapper {
         dto.setDataDoacao(doacao.getDataDoacao());
         dto.setFlagDoacaoEntregue(doacao.getFlagDoacaoEntregue());
 
-        dto.setInstituicao(toInstituicaoDto(doacao.getInstituicao()));
-
         dto.setDonatario(toDonatarioDto(doacao.getTitular()));
 
         return dto;
@@ -40,18 +38,18 @@ public class DoacaoMapper {
         return doacoes.stream().map(DoacaoMapper::toDto).toList();
     }
 
-    private static DoacaoConsultaDto.InstituicaoDto toInstituicaoDto(Instituicao instituicao) {
-        if (instituicao == null) return null;
-
-        DoacaoConsultaDto.InstituicaoDto instituicaoDto = new DoacaoConsultaDto.InstituicaoDto();
-        instituicaoDto.setId(instituicao.getId());
-        instituicaoDto.setNome(instituicao.getNome());
-        instituicaoDto.setDescricao(instituicao.getDescricao());
-        instituicaoDto.setCep(instituicao.getCep());
-        instituicaoDto.setNumeroImovel(instituicao.getNumeroImovel());
-
-        return instituicaoDto;
-    }
+//    private static DoacaoConsultaDto.InstituicaoDto toInstituicaoDto(Instituicao instituicao) {
+//        if (instituicao == null) return null;
+//
+//        DoacaoConsultaDto.InstituicaoDto instituicaoDto = new DoacaoConsultaDto.InstituicaoDto();
+//        instituicaoDto.setId(instituicao.getId());
+//        instituicaoDto.setNome(instituicao.getNome());
+//        instituicaoDto.setDescricao(instituicao.getDescricao());
+//        instituicaoDto.setCep(instituicao.getCep());
+//        instituicaoDto.setNumeroImovel(instituicao.getNumeroImovel());
+//
+//        return instituicaoDto;
+//    }
 
     private static DoacaoConsultaDto.DonatarioDto toDonatarioDto(Titular titular) {
         if (titular == null) return null;
