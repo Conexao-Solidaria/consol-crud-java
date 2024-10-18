@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,7 +40,9 @@ public class DoacaoService {
     }
 
     public List<Doacao> listarPorData(LocalDate dataDoacao) {
-        return repository.findByDataDoacao(dataDoacao);
+        LocalDateTime inicioDoDia = dataDoacao.atStartOfDay();
+        LocalDateTime fimDoDia = inicioDoDia.plusDays(1).minusSeconds(1);
+        return repository.findByDataDoacaoBetween(inicioDoDia,fimDoDia);
     }
 
     public List<Doacao> listarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {

@@ -13,6 +13,7 @@ import com.consol.api.service.InstituicaoService;
 import com.consol.api.service.TitularService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,16 +49,15 @@ public class DoacaoController {
         return ResponseEntity.created(uri).body(doacaoConsultaDto);
     }
 
-
     @GetMapping
     private ResponseEntity<List<DoacaoConsultaDto>> listar() {
         List<Doacao> doacoes = service.listar();
 
-        if (doacoes.isEmpty()) return ResponseEntity.noContent().build();
+        if (doacoes.isEmpty()) return ResponseEntity.status(204).build();
 
         List<DoacaoConsultaDto> dtos = DoacaoMapper.toDto(doacoes);
 
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @GetMapping("/{id}")
@@ -67,7 +67,7 @@ public class DoacaoController {
         Doacao doacao = service.listarPorId(id);
         DoacaoConsultaDto dto = DoacaoMapper.toDto(doacao);
 
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.status(200).build();
     }
 
     @GetMapping("/filtro/por-data")
