@@ -46,7 +46,9 @@ public class DoacaoService {
     }
 
     public List<Doacao> listarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
-        return repository.findByDataDoacaoBetween(dataInicio, dataFim);
+        LocalDateTime inicioDoDia = dataInicio.atStartOfDay();
+        LocalDateTime fimDoDia = dataFim.plusDays(1).atStartOfDay().minusSeconds(1);
+        return repository.findByDataDoacaoBetween(inicioDoDia, fimDoDia);
     }
 
     public Doacao atualizarFlag(int id, Doacao doacao){
