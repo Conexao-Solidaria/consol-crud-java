@@ -1,12 +1,19 @@
 package com.consol.api.dto.doacao;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class DoacaoAtualizarFlagDto {
-    @Size(min = 0, max = 1)
-    @NotBlank(message = "A flag doacao entrega não pode estar em branco")
+
+    @NotNull
     private Byte flagDoacaoEntregue;
+
+    @AssertTrue()
+    public boolean isFlagDoacaoEntregueValido() {
+        return flagDoacaoEntregue != null && (flagDoacaoEntregue == 0 || flagDoacaoEntregue == 1);
+    }
 }
