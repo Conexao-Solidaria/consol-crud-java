@@ -58,4 +58,11 @@ public class DoacaoService {
         return repository.save(doacaoAtualizar);
     }
 
+    public Doacao atualizarDescricao(int id, Doacao doacao){
+        Doacao doacaoAtualizar = listarPorId(id);
+        doacaoAtualizar.setDescricao(doacao.getDescricao());
+
+        return repository.save(doacaoAtualizar);
+    }
+
 }

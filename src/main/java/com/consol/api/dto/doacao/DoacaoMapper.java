@@ -76,5 +76,13 @@ public class DoacaoMapper {
         return entity;
     }
 
+    public static Doacao toEntity(DoacaoAtualizarDescricaoDto dto){
+        if (dto == null) return null;
+
+        Doacao entity = new Doacao();
+        entity.setDescricao(dto.getDescricao());
+
+        return entity;
+    }
 
 }

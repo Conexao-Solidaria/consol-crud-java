@@ -110,6 +110,19 @@ public class DoacaoController {
         return ResponseEntity.ok(doacaoConsultaDto);
     }
 
+    @PutMapping("/atualizar-descricao/{id}")
+    public ResponseEntity<DoacaoConsultaDto> atualizarDescricao(
+            @RequestBody @Valid DoacaoAtualizarDescricaoDto dto,
+            @PathVariable Integer id
+    ){
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoAtualizada = service.atualizarDescricao(id,doacao);
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
+
+        return ResponseEntity.status(200).body(doacaoConsultaDto);
+
+    }
+
 
     @GetMapping("/baixar-csv/{nomeArq}")
     public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
