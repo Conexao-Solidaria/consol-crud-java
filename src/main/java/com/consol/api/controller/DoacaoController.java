@@ -124,6 +124,18 @@ public class DoacaoController {
     }
 
 
+    @PutMapping("/confirmar-doacao/{id}")
+    public ResponseEntity<DoacaoConsultaDto> confirmarDoacao(
+            @RequestBody @Valid DoacaoConfirmacaoDto dto,
+            @PathVariable Integer id
+    ){
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoAtualizada = service.confirmarDoacao(id, doacao);
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
+
+        return ResponseEntity.status(200).body(doacaoConsultaDto);
+    }
+
     @GetMapping("/baixar-csv/{nomeArq}")
     public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
         List<Doacao> doacoes = service.listar();

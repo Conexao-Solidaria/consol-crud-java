@@ -85,4 +85,14 @@ public class DoacaoMapper {
         return entity;
     }
 
+    public static Doacao toEntity(DoacaoConfirmacaoDto dto){
+        if (dto == null) return null;
+
+        Doacao entity = new Doacao();
+        entity.setDataDoacao(dto.getDataDoacao());
+
+        return entity;
+
+    }
+
 }
