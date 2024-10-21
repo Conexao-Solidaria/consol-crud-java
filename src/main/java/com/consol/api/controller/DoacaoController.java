@@ -136,6 +136,12 @@ public class DoacaoController {
         return ResponseEntity.status(200).body(doacaoConsultaDto);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id){
+        service.deletar(id);
+        return ResponseEntity.status(204).build();
+    }
+
     @GetMapping("/baixar-csv/{nomeArq}")
     public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
         List<Doacao> doacoes = service.listar();

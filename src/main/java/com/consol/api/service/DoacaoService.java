@@ -6,10 +6,12 @@ import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.DoacaoRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.maven.surefire.shared.compress.harmony.pack200.PackingUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.PublicKey;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -71,6 +73,11 @@ public class DoacaoService {
         doacaoAtualizar.setFlagDoacaoEntregue((byte) 1);
 
         return repository.save(doacaoAtualizar);
+    }
+
+    public void deletar(int id){
+        if (!repository.existsById(id)) throw new EntidadeNaoEncontradaException("Doação");
+        repository.deleteById(id);
     }
 
 }
