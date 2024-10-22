@@ -80,4 +80,8 @@ public class DoacaoService {
         repository.deleteById(id);
     }
 
+    public List<Doacao> listarPorNome(String nome){
+        return repository.findByTitularNomeContainsIgnoreCase(nome);
+    }
+
 }

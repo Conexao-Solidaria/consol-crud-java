@@ -10,6 +10,6 @@ import java.util.List;
 public interface DoacaoRepository extends JpaRepository<Doacao, Integer> {
 
     List<Doacao> findByDataDoacaoBetween(LocalDateTime inicio, LocalDateTime fim);
-
+    List<Doacao> findByTitularNomeContainsIgnoreCase(String nome);
 
 }

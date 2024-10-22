@@ -142,6 +142,17 @@ public class DoacaoController {
         return ResponseEntity.status(204).build();
     }
 
+    @GetMapping("/por-nome")
+    public ResponseEntity<List<DoacaoConsultaDto>> porNome(@RequestParam String nome){
+        List<Doacao> doacaos = service.listarPorNome(nome);
+
+        if (doacaos.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<DoacaoConsultaDto> dto = DoacaoMapper.toDto(doacaos);
+        return ResponseEntity.status(200).body(dto);
+    }
+
+
     @GetMapping("/baixar-csv/{nomeArq}")
     public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
         List<Doacao> doacoes = service.listar();
