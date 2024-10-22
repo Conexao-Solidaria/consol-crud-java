@@ -18,5 +18,4 @@ public class InstituicaoCadastroDto {
 
     private String descricao;
 
-    private byte[] fotoPerfil;
 }

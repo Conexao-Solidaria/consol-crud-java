@@ -16,5 +16,4 @@ public class InstituicaoAtualizarDto {
 
     private String descricao;
 
-    private byte[] fotoPerfil;
 }

@@ -55,7 +55,7 @@ public class InstituicaoController {
         return ResponseEntity.ok(dto);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<InstituicaoConsultaDto> atualizar(
             @RequestBody @Valid InstituicaoAtualizarDto dto,
             @PathVariable Integer id

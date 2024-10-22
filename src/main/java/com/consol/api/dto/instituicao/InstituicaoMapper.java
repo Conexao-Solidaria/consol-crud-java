@@ -16,7 +16,6 @@ public class InstituicaoMapper {
         dto.setCep(instituicao.getCep());
         dto.setNumeroImovel(instituicao.getNumeroImovel());
         dto.setDescricao(instituicao.getDescricao());
-        dto.setFotoPerfil(instituicao.getFotoPerfil());
 
         return dto;
     }
@@ -30,7 +29,6 @@ public class InstituicaoMapper {
         instituicao.setCep(dto.getCep());
         instituicao.setNumeroImovel(dto.getNumeroImovel());
         instituicao.setDescricao(dto.getDescricao());
-        instituicao.setFotoPerfil(dto.getFotoPerfil());
 
         return instituicao;
     }
@@ -43,7 +41,6 @@ public class InstituicaoMapper {
         instituicao.setCep(dto.getCep());
         instituicao.setNumeroImovel(dto.getNumeroImovel());
         instituicao.setDescricao(dto.getDescricao());
-        instituicao.setFotoPerfil(dto.getFotoPerfil());
 
         return instituicao;
     }
