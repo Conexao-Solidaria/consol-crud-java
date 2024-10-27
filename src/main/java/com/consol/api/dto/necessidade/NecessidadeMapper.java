@@ -1,8 +1,5 @@
 package com.consol.api.dto.necessidade;
 
-import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
-import com.consol.api.dto.instituicao.InstituicaoMapper;
-import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Necessidade;
 
 import java.util.List;

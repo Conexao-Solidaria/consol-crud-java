@@ -5,8 +5,6 @@ import com.consol.api.dto.necessidade.NecessidadeCriacaoDto;
 import com.consol.api.dto.necessidade.NecessidadeListagemDto;
 import com.consol.api.dto.necessidade.NecessidadeMapper;
 import com.consol.api.entity.Necessidade;
-import com.consol.api.fila_pilha.NecessidadeMapperPilha;
-import com.consol.api.fila_pilha.Pilha;
 import com.consol.api.service.NecessidadeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

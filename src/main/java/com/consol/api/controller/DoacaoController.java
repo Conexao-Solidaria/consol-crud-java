@@ -1,10 +1,6 @@
 package com.consol.api.controller;
 
 import com.consol.api.dto.doacao.*;
-import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
-import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
-import com.consol.api.dto.instituicao.InstituicaoMapper;
-import com.consol.api.entity.Despesa;
 import com.consol.api.entity.Doacao;
 import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Titular;
@@ -13,7 +9,6 @@ import com.consol.api.service.InstituicaoService;
 import com.consol.api.service.TitularService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

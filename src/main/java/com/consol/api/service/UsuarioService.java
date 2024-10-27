@@ -1,7 +1,6 @@
 package com.consol.api.service;
 
 import com.consol.api.configuration.security.jwt.GerenciadorTokenJwt;
-import com.consol.api.dto.usuario.UsuarioCadastroDto;
 import com.consol.api.dto.usuario.UsuarioLoginDto;
 import com.consol.api.dto.usuario.UsuarioMapper;
 import com.consol.api.dto.usuario.UsuarioTokenDto;
@@ -9,20 +8,16 @@ import com.consol.api.entity.*;
 import com.consol.api.entity.exception.ConflitoException;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
-import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

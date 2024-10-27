@@ -5,22 +5,13 @@ import com.consol.api.dto.despesa.DespesaCadastroDto;
 import com.consol.api.dto.despesa.DespesaConsultaDto;
 import com.consol.api.dto.despesa.DespesaMapper;
 import com.consol.api.entity.Despesa;
-import com.consol.api.entity.Familia;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
-import com.consol.api.repository.DespesaRepository;
-import com.consol.api.repository.FamiliaRepository;
 import com.consol.api.service.DespesaService;
-import jakarta.validation.Constraint;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/despesas")

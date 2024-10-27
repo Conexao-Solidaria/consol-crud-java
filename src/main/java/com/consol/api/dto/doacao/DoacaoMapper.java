@@ -2,7 +2,6 @@ package com.consol.api.dto.doacao;
 
 import com.consol.api.entity.Doacao;
 import com.consol.api.entity.Titular;
-import com.consol.api.entity.Instituicao;
 
 import java.util.List;
 

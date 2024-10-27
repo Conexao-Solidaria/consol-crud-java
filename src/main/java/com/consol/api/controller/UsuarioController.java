@@ -1,30 +1,14 @@
 package com.consol.api.controller;
 
-import com.consol.api.dto.beneficio.BeneficioConsultaDto;
-import com.consol.api.dto.beneficio.BeneficioMapper;
-import com.consol.api.dto.familia.FamiliaAtualizarFlagDto;
-import com.consol.api.dto.familia.FamiliaConsultaDto;
-import com.consol.api.dto.familia.FamiliaMapper;
-import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
-import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
-import com.consol.api.dto.instituicao.InstituicaoMapper;
 import com.consol.api.dto.usuario.*;
-import com.consol.api.entity.Beneficio;
-import com.consol.api.entity.Familia;
-import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Usuario;
-import com.consol.api.fila_pilha.FilaCircular;
-import com.consol.api.repository.InstituicaoRepository;
-import com.consol.api.repository.UsuarioRepository;
 import com.consol.api.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")

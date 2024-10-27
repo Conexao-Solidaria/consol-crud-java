@@ -1,6 +1,5 @@
 package com.consol.api.entity;
 
-import com.consol.api.entity.Instituicao;
 import jakarta.persistence.*;
 import lombok.*;
 

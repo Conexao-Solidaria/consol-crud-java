@@ -8,7 +8,6 @@ import com.consol.api.repository.TitularRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Optional;
 

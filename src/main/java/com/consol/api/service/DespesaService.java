@@ -6,9 +6,7 @@ import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.DespesaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;

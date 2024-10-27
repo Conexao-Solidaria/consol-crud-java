@@ -2,8 +2,6 @@ package com.consol.api.dto.beneficio;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class BeneficioAtualizacaoDto {

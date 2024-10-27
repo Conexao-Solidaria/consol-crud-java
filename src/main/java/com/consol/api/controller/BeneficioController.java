@@ -8,7 +8,6 @@ import com.consol.api.entity.Beneficio;
 import com.consol.api.service.BeneficioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

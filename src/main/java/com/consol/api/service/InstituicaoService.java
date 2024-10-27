@@ -1,21 +1,18 @@
-//package com.consol.api.service;
+package com.consol.api.service;
+
+import com.consol.api.entity.Instituicao;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.consol.api.repository.InstituicaoRepository;
+
+@Service
+@RequiredArgsConstructor
+public class InstituicaoService {
 //
-//
-//import com.consol.api.entity.Instituicao;
-//import com.consol.api.entity.exception.RequisicaoIncorretaException;
-//import com.consol.api.repository.InstituicaoRepository;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.server.ResponseStatusException;
-//
-//import java.util.List;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class InstituicaoService {
-//
-//        private final InstituicaoRepository repository;
+        private final InstituicaoRepository repository;
 //
 //        public Instituicao criar(Instituicao instituicao) {
 //            return repository.save(instituicao);
@@ -25,11 +22,11 @@
 //            return repository.findAll();
 //        }
 //
-//        public Instituicao consultarPorId(Integer id) {
-//            return repository.findById(id).orElseThrow(
-//                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-//            );
-//        }
+        public Instituicao consultarPorId(Integer id) {
+            return repository.findById(id).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+            );
+        }
 //
 //        public Instituicao atualizar(Integer id, Instituicao instituicao) {
 //            Instituicao instituicaoAtualizada = consultarPorId(id);
@@ -54,5 +51,5 @@
 //            return repository.existsById(id);
 //        }
 //
-//    }
+    }
 //

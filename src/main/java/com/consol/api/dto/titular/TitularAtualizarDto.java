@@ -1,6 +1,5 @@
 package com.consol.api.dto.titular;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data

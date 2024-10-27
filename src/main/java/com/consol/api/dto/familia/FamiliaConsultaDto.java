@@ -1,8 +1,6 @@
 package com.consol.api.dto.familia;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 

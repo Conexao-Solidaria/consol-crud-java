@@ -2,7 +2,6 @@ package com.consol.api.dto.despesa;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 @Data

@@ -1,11 +1,6 @@
 package com.consol.api.dto.usuario;
 
-import com.consol.api.dto.familia.FamiliaAtualizarFlagDto;
-import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
-import com.consol.api.entity.Familia;
-import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Usuario;
-
 import java.util.List;
 
 public class UsuarioMapper {

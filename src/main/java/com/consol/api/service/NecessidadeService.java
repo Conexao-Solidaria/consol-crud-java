@@ -1,6 +1,5 @@
 package com.consol.api.service;
 
-import com.consol.api.dto.instituicao.InstituicaoMapper;
 import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Necessidade;
 import com.consol.api.repository.InstituicaoRepository;

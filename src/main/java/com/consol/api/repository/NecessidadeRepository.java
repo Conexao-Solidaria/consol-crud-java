@@ -1,6 +1,5 @@
 package com.consol.api.repository;
 
-import com.consol.api.entity.InstituicaoFamilia;
 import com.consol.api.entity.Necessidade;
 import org.springframework.data.jpa.repository.JpaRepository;
 
