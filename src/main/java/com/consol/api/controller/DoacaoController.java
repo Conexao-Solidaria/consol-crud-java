@@ -56,13 +56,13 @@ public class DoacaoController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<DoacaoConsultaDto> porData(
+    private ResponseEntity<DoacaoConsultaDto> porId(
             @PathVariable Integer id
     ) {
         Doacao doacao = service.listarPorId(id);
         DoacaoConsultaDto dto = DoacaoMapper.toDto(doacao);
 
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(dto);
     }
 
     @GetMapping("/filtro/por-data")
