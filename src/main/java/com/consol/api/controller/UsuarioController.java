@@ -32,7 +32,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
-        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
+        UsuarioTokenDto usuarioToken = usuarioService.autenticar(usuarioLoginDto);
         return ResponseEntity.ok(usuarioToken);
     }
 
