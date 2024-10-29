@@ -1,5 +1,6 @@
 package com.consol.api.dto.familia;
 
+import com.consol.api.entity.Titular;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,15 +16,15 @@ public class FamiliaConsultaDto {
     private Double renda;
     private Byte flagRetirada;
     private LocalDate dataCadastro;
-    private List<DonatarioDto> donatarios;
+    private List<TitularDto> titulares;
     private List<DespesaDto> despesas;
 
     @Data
-    public static class DonatarioDto {
+    public static class TitularDto {
         private Integer id;
         private String estadoCivil;
         private String escolaridade;
-        private Boolean trabalhando;
+        private Byte trabalhando;
         private String ocupacao;
 
     }

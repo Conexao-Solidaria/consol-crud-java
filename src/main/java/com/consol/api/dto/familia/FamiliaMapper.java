@@ -24,20 +24,20 @@ public class FamiliaMapper {
         dto.setFlagRetirada(familia.getFlagRetirada());
         dto.setDataCadastro(familia.getDataCadastro());
 
-        dto.setDonatarios(toDonatarioDto(familia.getTitulares()));
+        dto.setTitulares(toDonatarioDto(familia.getTitulares()));
 
         dto.setDespesas(toDespesaDto(familia.getDespesas()));
 
         return dto;
     }
 
-    public static List<FamiliaConsultaDto.DonatarioDto> toDonatarioDto(List<Titular> titulars) {
+    public static List<FamiliaConsultaDto.TitularDto> toDonatarioDto(List<Titular> titulars) {
         if (titulars == null) return null;
 
-        List<FamiliaConsultaDto.DonatarioDto> donatarioDtoList = new ArrayList<>();
+        List<FamiliaConsultaDto.TitularDto> donatarioDtoList = new ArrayList<>();
 
         for (Titular titularAtual : titulars) {
-            FamiliaConsultaDto.DonatarioDto donatarioDto = new FamiliaConsultaDto.DonatarioDto();
+            FamiliaConsultaDto.TitularDto donatarioDto = new FamiliaConsultaDto.TitularDto();
             donatarioDto.setId(titularAtual.getId());
             donatarioDto.setEstadoCivil(titularAtual.getEstadoCivil());
             donatarioDto.setEscolaridade(titularAtual.getEscolaridade());
