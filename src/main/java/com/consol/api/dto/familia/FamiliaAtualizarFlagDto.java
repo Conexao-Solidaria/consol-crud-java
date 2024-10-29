@@ -8,5 +8,5 @@ import lombok.Data;
 public class FamiliaAtualizarFlagDto {
     @Size(min = 1, max = 1)
     @NotBlank(message = "A flag retirada não pode estar em branco")
-    private Integer flagRetirada;
+    private Byte flagRetirada;
 }

@@ -45,7 +45,7 @@ public class FamiliaController {
     @PutMapping("{id}")
     public ResponseEntity<FamiliaConsultaDto> atualizarEndereco(
             @PathVariable int id,
-            @RequestBody FamiliaAtualizarDto dto
+            @RequestBody @Valid FamiliaAtualizarDto dto
     ) {
         Familia familia = FamiliaMapper.toEntity(dto);
         Familia familiaAtualizada = service.atualizar(id, familia);
