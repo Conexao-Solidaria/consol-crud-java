@@ -62,7 +62,7 @@ public class FamiliaController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("atualizar-flag/{id}")
+    @PutMapping("/atualizar-flag/{id}")
     public ResponseEntity<FamiliaConsultaDto> atualizarFlag(
             @PathVariable int id,
             @RequestBody FamiliaAtualizarFlagDto dto
