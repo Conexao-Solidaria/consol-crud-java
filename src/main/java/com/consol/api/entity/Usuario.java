@@ -1,7 +1,10 @@
 package com.consol.api.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Getter
@@ -24,6 +27,9 @@ public class Usuario {
 
     private String senha;
 
+    @CPF
+    @Size(min = 11,max = 11)
+    @NotBlank
     private String cpf;
 
     @Column(name = "flag_aprovado")
