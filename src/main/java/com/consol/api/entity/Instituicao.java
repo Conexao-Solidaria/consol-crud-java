@@ -16,13 +16,13 @@ public class Instituicao {
     @Column(name = "id_instituicao")
     private Integer id;
 
+    @Column(name = "nome_instituicao")
     private String nome;
 
+    @Column(name = "cep", length = 8, nullable = false)
     private String cep;
 
     private String numeroImovel;
 
     private String descricao;
-
-    private byte[] fotoPerfil;
 }
