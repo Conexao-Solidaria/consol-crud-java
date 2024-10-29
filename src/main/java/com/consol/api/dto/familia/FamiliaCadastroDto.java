@@ -1,11 +1,15 @@
 package com.consol.api.dto.familia;
 
+import ch.qos.logback.classic.pattern.LineOfCallerConverter;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class FamiliaCadastroDto {
     @NotBlank(message = "O nome da família não pode estar em branco")
+    @Size(min = 3)
     private String nome;
 
     @Size(min = 8, max = 8)
@@ -19,5 +23,9 @@ public class FamiliaCadastroDto {
     @NotNull(message = "A renda não pode ser nula")
     private Double renda;
 
-    private Integer flagRetirada = 0;
+    @NotNull
+    @FutureOrPresent
+    private LocalDate dataCadastro;
+
+
 }

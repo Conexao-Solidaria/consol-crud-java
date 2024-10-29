@@ -11,7 +11,6 @@ import java.util.List;
 @Data
 public class FamiliaMapper {
 
-
     public static FamiliaConsultaDto toDto(Familia familia) {
         if (familia == null) return null;
 
@@ -23,8 +22,9 @@ public class FamiliaMapper {
         dto.setNumeroCasa(familia.getNumeroCasa());
         dto.setRenda(familia.getRenda());
         dto.setFlagRetirada(familia.getFlagRetirada());
+        dto.setDataCadastro(familia.getDataCadastro());
 
-        dto.setDonatarios(toDonatarioDto(familia.getTitulars()));
+        dto.setDonatarios(toDonatarioDto(familia.getTitulares()));
 
         dto.setDespesas(toDespesaDto(familia.getDespesas()));
 
@@ -73,7 +73,8 @@ public class FamiliaMapper {
         familia.setCep(dto.getCep());
         familia.setNumeroCasa(dto.getNumeroCasa());
         familia.setRenda(dto.getRenda());
-        familia.setFlagRetirada(dto.getFlagRetirada());
+        familia.setFlagRetirada((byte) 0);
+        familia.setDataCadastro(dto.getDataCadastro());
 
         return familia;
     }

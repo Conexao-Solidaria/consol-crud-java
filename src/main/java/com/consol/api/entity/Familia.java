@@ -3,6 +3,7 @@ package com.consol.api.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,15 +22,21 @@ public class Familia {
 
     private String cep;
 
+    @Column(name = "numero_casa")
     private Integer numeroCasa;
 
     private Double renda;
 
-    private Integer flagRetirada;
+    @Column(name = "flag_retirada")
+    private Byte flagRetirada;
 
     @OneToMany(mappedBy = "familia")
-    private List<Titular> titulars;
+    private List<Titular> titulares;
 
     @OneToMany(mappedBy = "familia")
     private List<Despesa> despesas;
+
+    @Column(name = "data_cadastro")
+    private LocalDate dataCadastro;
+
 }
