@@ -2,12 +2,14 @@ package com.consol.api.service;
 
 import com.consol.api.entity.Titular;
 import com.consol.api.entity.Familia;
+import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.TitularRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,6 +26,8 @@ public class TitularService {
 
     public Titular salvar(Titular titular, Integer idFamilia) {
         Familia familia = familiaService.porId(idFamilia);
+
+        if (titular.getTrabalhando() != (byte) 0 && titular.getTrabalhando() != (byte) 1) throw new RequisicaoIncorretaException("Titular");
 
         titular.setFamilia(familia);
         return repository.save(titular);
@@ -43,7 +47,6 @@ public class TitularService {
         Titular titularAtualizado = porId(id);
 
         titularAtualizado.setNome(titular.getNome());
-        titularAtualizado.setSobrenome(titular.getSobrenome());
         titularAtualizado.setEstadoCivil(titular.getEstadoCivil());
         titularAtualizado.setEscolaridade(titular.getEscolaridade());
         titularAtualizado.setTelefone1(titular.getTelefone1());
@@ -64,4 +67,11 @@ public class TitularService {
     public Boolean existById(int id){
         return repository.existsById(id);
     }
+
+    public Integer qtdCriancas(LocalDate dataAtual){
+        LocalDate dataBase = dataAtual.minusYears(12);
+        return repository.countByDataNascimentoAfter(dataBase);
+    }
+
+
 }

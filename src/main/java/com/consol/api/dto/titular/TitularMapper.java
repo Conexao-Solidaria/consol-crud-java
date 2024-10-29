@@ -1,28 +1,49 @@
 package com.consol.api.dto.titular;
 
+import com.consol.api.controller.TitularController;
+import com.consol.api.entity.Familia;
 import com.consol.api.entity.Titular;
 
 import java.util.List;
 
 public class TitularMapper {
 
-    public static TitularConsultaDto toDto(Titular titular) {
-        if (titular == null) return null;
+    public static TitularConsultaDto toDto(Titular entity) {
+        if (entity == null) return null;
 
         TitularConsultaDto dto = new TitularConsultaDto();
 
-        dto.setId(titular.getId());
-        dto.setDataCadastro(titular.getDataCadastro());
-        dto.setNome(titular.getNome());
-        dto.setRg(titular.getRg());
-        dto.setCpf(titular.getCpf());
-        dto.setDataNascimento(titular.getDataNascimento());
-        dto.setTelefone1(titular.getTelefone1());
-        dto.setTelefone2(titular.getTelefone2());
-        dto.setEstadoCivil(titular.getEstadoCivil());
-        dto.setEscolaridade(titular.getEscolaridade());
-        dto.setTrabalhando(titular.getTrabalhando());
-        dto.setOcupacao(titular.getOcupacao());
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setRg(entity.getRg());
+        dto.setCpf(entity.getCpf());
+        dto.setDataNascimento(entity.getDataNascimento());
+        dto.setTelefone1(entity.getTelefone1());
+        dto.setTelefone2(entity.getTelefone2());
+        dto.setEstadoCivil(entity.getEstadoCivil());
+        dto.setEscolaridade(entity.getEscolaridade());
+        dto.setTrabalhando(entity.getTrabalhando());
+        dto.setOcupacao(entity.getOcupacao());
+
+        if (entity.getFamilia() != null){
+            dto.setFamilia(toDto(entity.getFamilia()));
+        }
+
+
+        dto.setReferenciaS3(entity.getReferenciaS3());
+        return dto;
+    }
+
+    private static TitularConsultaDto.FamiliaDto toDto(Familia entity){
+        TitularConsultaDto.FamiliaDto dto = new TitularConsultaDto.FamiliaDto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setCep(entity.getCep());
+        dto.setCep(entity.getCep());
+        dto.setNumeroCasa(entity.getNumeroCasa());
+        dto.setRenda(entity.getRenda());
+        dto.setFlagRetirada(entity.getFlagRetirada());
+        dto.setDataCadastro(entity.getDataCadastro());
 
         return dto;
     }
@@ -32,7 +53,6 @@ public class TitularMapper {
 
         Titular titular = new Titular();
 
-        titular.setDataCadastro(dto.getDataCadastro());
         titular.setNome(dto.getNome());
         titular.setRg(dto.getRg());
         titular.setCpf(dto.getCpf());

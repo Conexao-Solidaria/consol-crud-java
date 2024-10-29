@@ -17,7 +17,7 @@ public class TitularAtualizarDto {
 
     private String escolaridade;
 
-    private Boolean trabalhando;
+    private Byte trabalhando;
 
     private String ocupacao;
 }

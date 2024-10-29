@@ -17,29 +17,30 @@ public class Titular {
     @Column(name = "id_titular")
     private Integer id;
 
-    private LocalDate dataCadastro;
-
     private String nome;
-
-    private String Sobrenome;
 
     private String rg;
 
     private String cpf;
 
+    @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
     private String telefone1;
 
     private String telefone2;
 
+    @Column(name = "estado_civil")
     private String estadoCivil;
 
     private String escolaridade;
 
-    private Boolean trabalhando;
+    private Byte trabalhando;
 
     private String ocupacao;
+
+    @Column(name = "referencia_s3")
+    private String referenciaS3;
 
     @ManyToOne
     @JoinColumn(name = "fk_familia")
