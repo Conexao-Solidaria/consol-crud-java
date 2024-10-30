@@ -11,9 +11,6 @@ public interface DoacaoRepository extends JpaRepository<Doacao, Integer> {
 
     List<Doacao> findByDataDoacaoBetween(LocalDateTime inicio, LocalDateTime fim);
     List<Doacao> findByTitularNomeContainsIgnoreCase(String nome);
-
-    Integer countByDataDoacaoBetween(LocalDateTime dataInicio, LocalDateTime dataFim);
-
-
+    List<Doacao> findByDataDoacaoBetweenAndFlagDoacaoEntregue(LocalDateTime inicio, LocalDateTime fim, Byte flag);
 
 }

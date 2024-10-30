@@ -1,9 +1,12 @@
 package com.consol.api.controller;
 
 import com.consol.api.dto.dashboard.DashboardDadosDto;
+import com.consol.api.entity.Doacao;
+import com.consol.api.service.DashboardService;
 import com.consol.api.service.DoacaoService;
 import com.consol.api.service.FamiliaService;
 import com.consol.api.service.TitularService;
+import jdk.dynalink.linker.LinkerServices;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.yaml.snakeyaml.events.Event;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/dashboard")
@@ -23,6 +27,7 @@ public class DashboardController {
     private final FamiliaService serviceFamilia;
     private final TitularService serviceTitular;
     private final DoacaoService serviceDoacao;
+    private final DashboardService service;
 
 
     @GetMapping("/data-atual")
@@ -39,6 +44,9 @@ public class DashboardController {
         idades.setMaisSessenta(serviceTitular.maisSessenta(data));
 
         dto.setDistribuicaoIdades(idades);
+        List<Doacao> doacoes = serviceDoacao.ultimoSeisMeses(data);
+
+        dto.setQtdDoacoesMes(service.ultimosSeisMeses(doacoes,data));
 
         return ResponseEntity.status(200).body(dto);
 

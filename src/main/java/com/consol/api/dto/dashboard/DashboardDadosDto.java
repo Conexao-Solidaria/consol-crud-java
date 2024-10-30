@@ -1,10 +1,10 @@
 package com.consol.api.dto.dashboard;
 
-import com.consol.api.dto.doacao.DoacaoConsultaDto;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
+
 
 @Data
 public class DashboardDadosDto {
@@ -12,6 +12,7 @@ public class DashboardDadosDto {
     private Integer qtdCriancas;
     private Integer cadastrosProximosVencimento;
     private DistribuicaoIdades distribuicaoIdades;
+    private Map <String, Integer> qtdDoacoesMes;
 
     @Data
     public static class DistribuicaoIdades{

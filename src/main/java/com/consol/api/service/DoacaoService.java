@@ -81,4 +81,10 @@ public class DoacaoService {
         return repository.findByTitularNomeContainsIgnoreCase(nome);
     }
 
+    public List<Doacao> ultimoSeisMeses(LocalDate data){
+        LocalDateTime incio = data.minusMonths(6).withDayOfMonth(1).atStartOfDay();
+        LocalDateTime fim = data.atTime(23,59,59);
+        return repository.findByDataDoacaoBetweenAndFlagDoacaoEntregue(incio,fim,(byte) 1);
+
+    }
 }
