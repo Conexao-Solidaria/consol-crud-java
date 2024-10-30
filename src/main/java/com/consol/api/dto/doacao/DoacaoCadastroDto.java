@@ -15,7 +15,6 @@ public class DoacaoCadastroDto {
     private String descricao;
 
     @NotNull(message = "A data da doação está nula")
-    @FutureOrPresent(message = "A data da doação está inválida")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime dataDoacao;
 
