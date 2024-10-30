@@ -4,6 +4,8 @@ import com.consol.api.entity.Titular;
 import com.consol.api.entity.Familia;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.TitularRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -73,5 +75,27 @@ public class TitularService {
         return repository.countByDataNascimentoAfter(dataBase);
     }
 
+    public Integer zeroADozeAnos(LocalDate dataAtual){
+        LocalDate dataBase = dataAtual.minusYears(12);
+        return repository.countByDataNascimentoBetween(dataBase,dataAtual);
+    }
+
+    public Integer trezeVinteCinco(LocalDate dataAtual){
+        LocalDate dataIncio = dataAtual.minusYears(25);
+        LocalDate dataFim = dataAtual.minusYears(13);
+        return repository.countByDataNascimentoBetween(dataIncio,dataFim);
+    }
+
+    public Integer vinteCincoASessenta(LocalDate dataAtual){
+        LocalDate dataInicio = dataAtual.minusYears(60);
+        LocalDate dataFim = dataAtual.minusYears(25);
+
+        return repository.countByDataNascimentoBetween(dataInicio,dataFim);
+    }
+
+    public Integer maisSessenta(LocalDate data){
+        LocalDate dataBase = data.minusYears(60);
+        return repository.countByDataNascimentoBefore(dataBase);
+    }
 
 }

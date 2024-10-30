@@ -55,7 +55,6 @@ public class DoacaoMapper {
 
         DoacaoConsultaDto.DonatarioDto donatarioDto = new DoacaoConsultaDto.DonatarioDto();
         donatarioDto.setId(titular.getId());
-        donatarioDto.setDataCadastro(titular.getDataCadastro());
         donatarioDto.setNome(titular.getNome());
         donatarioDto.setRg(titular.getRg());
         donatarioDto.setCpf(titular.getCpf());

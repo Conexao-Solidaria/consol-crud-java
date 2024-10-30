@@ -3,6 +3,7 @@ package com.consol.api.service;
 import com.consol.api.entity.Doacao;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.DoacaoRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
