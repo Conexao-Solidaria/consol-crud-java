@@ -21,6 +21,8 @@ public class Doacao {
 
     private String descricao;
 
+    private Byte statusDoacao;
+
     private LocalDateTime dataDoacao;
 
     private Byte flagDoacaoEntregue;

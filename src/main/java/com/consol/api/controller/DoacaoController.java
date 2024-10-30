@@ -1,10 +1,6 @@
 package com.consol.api.controller;
 
 import com.consol.api.dto.doacao.*;
-import com.consol.api.dto.instituicao.InstituicaoAtualizarDto;
-import com.consol.api.dto.instituicao.InstituicaoConsultaDto;
-import com.consol.api.dto.instituicao.InstituicaoMapper;
-import com.consol.api.entity.Despesa;
 import com.consol.api.entity.Doacao;
 import com.consol.api.entity.Instituicao;
 import com.consol.api.entity.Titular;
@@ -30,7 +26,7 @@ public class DoacaoController {
 
     private final DoacaoService service;
 
-    @PostMapping("/titular/{id}/instituicao/{idInstituicao}") // vai ser sempre 1
+    @PostMapping("/titular/{id}/instituicao/{idInstituicao}") // idInstituicao será sempre 1
     private ResponseEntity<DoacaoConsultaDto> criar(
             @RequestBody @Valid DoacaoCadastroDto dto,
             @PathVariable int id,
@@ -48,26 +44,25 @@ public class DoacaoController {
         return ResponseEntity.created(uri).body(doacaoConsultaDto);
     }
 
-
     @GetMapping
     private ResponseEntity<List<DoacaoConsultaDto>> listar() {
         List<Doacao> doacoes = service.listar();
 
-        if (doacoes.isEmpty()) return ResponseEntity.noContent().build();
+        if (doacoes.isEmpty()) return ResponseEntity.status(204).build();
 
         List<DoacaoConsultaDto> dtos = DoacaoMapper.toDto(doacoes);
 
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.status(200).body(dtos);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<DoacaoConsultaDto> porData(
+    private ResponseEntity<DoacaoConsultaDto> porId(
             @PathVariable Integer id
     ) {
         Doacao doacao = service.listarPorId(id);
         DoacaoConsultaDto dto = DoacaoMapper.toDto(doacao);
 
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.status(200).body(dto);
     }
 
     @GetMapping("/filtro/por-data")
@@ -108,6 +103,48 @@ public class DoacaoController {
         DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
 
         return ResponseEntity.ok(doacaoConsultaDto);
+    }
+
+    @PutMapping("/atualizar-descricao/{id}")
+    public ResponseEntity<DoacaoConsultaDto> atualizarDescricao(
+            @RequestBody @Valid DoacaoAtualizarDescricaoDto dto,
+            @PathVariable Integer id
+    ){
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoAtualizada = service.atualizarDescricao(id,doacao);
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
+
+        return ResponseEntity.status(200).body(doacaoConsultaDto);
+
+    }
+
+
+    @PutMapping("/confirmar-doacao/{id}")
+    public ResponseEntity<DoacaoConsultaDto> confirmarDoacao(
+            @RequestBody @Valid DoacaoConfirmacaoDto dto,
+            @PathVariable Integer id
+    ){
+        Doacao doacao = DoacaoMapper.toEntity(dto);
+        Doacao doacaoAtualizada = service.confirmarDoacao(id, doacao);
+        DoacaoConsultaDto doacaoConsultaDto = DoacaoMapper.toDto(doacaoAtualizada);
+
+        return ResponseEntity.status(200).body(doacaoConsultaDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer id){
+        service.deletar(id);
+        return ResponseEntity.status(204).build();
+    }
+
+    @GetMapping("/por-nome")
+    public ResponseEntity<List<DoacaoConsultaDto>> porNome(@RequestParam String nome){
+        List<Doacao> doacaos = service.listarPorNome(nome);
+
+        if (doacaos.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<DoacaoConsultaDto> dto = DoacaoMapper.toDto(doacaos);
+        return ResponseEntity.status(200).body(dto);
     }
 
 
