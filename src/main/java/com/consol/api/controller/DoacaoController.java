@@ -152,6 +152,7 @@ public class DoacaoController {
     public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
         List<Doacao> doacoes = service.listar();
 
+
         if (doacoes.isEmpty()){
             return ResponseEntity.noContent().build();
         }
@@ -163,6 +164,8 @@ public class DoacaoController {
     @GetMapping("/baixar-txt/{nomeArq}")
     public ResponseEntity<Void> baixarTxt(@PathVariable String nomeArq) {
         List<Doacao> doacoes = service.listar();
+        System.out.println(doacoes);
+
         gravaArquivoTxt(doacoes, nomeArq);
         return ResponseEntity.ok().build();
     }
@@ -184,7 +187,7 @@ public class DoacaoController {
 
         try {
             for (Doacao doacao : lista) {
-                saida.format("%d;%s;%d;%s;%d;%s,%s\n",
+                saida.format("%d;%s;%s;%d;%s,%s\n",
                         doacao.getId(),
                         doacao.getDescricao(),
 //                        doacao.getStatusDoacao(),    ---------- REMOVER - EDU
@@ -231,11 +234,10 @@ public class DoacaoController {
         }
     }
     public static void gravaArquivoTxt(List<Doacao> doacoes, String nomeArq) {
-
         nomeArq += ".txt";
 
         int contaRegistro = 0;
-        String header = "00NOTA20242";
+        String header = "00DOACAO";
         header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         header += "01";
         gravaRegistro(nomeArq, header);

@@ -45,4 +45,21 @@ public class Titular {
     @ManyToOne
     @JoinColumn(name = "fk_familia")
     private Familia familia;
+
+    @Override
+    public String toString() {
+        return "Titular{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", rg='" + rg + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", telefone1='" + telefone1 + '\'' +
+                ", telefone2='" + telefone2 + '\'' +
+                ", estadoCivil='" + estadoCivil + '\'' +
+                ", escolaridade='" + escolaridade + '\'' +
+                ", trabalhando=" + trabalhando +
+                ", ocupacao='" + ocupacao + '\'' +
+                '}';
+    }
 }
