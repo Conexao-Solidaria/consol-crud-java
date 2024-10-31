@@ -250,7 +250,7 @@ public class DoacaoController {
             corpo += String.format("%-8.8s", a.getFlagDoacaoEntregue());
 //            corpo += String.format("%-40.40s", a.getStatusDoacao()); ---- REMOVER - EDU
             corpo += String.format("%5.2s", a.getDataDoacao());
-            corpo += String.format("%2.2s", a.getInstituicao());
+            corpo += String.format("%2.2s", a.getInstituicao().getId());
 
             gravaRegistro(nomeArq, corpo);
             contaRegistro++;
