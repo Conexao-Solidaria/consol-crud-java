@@ -3,25 +3,26 @@ package com.consol.api.dto.doacao;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class DoacaoConsultaDto {
 
     private Integer id;
-    private Double peso;
     private String descricao;
-    private LocalDate dataDoacao;
-    private InstituicaoDto instituicao;
+    private LocalDateTime dataDoacao;
+//    private InstituicaoDto instituicao;
     private DonatarioDto donatario;
+    private Byte flagDoacaoEntregue;
 
-    @Data
-    public static class InstituicaoDto {
-        private Integer id;
-        private String nome;
-        private String cep;
-        private String numeroImovel;
-        private String descricao;
-    }
+//    @Data
+//    public static class InstituicaoDto {
+//        private Integer id;
+//        private String nome;
+//        private String cep;
+//        private String numeroImovel;
+//        private String descricao;
+//    }
 
     @Data
     public static class DonatarioDto {

@@ -1,9 +1,8 @@
 package com.consol.api.service;
 
-import com.consol.api.repository.DonatarioRepository;
+import com.consol.api.repository.TitularRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -11,13 +10,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Service - Donatario")
-public class DonatarioServiceTest {
+public class TitularServiceTest {
 
     @InjectMocks
-    private DonatarioService service;
+    private TitularService service;
 
     @Mock
-    private DonatarioRepository repository;
+    private TitularRepository repository;
 
     @Nested
     @DisplayName("Salvar")

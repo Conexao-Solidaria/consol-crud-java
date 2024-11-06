@@ -1,8 +1,10 @@
 package com.consol.api.entity;
 
-import com.consol.api.entity.Instituicao;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Getter
@@ -16,20 +18,22 @@ public class Usuario {
     @Column(name = "id_usuario")
     private int id;
 
-    @Column(name = "coordenador")
-    private boolean coordenador;
+    private Byte coordenador;
 
     @Column(name = "nome_usuario")
     private String nomeUsuario;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "senha")
     private String senha;
 
-    @Column(name = "cpf")
+    @CPF
+    @Size(min = 11,max = 11)
+    @NotBlank
     private String cpf;
+
+    @Column(name = "flag_aprovado")
+    private Byte flagAprovado;
 
     @ManyToOne
     @JoinColumn(name = "fk_instituicao")

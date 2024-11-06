@@ -5,19 +5,13 @@ import com.consol.api.dto.despesa.DespesaCadastroDto;
 import com.consol.api.dto.despesa.DespesaConsultaDto;
 import com.consol.api.dto.despesa.DespesaMapper;
 import com.consol.api.entity.Despesa;
-import com.consol.api.entity.Familia;
-import com.consol.api.repository.DespesaRepository;
-import com.consol.api.repository.FamiliaRepository;
+import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.service.DespesaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/despesas")
@@ -26,17 +20,38 @@ public class DespesaController {
 
     private final DespesaService despesaService;
 
-    @PostMapping
-    public ResponseEntity<DespesaConsultaDto> criar(@RequestBody @Valid DespesaCadastroDto despesaCadastroDto) {
-        if (despesaCadastroDto == null) return ResponseEntity.status(400).build();
+    @PostMapping("/familia/{idFamilia}")
+    public ResponseEntity<DespesaConsultaDto> criar(@RequestBody @Valid DespesaCadastroDto despesaCadastroDto,
+        @PathVariable int idFamilia
+    ) {
+        if (despesaCadastroDto == null) throw new RequisicaoIncorretaException("Despesa");
 
-        Despesa despesaSalvar = DespesaMapper.cadastroDtoToDespesa(despesaCadastroDto);
+        Despesa entity = DespesaMapper.toEntity(despesaCadastroDto);
+        Despesa despesaSalva = despesaService.salvar(entity,idFamilia);
 
-        Despesa despesaSalva = despesaService.salvar(despesaSalvar);
+        DespesaConsultaDto dto = DespesaMapper.toDto(despesaSalva);
 
-        DespesaConsultaDto despesaConsultaDto = DespesaMapper.despesaToListagemDto(despesaSalva);
+        return ResponseEntity.status(201).body(dto);
+    }
 
-        return ResponseEntity.status(201).body(despesaConsultaDto);
+    @GetMapping()
+    public ResponseEntity<List<DespesaConsultaDto>> listar(){
+        List<Despesa> entities = despesaService.listar();
+
+        if (entities.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<DespesaConsultaDto> dtos = DespesaMapper.toDto(entities);
+        return ResponseEntity.status(200).body(dtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DespesaConsultaDto> consultarPorId(@PathVariable Integer id) {
+
+        Despesa despesa = despesaService.buscarPorId(id);
+
+        DespesaConsultaDto despesaConsultaDto = DespesaMapper.toDto(despesa);
+
+        return ResponseEntity.ok(despesaConsultaDto);
     }
 
     @GetMapping("/familia/{idFamilia}")
@@ -45,37 +60,19 @@ public class DespesaController {
 
         if (entities.isEmpty()) return ResponseEntity.status(204).build();
 
-        List<DespesaConsultaDto> dtos = DespesaMapper.despesaToListagemDto(entities);
+        List<DespesaConsultaDto> dtos = DespesaMapper.toDto(entities);
         return ResponseEntity.status(200).body(dtos);
-    }
-
-
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DespesaConsultaDto> consultarPorId(@PathVariable Integer id) {
-
-        Despesa despesa = despesaService.buscarPorId(id);
-
-        DespesaConsultaDto despesaConsultaDto = new DespesaConsultaDto();
-
-        return ResponseEntity.ok(despesaConsultaDto);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DespesaConsultaDto> atualizar(@RequestBody @Valid DespesaAtualizarDto despesaAtualizarDto,
-                                                          @PathVariable Integer id) {
+                                                        @PathVariable Integer id) {
 
-        Despesa despesaBuscada = despesaService.buscarPorId(id);;
+        if (despesaAtualizarDto == null) return ResponseEntity.status(400).build();
 
-        Despesa despesa = DespesaMapper.atualizacaoDtoToDespesa(despesaAtualizarDto);
-
-        despesa.setId(id);
-        if (despesa.getTipo() == null) despesa.setTipo(despesaBuscada.getTipo());
-        if (despesa.getGasto() == null) despesa.setGasto(despesaBuscada.getGasto());
-
-        Despesa eventoAtualizado = despesaService.salvar(despesa);
-
-        DespesaConsultaDto dto = DespesaMapper.despesaToListagemDto(eventoAtualizado);
+        Despesa entity = DespesaMapper.toEntity(despesaAtualizarDto);
+        Despesa despesaAtualizada = despesaService.atualizarDespesa(entity,id);
+        DespesaConsultaDto dto = DespesaMapper.toDto(despesaAtualizada);
 
         return ResponseEntity.status(200).body(dto);
     }
@@ -87,4 +84,6 @@ public class DespesaController {
 
         return ResponseEntity.noContent().build();
     }
+
+
 }

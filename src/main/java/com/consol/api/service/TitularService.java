@@ -1,0 +1,101 @@
+package com.consol.api.service;
+
+import com.consol.api.entity.Titular;
+import com.consol.api.entity.Familia;
+import com.consol.api.entity.exception.RequisicaoIncorretaException;
+import com.consol.api.repository.TitularRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TitularService {
+
+    private final TitularRepository repository;
+
+    private final FamiliaService familiaService;
+
+    public List<Titular> listar() {
+        return repository.findAll();
+    }
+
+    public Titular salvar(Titular titular, Integer idFamilia) {
+        Familia familia = familiaService.porId(idFamilia);
+
+        if (titular.getTrabalhando() != (byte) 0 && titular.getTrabalhando() != (byte) 1) throw new RequisicaoIncorretaException("Titular");
+
+        titular.setFamilia(familia);
+        return repository.save(titular);
+    }
+
+    public Titular porId(int id) {
+        return repository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+    }
+
+    public List<Titular> listarPorNome(String nome) {
+        return repository.findByNomeContainsIgnoreCase(nome);
+    }
+
+    public Titular atualizar(int id, Titular titular) {
+        Titular titularAtualizado = porId(id);
+
+        titularAtualizado.setNome(titular.getNome());
+        titularAtualizado.setEstadoCivil(titular.getEstadoCivil());
+        titularAtualizado.setEscolaridade(titular.getEscolaridade());
+        titularAtualizado.setTelefone1(titular.getTelefone1());
+        titularAtualizado.setTelefone2(titular.getTelefone2());
+        titularAtualizado.setTrabalhando(titular.getTrabalhando());
+        titularAtualizado.setOcupacao(titular.getOcupacao());
+
+        return repository.save(titularAtualizado);
+    }
+
+    public void deletar(int id) {
+        if (!repository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        repository.deleteById(id);
+    }
+
+    public Boolean existById(int id){
+        return repository.existsById(id);
+    }
+
+    public Integer qtdCriancas(LocalDate dataAtual){
+        LocalDate dataBase = dataAtual.minusYears(12);
+        return repository.countByDataNascimentoAfter(dataBase);
+    }
+
+    public Integer zeroADozeAnos(LocalDate dataAtual){
+        LocalDate dataBase = dataAtual.minusYears(12);
+        return repository.countByDataNascimentoBetween(dataBase,dataAtual);
+    }
+
+    public Integer trezeVinteCinco(LocalDate dataAtual){
+        LocalDate dataIncio = dataAtual.minusYears(25);
+        LocalDate dataFim = dataAtual.minusYears(13);
+        return repository.countByDataNascimentoBetween(dataIncio,dataFim);
+    }
+
+    public Integer vinteCincoASessenta(LocalDate dataAtual){
+        LocalDate dataInicio = dataAtual.minusYears(60);
+        LocalDate dataFim = dataAtual.minusYears(25);
+
+        return repository.countByDataNascimentoBetween(dataInicio,dataFim);
+    }
+
+    public Integer maisSessenta(LocalDate data){
+        LocalDate dataBase = data.minusYears(60);
+        return repository.countByDataNascimentoBefore(dataBase);
+    }
+
+}

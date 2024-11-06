@@ -4,12 +4,13 @@ import com.consol.api.entity.Doacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DoacaoRepository extends JpaRepository<Doacao, Integer> {
 
-    List<Doacao> findByDataDoacao(LocalDate data);
-
-    List<Doacao> findByDataDoacaoBetween(LocalDate dataInicio, LocalDate dataFim);
+    List<Doacao> findByDataDoacaoBetween(LocalDateTime inicio, LocalDateTime fim);
+    List<Doacao> findByTitularNomeContainsIgnoreCase(String nome);
+    List<Doacao> findByDataDoacaoBetweenAndFlagDoacaoEntregue(LocalDateTime inicio, LocalDateTime fim, Byte flag);
 
 }

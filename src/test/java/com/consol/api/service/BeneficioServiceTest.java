@@ -39,7 +39,7 @@ public class BeneficioServiceTest {
 
     @Nested
     @DisplayName("Por Donatario")
-    class PorDonatario {
+    class PorTitular {
 //        TODO
     }
 

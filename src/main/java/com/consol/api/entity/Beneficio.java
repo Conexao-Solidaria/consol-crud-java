@@ -8,12 +8,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-//@Data
 @Builder
 public class Beneficio {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_beneficio")
     private Integer id;
 
     private String nome;
@@ -21,6 +20,6 @@ public class Beneficio {
     private Double valor;
 
     @ManyToOne
-    @JoinColumn(name = "fk_donatario")
-    private Donatario donatario;
+    @JoinColumn(name = "fk_titular")
+    private Titular titular;
 }

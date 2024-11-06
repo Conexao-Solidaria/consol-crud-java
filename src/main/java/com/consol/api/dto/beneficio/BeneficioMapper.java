@@ -30,7 +30,7 @@ public class BeneficioMapper {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setValor(entity.getValor());
-        dto.setIdDonatario(entity.getDonatario().getId());
+        dto.setIdDonatario(entity.getTitular().getId());
 
         return dto;
     }

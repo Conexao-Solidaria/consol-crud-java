@@ -1,10 +1,10 @@
 package com.consol.api.service;
 
 import com.consol.api.entity.Beneficio;
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.repository.BeneficioRepository;
-import com.consol.api.repository.DonatarioRepository;
+import com.consol.api.repository.TitularRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +16,16 @@ import java.util.Optional;
 public class BeneficioService {
 
     private final BeneficioRepository beneficioRepository;
-    private final DonatarioRepository donatarioRepository;
+    private final TitularRepository titularRepository;
     private final FamiliaService familiaService;
 
-    public Beneficio salvar(Beneficio beneficio, int idDonatario) {
-        Optional<Donatario> donatario = donatarioRepository.findById(idDonatario);
+    public Beneficio salvar(Beneficio beneficio, int idTitular) {
+        Optional<Titular> titular = titularRepository.findById(idTitular);
 
-        if (donatario.isEmpty()){
-            throw new EntidadeNaoEncontradaException();
-        }
+        if (titular.isEmpty()) throw new EntidadeNaoEncontradaException("Benefício");
 
-        beneficio.setDonatario(donatario.get());
+
+        beneficio.setTitular(titular.get());
         return beneficioRepository.save(beneficio);
     }
 
@@ -36,34 +35,38 @@ public class BeneficioService {
 
     public Beneficio listarPorId(int id) {
         return beneficioRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException()
+                () -> new EntidadeNaoEncontradaException("Benefício")
         );
     }
 
-    public List<Beneficio> listarPorDonatario(int idDonatario) {
-        if (!donatarioRepository.existsById(idDonatario)) throw new EntidadeNaoEncontradaException();
-        return beneficioRepository.findByDonatario_id(idDonatario);
+    public List<Beneficio> listarPorTitular(int idTitular) {
+        if (!titularRepository.existsById(idTitular)) throw new EntidadeNaoEncontradaException("Titular");
+        return beneficioRepository.findByTitularId(idTitular);
 
     }
 
     public List<Beneficio> listarPorFamilia(int idFamilia) {
-       familiaService.porId(idFamilia);
-        return beneficioRepository.findByDonatario_Familia_id(idFamilia);
+        if (!familiaService.familiaExiste(idFamilia)) throw new EntidadeNaoEncontradaException("Familia");
+        return beneficioRepository.findByTitularFamiliaId(idFamilia);
     }
 
+    public Beneficio atualizar(int idBenefico, Beneficio beneficio) {
+        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException("Beneficio");
 
-    public Beneficio atualizar(int idBenefico, Beneficio beneficioAtualizado) {
-        Optional<Beneficio> beneficio = beneficioRepository.findById(idBenefico);
-        if (beneficio.isEmpty()) throw new EntidadeNaoEncontradaException();
+        Optional <Beneficio> beneficioBanco = beneficioRepository.findById(idBenefico);
+        Beneficio beneficioAtualizar = beneficioBanco.get();
 
-        beneficioAtualizado.setId(beneficio.get().getId());
-        beneficioAtualizado.setDonatario(beneficio.get().getDonatario());
+        if (beneficio.getValor() != null) beneficioAtualizar.setValor(beneficio.getValor());
+        if (beneficio.getNome() != null && !beneficio.getNome().equals("") && !beneficio.getNome().equals(" ") ) {
+            beneficioAtualizar.setNome(beneficio.getNome());
+        }
 
-        return beneficioRepository.save(beneficioAtualizado);
+
+        return beneficioRepository.save(beneficioAtualizar);
     }
 
     public void deletar(int idBenefico) {
-        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException();
+        if (!beneficioRepository.existsById(idBenefico)) throw new EntidadeNaoEncontradaException("Beneficio");
         beneficioRepository.deleteById(idBenefico);
     }
 }

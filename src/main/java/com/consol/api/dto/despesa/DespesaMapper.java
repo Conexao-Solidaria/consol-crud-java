@@ -7,34 +7,23 @@ import java.util.List;
 
 public class DespesaMapper {
 
-    public static DespesaConsultaDto despesaToListagemDto(Despesa despesa) {
-
-        DespesaConsultaDto dto = new DespesaConsultaDto();
-        dto.setId(despesa.getId());
-        dto.setTipo(despesa.getTipo());
-        dto.setGasto(despesa.getGasto());
-        return dto;
-    }
-
-    public static List<DespesaConsultaDto> despesaToListagemDto (List<Despesa> despesas) {
-        return despesas.stream().map(DespesaMapper::despesaToListagemDto).toList();
-
-    }
-
-    public static Despesa cadastroDtoToDespesa(DespesaCadastroDto dto) {
+    public static Despesa toEntity(DespesaCadastroDto dto) {
         Despesa despesa = new Despesa();
         despesa.setTipo(dto.getTipo());
         despesa.setGasto(dto.getGasto());
 
-        Familia familia = Familia.builder()
-                        .id(dto.getFamiliaDto().getId())
-                        .nome(dto.getFamiliaDto().getNome())
-                        .cep(dto.getFamiliaDto().getCep())
-                        .numeroCasa(dto.getFamiliaDto().getNumeroCasa())
-                        .renda(dto.getFamiliaDto().getRenda()).build();
-
-        despesa.setFamilia(familia);
         return despesa;
+    }
+
+    public static Despesa toEntity(DespesaAtualizarDto dto){
+        if (dto == null) return null;
+
+        Despesa entity = new Despesa();
+        entity.setGasto(dto.getGasto());
+        entity.setTipo(dto.getTipo());
+
+        return entity;
+
     }
 
     public static Despesa atualizacaoDtoToDespesa(DespesaAtualizarDto dto) {
@@ -44,7 +33,37 @@ public class DespesaMapper {
         return despesa;
     }
 
+    public static DespesaConsultaDto toDto(Despesa entity){
+        DespesaConsultaDto dto = new DespesaConsultaDto();
+        dto.setId(entity.getId());
+        dto.setTipo(entity.getTipo());
+        dto.setGasto(entity.getGasto());
+
+        if (entity.getFamilia() != null){
+            dto.setFamiliaDto(toDtoFamilia(entity.getFamilia()));
+        }
+
+        return dto;
+    }
+
+
+    public static DespesaConsultaDto.FamiliaDto toDtoFamilia(Familia entity){
+        DespesaConsultaDto.FamiliaDto dto = new DespesaConsultaDto.FamiliaDto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setCep(entity.getCep());
+        dto.setNumeroCasa(entity.getNumeroCasa());
+        dto.setRenda(entity.getRenda());
+        return dto;
+    }
+
+    public static List<DespesaConsultaDto> toDto (List<Despesa> despesas) {
+        return despesas.stream().map(DespesaMapper::toDto).toList();
+
+    }
+
+
     public static List<DespesaConsultaDto> listagemDtoToDespesa(List<Despesa> despesas) {
-        return despesas.stream().map(DespesaMapper::despesaToListagemDto).toList();
+        return despesas.stream().map(DespesaMapper::toDto).toList();
     }
 }

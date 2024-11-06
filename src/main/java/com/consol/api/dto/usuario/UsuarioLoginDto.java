@@ -1,6 +1,5 @@
 package com.consol.api.dto.usuario;
 
-
 import lombok.Data;
 
 @Data

@@ -1,7 +1,7 @@
 package com.consol.api.dto.familia;
 
 import com.consol.api.entity.Despesa;
-import com.consol.api.entity.Donatario;
+import com.consol.api.entity.Titular;
 import com.consol.api.entity.Familia;
 import lombok.Data;
 
@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 public class FamiliaMapper {
-
 
     public static FamiliaConsultaDto toDto(Familia familia) {
         if (familia == null) return null;
@@ -22,26 +21,28 @@ public class FamiliaMapper {
         dto.setCep(familia.getCep());
         dto.setNumeroCasa(familia.getNumeroCasa());
         dto.setRenda(familia.getRenda());
+        dto.setFlagRetirada(familia.getFlagRetirada());
+        dto.setDataCadastro(familia.getDataCadastro());
 
-        dto.setDonatarios(toDonatarioDto(familia.getDonatarios()));
+        dto.setTitulares(toDonatarioDto(familia.getTitulares()));
 
         dto.setDespesas(toDespesaDto(familia.getDespesas()));
 
         return dto;
     }
 
-    public static List<FamiliaConsultaDto.DonatarioDto> toDonatarioDto(List<Donatario> donatarios) {
-        if (donatarios == null) return null;
+    public static List<FamiliaConsultaDto.TitularDto> toDonatarioDto(List<Titular> titulars) {
+        if (titulars == null) return null;
 
-        List<FamiliaConsultaDto.DonatarioDto> donatarioDtoList = new ArrayList<>();
+        List<FamiliaConsultaDto.TitularDto> donatarioDtoList = new ArrayList<>();
 
-        for (Donatario donatarioAtual : donatarios) {
-            FamiliaConsultaDto.DonatarioDto donatarioDto = new FamiliaConsultaDto.DonatarioDto();
-            donatarioDto.setId(donatarioAtual.getId());
-            donatarioDto.setEstadoCivil(donatarioAtual.getEstadoCivil());
-            donatarioDto.setEscolaridade(donatarioAtual.getEscolaridade());
-            donatarioDto.setTrabalhando(donatarioAtual.getTrabalhando());
-            donatarioDto.setOcupacao(donatarioAtual.getOcupacao());
+        for (Titular titularAtual : titulars) {
+            FamiliaConsultaDto.TitularDto donatarioDto = new FamiliaConsultaDto.TitularDto();
+            donatarioDto.setId(titularAtual.getId());
+            donatarioDto.setEstadoCivil(titularAtual.getEstadoCivil());
+            donatarioDto.setEscolaridade(titularAtual.getEscolaridade());
+            donatarioDto.setTrabalhando(titularAtual.getTrabalhando());
+            donatarioDto.setOcupacao(titularAtual.getOcupacao());
 
             donatarioDtoList.add(donatarioDto);
         }
@@ -72,6 +73,8 @@ public class FamiliaMapper {
         familia.setCep(dto.getCep());
         familia.setNumeroCasa(dto.getNumeroCasa());
         familia.setRenda(dto.getRenda());
+        familia.setFlagRetirada((byte) 0);
+        familia.setDataCadastro(dto.getDataCadastro());
 
         return familia;
     }
@@ -82,6 +85,15 @@ public class FamiliaMapper {
         Familia familia = new Familia();
         familia.setCep(dto.getCep());
         familia.setNumeroCasa(dto.getNumeroCasa());
+
+        return familia;
+    }
+
+    public static Familia toEntity(FamiliaAtualizarFlagDto dto){
+        if (dto == null) return null;
+
+        Familia familia = new Familia();
+        familia.setFlagRetirada(dto.getFlagRetirada());
 
         return familia;
     }
