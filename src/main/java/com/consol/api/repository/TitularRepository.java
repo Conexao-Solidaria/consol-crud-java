@@ -17,5 +17,4 @@ public interface TitularRepository extends JpaRepository<Titular, Integer> {
     Integer countByDataNascimentoAfter(LocalDate dataBase);
     Integer countByDataNascimentoBetween(LocalDate dataBase, LocalDate atual);
     Integer countByDataNascimentoBefore(LocalDate dataBase);
-
 }

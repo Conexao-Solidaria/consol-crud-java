@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -86,5 +87,21 @@ public class TitularController {
     ) {
         service.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/foto/{id}", consumes = "image/*")
+    public ResponseEntity<Void> atualizarFoto(
+            @PathVariable final Integer id,
+            @RequestBody final byte[] referenciaArquivoFoto) {
+        service.atualizarFoto(id, referenciaArquivoFoto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/foto/{id}", produces = "image/png")
+    public ResponseEntity<byte[]> getFoto(@PathVariable final Integer id) {
+        byte[] foto = service.getFoto(id);
+
+        return ResponseEntity.ok(foto);
     }
 }
