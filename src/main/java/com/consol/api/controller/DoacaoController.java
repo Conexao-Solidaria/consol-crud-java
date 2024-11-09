@@ -168,11 +168,11 @@ public class DoacaoController {
     private static List<String[]> converter(List<Doacao> doacaos) {
         List<String[]> data = new ArrayList<>();
 
-        data.add(new String[]{"ID", "Descrição", "Data da Doação", "Titular"});
+        data.add(new String[]{"ID", "Descrição", "Data da Doação","Entregue?","Titular"});
 
         for (Doacao doacao : doacaos) {
 
-            String[] row = new String[6];
+            String[] row = new String[5];
             row[0] = String.valueOf(doacao.getId());
             row[1] = doacao.getDescricao();
             row[2] = doacao.getDataDoacao().toString();
