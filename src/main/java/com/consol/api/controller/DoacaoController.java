@@ -9,11 +9,13 @@ import com.consol.api.service.InstituicaoService;
 import com.consol.api.service.TitularService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -137,28 +139,49 @@ public class DoacaoController {
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping("/por-nome")
-    public ResponseEntity<List<DoacaoConsultaDto>> porNome(@RequestParam String nome){
-        List<Doacao> doacaos = service.listarPorNome(nome);
-
-        if (doacaos.isEmpty()) return ResponseEntity.status(204).build();
-
-        List<DoacaoConsultaDto> dto = DoacaoMapper.toDto(doacaos);
-        return ResponseEntity.status(200).body(dto);
-    }
-
-
-    @GetMapping("/baixar-csv/{nomeArq}")
-    public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
+    @GetMapping("/baixar-csv")
+    public ResponseEntity<byte[]> baixarCsv() throws IOException{
         List<Doacao> doacoes = service.listar();
 
+        List<String[]> data = converter(doacoes);
 
         if (doacoes.isEmpty()){
             return ResponseEntity.noContent().build();
         }
 
-        gravaArquivosCsv(doacoes, nomeArq);
-        return ResponseEntity.ok().build();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try(OutputStreamWriter writer = new OutputStreamWriter(byteArrayOutputStream,StandardCharsets.UTF_8)){
+            for (String[] row : data){
+                writer.write(String.join(",",row));
+                writer.write("\n");
+            }
+        }
+
+        byte[] csvBytes = byteArrayOutputStream.toByteArray();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"dados.csv\"")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv")
+                .body(csvBytes);
+    }
+
+
+    private static List<String[]> converter(List<Doacao> doacaos) {
+        List<String[]> data = new ArrayList<>();
+
+        data.add(new String[]{"ID", "Descrição", "Data da Doação", "Titular"});
+
+        for (Doacao doacao : doacaos) {
+
+            String[] row = new String[6];
+            row[0] = String.valueOf(doacao.getId());
+            row[1] = doacao.getDescricao();
+            row[2] = doacao.getDataDoacao().toString();
+            row[3] = doacao.getFlagDoacaoEntregue() == 1 ? "Sim" : "Não";
+            row[4] = doacao.getTitular() != null ? doacao.getTitular().getNome() : "Sem Titular";
+            data.add(row);
+        }
+
+        return data;
     }
 
     @GetMapping("/baixar-txt/{nomeArq}")
@@ -171,48 +194,7 @@ public class DoacaoController {
     }
 
     public static void gravaArquivosCsv(List<Doacao> lista, String nomeArq) {
-        FileWriter arq = null;
-        Formatter saida = null;
-        boolean deuRuim = false;
 
-        nomeArq += ".csv";
-
-        try {
-            arq = new FileWriter(nomeArq);
-            saida = new Formatter(arq);
-        } catch (IOException erro) {
-            System.out.println("ERRO AO ABRIR O ARQUIVO");
-            System.exit(1);
-        }
-
-        try {
-            for (Doacao doacao : lista) {
-                saida.format("%d;%s;%s;%d;%s,%s\n",
-                        doacao.getId(),
-                        doacao.getDescricao(),
-//                        doacao.getStatusDoacao(),    ---------- REMOVER - EDU
-                        doacao.getDataDoacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
-                        doacao.getFlagDoacaoEntregue(),
-                        doacao.getInstituicao(),
-                        doacao.getTitular()
-                );
-            }
-        } catch (FormatterClosedException erro) {
-            System.out.println("ERRO AO GRAVAR O ARQUIVO");
-            deuRuim = true;
-        } finally {
-            if (saida != null) {
-                saida.close();
-            }
-            try {
-                if (arq != null) {
-                    arq.close();
-                }
-            } catch (IOException erro) {
-                System.out.println("ERRO AO FECHAR O ARQUIVO");
-                deuRuim = true;
-            }
-        }
     }
 
     public static void gravaRegistro(String nomeArq, String registro){
