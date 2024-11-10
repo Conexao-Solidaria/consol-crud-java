@@ -17,8 +17,15 @@ Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o a
 ```
 ./build.sh
 ```
+
+Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o arquivo "./.database/build.sh"
+```
+./.database/build.sh
+```
+
 Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o arquivo "start.sh"
 ```
 ./start.sh
 ```
+
 Abrir no **insomnia** e testar o projeto.
