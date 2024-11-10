@@ -17,17 +17,16 @@ services:
     image: consol-db
     environment:
       MYSQL_DATABASE: consol
-      MYSQL_INITDB_SKIP_TZ_CHECK: "true"
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./scripts:/docker-entrypoint-initdb.d
+      - ../.database/scripts:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      interval: 20s
       timeout: 5s
-      retries: 5
+      retries: 10
 
 volumes:
   mysql-data:

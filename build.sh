@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t consol-be .
+docker buildx build -t consol-be .
