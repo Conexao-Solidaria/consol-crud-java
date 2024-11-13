@@ -17,8 +17,8 @@ Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o a
 ```
 ./build.sh
 ```
-Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o arquivo "start.sh"
+Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o arquivo "run.sh"
 ```
-./start.sh
+./run.sh
 ```
 Abrir no **insomnia** e testar o projeto.
