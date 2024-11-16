@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
-    private final UsuarioService usuarioService;
+    private final UsuarioService service;
     // private FilaCircular fila = new FilaCircular(100);
 
     @PostMapping("/instituicao/{idInstituicao}")
@@ -24,7 +24,7 @@ public class UsuarioController {
     ){
 
         Usuario entity = UsuarioMapper.toEntity(usuarioCadastroDto);
-        Usuario usuarioCadastrado = usuarioService.criar(entity, idInstituicao);
+        Usuario usuarioCadastrado = service.criar(entity, idInstituicao);
         UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioCadastrado);
 
         return ResponseEntity.status(201).body(dto);
@@ -32,14 +32,14 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto) {
-        UsuarioTokenDto usuarioToken = usuarioService.autenticar(usuarioLoginDto);
+        UsuarioTokenDto usuarioToken = service.autenticar(usuarioLoginDto);
         return ResponseEntity.ok(usuarioToken);
     }
 
 
     @GetMapping
     public ResponseEntity<List<UsuarioConsultaDto>> listagemUsuarios(){
-        List<Usuario> entities = usuarioService.listar();
+        List<Usuario> entities = service.listar();
 
         if (entities.isEmpty()) return ResponseEntity.status(204).build();
 
@@ -49,7 +49,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioConsultaDto> consultarPorId(@PathVariable Integer id){
-        Usuario entity = usuarioService.porId(id);
+        Usuario entity = service.porId(id);
         UsuarioConsultaDto dto = UsuarioMapper.toDto(entity);
 
         return ResponseEntity.status(200).body(dto);
@@ -57,7 +57,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagarPorId( @PathVariable Integer id){
-        usuarioService.deletar(id);
+        service.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -67,7 +67,7 @@ public class UsuarioController {
             @RequestBody UsuarioAtualizarFlagDto usuarioAtualizarFlagDto
     ){
         Usuario entity = UsuarioMapper.toEntity(usuarioAtualizarFlagDto);
-        Usuario usuarioAtualizado = usuarioService.atualizarFlag(id,entity);
+        Usuario usuarioAtualizado = service.atualizarFlag(id,entity);
         UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioAtualizado);
 
         return ResponseEntity.ok(dto);
@@ -79,7 +79,19 @@ public class UsuarioController {
             @PathVariable int id
     ){
         Usuario entity = UsuarioMapper.toEntity(atualizarCoordenadorDto);
-        Usuario usuarioAtualizado = usuarioService.atualizarCoordenador(id,entity);
+        Usuario usuarioAtualizado = service.atualizarCoordenador(id,entity);
+        UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioAtualizado);
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/atualizar-flag-coordenador/{id}")
+    public ResponseEntity<UsuarioConsultaDto> atualizarFlagCoordenador(
+            @RequestBody UsuarioAtualizarFlagCoordenadorDto atualizarFlagCoordenadorDto,
+            @PathVariable int id
+    ){
+        Usuario entity = UsuarioMapper.toEntity(atualizarFlagCoordenadorDto);
+        Usuario usuarioAtualizado = service.atualizarFlagCoordenador(id,entity);
         UsuarioConsultaDto dto = UsuarioMapper.toDto(usuarioAtualizado);
 
         return ResponseEntity.ok(dto);
