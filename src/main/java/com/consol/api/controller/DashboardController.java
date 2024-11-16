@@ -1,6 +1,7 @@
 package com.consol.api.controller;
 
 import com.consol.api.dto.dashboard.DashboardDadosDto;
+import com.consol.api.dto.dashboard.DashboardHistoricoDto;
 import com.consol.api.entity.Doacao;
 import com.consol.api.service.DashboardService;
 import com.consol.api.service.DoacaoService;
@@ -44,12 +45,20 @@ public class DashboardController {
         idades.setMaisSessenta(serviceTitular.maisSessenta(data));
 
         dto.setDistribuicaoIdades(idades);
-        List<Doacao> doacoes = serviceDoacao.ultimoSeisMeses(data);
 
-        dto.setQtdDoacoesMes(service.ultimosSeisMeses(doacoes,data));
 
         return ResponseEntity.status(200).body(dto);
 
+    }
+
+    @GetMapping("/data-base")
+    public ResponseEntity<DashboardHistoricoDto> historico(@RequestParam LocalDate data){
+        DashboardHistoricoDto dto = new DashboardHistoricoDto();
+
+        List<Doacao> doacoes = serviceDoacao.ultimoSeisMeses(data);
+        dto.setQtdDoacoesMes(service.ultimosSeisMeses(doacoes,data));
+
+        return ResponseEntity.status(200).body(dto);
     }
 
 }

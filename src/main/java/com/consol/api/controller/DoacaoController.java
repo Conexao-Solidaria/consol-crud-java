@@ -9,11 +9,14 @@ import com.consol.api.service.InstituicaoService;
 import com.consol.api.service.TitularService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.lambda.endpoints.internal.Value;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -147,73 +150,113 @@ public class DoacaoController {
         return ResponseEntity.status(200).body(dto);
     }
 
-
-    @GetMapping("/baixar-csv/{nomeArq}")
-    public ResponseEntity<List<DoacaoConsultaDto>> baixarCsv(@PathVariable String nomeArq){
+    @GetMapping("/baixar-csv")
+    public ResponseEntity<byte[]> baixarCsv() throws IOException{
         List<Doacao> doacoes = service.listar();
-
 
         if (doacoes.isEmpty()){
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(204).build();
         }
 
-        gravaArquivosCsv(doacoes, nomeArq);
-        return ResponseEntity.ok().build();
+        List<String[]> data = converterCsv(doacoes);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try(OutputStreamWriter writer = new OutputStreamWriter(byteArrayOutputStream,StandardCharsets.UTF_8)){
+            for (String[] row : data){
+                writer.write(String.join(",",row));
+                writer.write("\n");
+            }
+        }
+
+        byte[] csvBytes = byteArrayOutputStream.toByteArray();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"dados.csv\"")
+                .header(HttpHeaders.CONTENT_TYPE, "text/csv")
+                .body(csvBytes);
     }
 
-    @GetMapping("/baixar-txt/{nomeArq}")
-    public ResponseEntity<Void> baixarTxt(@PathVariable String nomeArq) {
+    private static List<String[]> converterCsv(List<Doacao> doacaos) {
+        List<String[]> data = new ArrayList<>();
+
+        data.add(new String[]{"ID", "Descrição", "Data da Doação","Entregue?","Titular"});
+
+        for (Doacao doacao : doacaos) {
+
+            String[] row = new String[5];
+            row[0] = String.valueOf(doacao.getId());
+            row[1] = doacao.getDescricao();
+            row[2] = doacao.getDataDoacao().toString();
+            row[3] = doacao.getFlagDoacaoEntregue() == 1 ? "Sim" : "Não";
+            row[4] = doacao.getTitular() != null ? doacao.getTitular().getNome() : "Sem Titular";
+            data.add(row);
+        }
+
+        return data;
+    }
+
+    @GetMapping("/baixar-txt")
+    public ResponseEntity<byte[]> baixarTxt() throws IOException {
         List<Doacao> doacoes = service.listar();
-        System.out.println(doacoes);
 
-        gravaArquivoTxt(doacoes, nomeArq);
-        return ResponseEntity.ok().build();
-    }
+        if (doacoes.isEmpty()) return ResponseEntity.status(204).build();
 
-    public static void gravaArquivosCsv(List<Doacao> lista, String nomeArq) {
-        FileWriter arq = null;
-        Formatter saida = null;
-        boolean deuRuim = false;
+        List<String[]> data = converterTxt(doacoes);
 
-        nomeArq += ".csv";
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (OutputStreamWriter writer = new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8)) {
 
-        try {
-            arq = new FileWriter(nomeArq);
-            saida = new Formatter(arq);
-        } catch (IOException erro) {
-            System.out.println("ERRO AO ABRIR O ARQUIVO");
-            System.exit(1);
+            writer.write("00DOACAO");
+            writer.write(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+            writer.write("01");
+            writer.write("\n");
+
+            Integer qtdDoacao = 0;
+
+            for (String[] row : data) {
+                String linha = String.format("%-50.50s", row[0]) +
+                        String.format("%-5.5s", row[1]) +
+                        String.format("%-19.19s", row[2]) +
+                        String.format("%-1.1s", row[3]) +
+                        String.format("%2.2s", row[4]);
+                writer.write(linha);
+                writer.write("\n");
+
+                qtdDoacao++;
+            }
+
+            writer.write(String.format("%-2.2s","01"));
+            writer.write(String.format("%-5.5s",String.valueOf(qtdDoacao)));
         }
 
-        try {
-            for (Doacao doacao : lista) {
-                saida.format("%d;%s;%s;%d;%s,%s\n",
-                        doacao.getId(),
-                        doacao.getDescricao(),
-//                        doacao.getStatusDoacao(),    ---------- REMOVER - EDU
-                        doacao.getDataDoacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")),
-                        doacao.getFlagDoacaoEntregue(),
-                        doacao.getInstituicao(),
-                        doacao.getTitular()
-                );
-            }
-        } catch (FormatterClosedException erro) {
-            System.out.println("ERRO AO GRAVAR O ARQUIVO");
-            deuRuim = true;
-        } finally {
-            if (saida != null) {
-                saida.close();
-            }
-            try {
-                if (arq != null) {
-                    arq.close();
-                }
-            } catch (IOException erro) {
-                System.out.println("ERRO AO FECHAR O ARQUIVO");
-                deuRuim = true;
-            }
-        }
+        byte[] txtBytes = byteArrayOutputStream.toByteArray();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"dados.txt\"")
+                .header(HttpHeaders.CONTENT_TYPE, "text/plain")
+                .body(txtBytes);
     }
+
+
+    private static List<String[]> converterTxt(List<Doacao> doacaos) {
+        Integer qtdRegistro = 0;
+
+        List<String[]> result = new ArrayList<>();
+
+        for (Doacao doacao : doacaos) {
+            String[] linha = new String[5];
+
+            linha[0] = String.format("%-50.50s", doacao.getDescricao());
+            linha[1] = String.format("%-5.5s", doacao.getId());
+            linha[2] = String.format("%-19.19s", doacao.getDataDoacao().toString());
+            linha[3] = String.format("%-1.1s", doacao.getFlagDoacaoEntregue() == 1 ? "S" : "N");
+            linha[4] = String.format("%2.2s", doacao.getInstituicao().getId());
+            result.add(linha);
+
+            qtdRegistro++;
+        }
+
+        return result;
+    }
+
 
     public static void gravaRegistro(String nomeArq, String registro){
         BufferedWriter saida = null;
@@ -248,8 +291,8 @@ public class DoacaoController {
             corpo += String.format("%-50.50s", a.getDescricao());
             corpo += String.format("%-5.5s", a.getId());
             corpo += String.format("%-8.8s", a.getFlagDoacaoEntregue());
-//            corpo += String.format("%-40.40s", a.getStatusDoacao()); ---- REMOVER - EDU
             corpo += String.format("%5.2s", a.getDataDoacao());
+            corpo += String.format("%-1.1s",a.getFlagDoacaoEntregue());
             corpo += String.format("%2.2s", a.getInstituicao().getId());
 
             gravaRegistro(nomeArq, corpo);

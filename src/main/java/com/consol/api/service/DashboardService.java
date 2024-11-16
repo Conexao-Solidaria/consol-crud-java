@@ -8,32 +8,26 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
 
     public Map<String, Integer> ultimosSeisMeses(List<Doacao> doacoes, LocalDate dataAtual) {
-        Map<String, Integer> contagemDeDoacoes = new HashMap<>();
+        Map<String, Integer> contagemDeDoacoes = new LinkedHashMap <>();
         YearMonth mesReferencia = YearMonth.from(dataAtual);
 
-        // Inicializa o Map com os últimos 6 meses, incluindo o mês atual
-        for (int i = 0; i <= 6; i++) {
+        for (int i = 6; i >= 0; i--) {
             YearMonth mes = mesReferencia.minusMonths(i);
             String nomeMes = nomeMes(mes.getMonthValue());
             contagemDeDoacoes.put(nomeMes, 0);
         }
 
-        // Conta as doações dentro dos últimos 6 meses
         for (Doacao doacao : doacoes) {
             LocalDate dataDoacao = doacao.getDataDoacao().toLocalDate();
             YearMonth mesDaDoacao = YearMonth.from(dataDoacao);
 
-            // Verifica se a data da doação está nos últimos 6 meses
             if (!mesDaDoacao.isBefore(mesReferencia.minusMonths(6)) && !mesDaDoacao.isAfter(mesReferencia)) {
                 String nomeMes = nomeMes(dataDoacao.getMonthValue());
                 contagemDeDoacoes.put(nomeMes, contagemDeDoacoes.getOrDefault(nomeMes, 0) + 1);
@@ -57,7 +51,7 @@ public class DashboardService {
             case 10: return "Outubro";
             case 11: return "Novembro";
             case 12: return "Dezembro";
-            default: return "Mês inválido"; // Não deveria ocorrer
+            default: return "Mês inválido";
         }
 
     }

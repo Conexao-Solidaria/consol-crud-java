@@ -12,7 +12,6 @@ public class DashboardDadosDto {
     private Integer qtdCriancas;
     private Integer cadastrosProximosVencimento;
     private DistribuicaoIdades distribuicaoIdades;
-    private Map <String, Integer> qtdDoacoesMes;
 
     @Data
     public static class DistribuicaoIdades{
