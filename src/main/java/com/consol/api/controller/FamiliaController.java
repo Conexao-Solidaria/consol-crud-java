@@ -42,7 +42,14 @@ public class FamiliaController {
         return ResponseEntity.ok(dtos);
     }
 
-    @PutMapping("{id}")
+    @GetMapping("/{id}")
+    public ResponseEntity<FamiliaConsultaDto> listarPorId(@PathVariable int id) {
+        Familia entity = service.porId(id);
+        FamiliaConsultaDto familiaConsultaDto = FamiliaMapper.toDto(entity);
+        return ResponseEntity.ok().body(familiaConsultaDto);
+    }
+
+    @PutMapping("/{id}")
     public ResponseEntity<FamiliaConsultaDto> atualizarEndereco(
             @PathVariable int id,
             @RequestBody @Valid FamiliaAtualizarDto dto
@@ -54,7 +61,7 @@ public class FamiliaController {
         return ResponseEntity.ok(familiaConsultaDto);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagar(
             @PathVariable int id
     ) {

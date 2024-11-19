@@ -9,6 +9,7 @@ import com.consol.api.entity.exception.ConflitoException;
 import com.consol.api.entity.exception.EntidadeNaoEncontradaException;
 import com.consol.api.entity.exception.RequisicaoIncorretaException;
 import com.consol.api.repository.UsuarioRepository;
+import io.swagger.v3.oas.models.media.UUIDSchema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -87,6 +88,15 @@ public class UsuarioService {
     public Usuario atualizarCoordenador(int id, Usuario usuario){
         Usuario usuarioAtualizar = porId(id);
         usuarioAtualizar.setCoordenador(usuario.getCoordenador());
+        return repository.save(usuarioAtualizar);
+    }
+
+    public Usuario atualizarFlagCoordenador(int id, Usuario usuario){
+        Usuario usuarioAtualizar = porId(id);
+
+        usuarioAtualizar.setCoordenador(usuario.getCoordenador());
+        usuarioAtualizar.setFlagAprovado(usuario.getFlagAprovado());
+
         return repository.save(usuarioAtualizar);
     }
 

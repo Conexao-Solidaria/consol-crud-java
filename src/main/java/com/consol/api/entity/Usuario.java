@@ -27,9 +27,6 @@ public class Usuario {
 
     private String senha;
 
-    @CPF
-    @Size(min = 11,max = 11)
-    @NotBlank
     private String cpf;
 
     @Column(name = "flag_aprovado")

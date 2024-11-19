@@ -61,10 +61,19 @@ public class UsuarioMapper {
     public static Usuario toEntity(UsuarioAtualizarCoordenadorDto dto){
         if (dto == null) return null;
 
-        Usuario usuario = new Usuario();
-        usuario.setCoordenador(dto.getCoordenador());
+        Usuario entity = new Usuario();
+        entity.setCoordenador(dto.getCoordenador());
 
-        return usuario;
+        return entity;
+    }
+
+    public static Usuario toEntity(UsuarioAtualizarFlagCoordenadorDto dto){
+        if (dto == null) return null;
+
+        Usuario entity = new Usuario();
+        entity.setCoordenador(dto.getCoordenador());
+        entity.setFlagAprovado(dto.getFlagAprovado());
+        return entity;
     }
 
 }
