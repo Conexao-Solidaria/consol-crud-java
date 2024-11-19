@@ -38,6 +38,10 @@ public class DoacaoService {
         );
     }
 
+    public List<Doacao> listarDoacaoFamilia(){
+        return repository.findByTitularFamilia();
+    }
+
     public List<Doacao> listarPorData(LocalDate dataDoacao) {
         LocalDateTime inicioDoDia = dataDoacao.atStartOfDay();
         LocalDateTime fimDoDia = inicioDoDia.plusDays(1).minusSeconds(1);

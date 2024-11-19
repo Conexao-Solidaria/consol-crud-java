@@ -1,8 +1,10 @@
 package com.consol.api.dto.doacao;
 
 import com.consol.api.entity.Doacao;
+import com.consol.api.entity.Familia;
 import com.consol.api.entity.Titular;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DoacaoMapper {
@@ -50,10 +52,10 @@ public class DoacaoMapper {
 //        return instituicaoDto;
 //    }
 
-    private static DoacaoConsultaDto.DonatarioDto toDonatarioDto(Titular titular) {
+    private static DoacaoConsultaDto.TitularDto toDonatarioDto(Titular titular) {
         if (titular == null) return null;
 
-        DoacaoConsultaDto.DonatarioDto donatarioDto = new DoacaoConsultaDto.DonatarioDto();
+        DoacaoConsultaDto.TitularDto donatarioDto = new DoacaoConsultaDto.TitularDto();
         donatarioDto.setId(titular.getId());
         donatarioDto.setNome(titular.getNome());
         donatarioDto.setRg(titular.getRg());
@@ -91,6 +93,50 @@ public class DoacaoMapper {
 
         return entity;
 
+    }
+
+    public static List<DoacaoConsultaComFamiliaDto> toDtoFamilia(List<Doacao> entity){
+        List<DoacaoConsultaComFamiliaDto> dtos = new ArrayList <>();
+
+        for (int i = 0; i < entity.size(); i++) {
+        DoacaoConsultaComFamiliaDto dto = new DoacaoConsultaComFamiliaDto();
+        dto.setId(entity.get(i).getId());
+        dto.setDescricao(entity.get(i).getDescricao());
+        dto.setDataDoacao(entity.get(i).getDataDoacao());
+        dto.setFlagDoacaoEntregue(entity.get(i).getFlagDoacaoEntregue());
+        dto.setTitular(toDtoDonaratio(entity.get(i).getTitular()));
+        dto.getTitular().setFamilia(toDtoFamilia(entity.get(i).getTitular().getFamilia()));
+        dtos.add(dto);
+        }
+
+        return dtos;
+    }
+
+
+    public static DoacaoConsultaComFamiliaDto.TitularDto toDtoDonaratio(Titular entity){
+        DoacaoConsultaComFamiliaDto.TitularDto dto = new DoacaoConsultaComFamiliaDto.TitularDto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setRg(entity.getRg());
+        dto.setCpf(entity.getCpf());
+        dto.setDataNascimento(entity.getDataNascimento());
+        dto.setTelefone1(entity.getTelefone1());
+        dto.setTelefone2(entity.getTelefone2());
+
+        return dto;
+    }
+
+    public static DoacaoConsultaComFamiliaDto.TitularDto.FamiliaDto toDtoFamilia(Familia entity){
+        DoacaoConsultaComFamiliaDto.TitularDto.FamiliaDto dto = new DoacaoConsultaComFamiliaDto.TitularDto.FamiliaDto();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setCep(entity.getCep());
+        dto.setNumeroCasa(entity.getNumeroCasa());
+        dto.setRenda(entity.getRenda());
+        dto.setFlagRetirada(entity.getFlagRetirada());
+        dto.setDataCadastro(entity.getDataCadastro());
+
+        return dto;
     }
 
 }

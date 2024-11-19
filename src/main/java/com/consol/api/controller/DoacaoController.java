@@ -68,6 +68,14 @@ public class DoacaoController {
         return ResponseEntity.status(200).body(dto);
     }
 
+    @GetMapping("/listagem-com-familia")
+    public ResponseEntity<List<DoacaoConsultaComFamiliaDto>> consultaComFamilia(){
+        List<Doacao> doacaos = service.listarDoacaoFamilia();
+        List<DoacaoConsultaComFamiliaDto> dto = DoacaoMapper.toDtoFamilia(doacaos);
+
+        return ResponseEntity.ok().body(dto);
+    }
+
     @GetMapping("/filtro/por-data")
     private ResponseEntity<List<DoacaoConsultaDto>> porData(
             @RequestParam LocalDate data

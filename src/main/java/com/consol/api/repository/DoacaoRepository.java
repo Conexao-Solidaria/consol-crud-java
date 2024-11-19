@@ -2,6 +2,7 @@ package com.consol.api.repository;
 
 import com.consol.api.entity.Doacao;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,5 +13,9 @@ public interface DoacaoRepository extends JpaRepository<Doacao, Integer> {
     List<Doacao> findByDataDoacaoBetween(LocalDateTime inicio, LocalDateTime fim);
     List<Doacao> findByTitularNomeContainsIgnoreCase(String nome);
     List<Doacao> findByDataDoacaoBetweenAndFlagDoacaoEntregue(LocalDateTime inicio, LocalDateTime fim, Byte flag);
+
+    @Query("SELECT d FROM Doacao d JOIN FETCH d.titular t JOIN FETCH t.familia f")
+    List<Doacao> findByTitularFamilia();
+
 
 }
