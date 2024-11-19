@@ -12,7 +12,7 @@ public class DoacaoConsultaDto {
     private String descricao;
     private LocalDateTime dataDoacao;
 //    private InstituicaoDto instituicao;
-    private DonatarioDto donatario;
+    private TitularDto donatario;
     private Byte flagDoacaoEntregue;
 
 //    @Data
@@ -25,7 +25,7 @@ public class DoacaoConsultaDto {
 //    }
 
     @Data
-    public static class DonatarioDto {
+    public static class TitularDto {
         private Integer id;
         private LocalDate dataCadastro;
         private String nome;
