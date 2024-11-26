@@ -31,22 +31,28 @@ public class FamiliaMapper {
         return dto;
     }
 
-    public static List<FamiliaConsultaDto.TitularDto> toDonatarioDto(List<Titular> titulars) {
-        if (titulars == null) return null;
+    public static List<FamiliaConsultaDto.TitularDto> toDonatarioDto(List<Titular> entities) {
+        if (entities == null) return null;
 
-        List<FamiliaConsultaDto.TitularDto> donatarioDtoList = new ArrayList<>();
+        List<FamiliaConsultaDto.TitularDto> titularDtos = new ArrayList<>();
 
-        for (Titular titularAtual : titulars) {
-            FamiliaConsultaDto.TitularDto donatarioDto = new FamiliaConsultaDto.TitularDto();
-            donatarioDto.setId(titularAtual.getId());
-            donatarioDto.setEstadoCivil(titularAtual.getEstadoCivil());
-            donatarioDto.setEscolaridade(titularAtual.getEscolaridade());
-            donatarioDto.setTrabalhando(titularAtual.getTrabalhando());
-            donatarioDto.setOcupacao(titularAtual.getOcupacao());
+        for (Titular entityAtual : entities) {
+            FamiliaConsultaDto.TitularDto dto = new FamiliaConsultaDto.TitularDto();
+            dto.setId(entityAtual.getId());
+            dto.setNome(entityAtual.getNome());
+            dto.setRg(entityAtual.getRg());
+            dto.setCpf(entityAtual.getCpf());
+            dto.setDataNascimento(entityAtual.getDataNascimento());
+            dto.setTelefone1(entityAtual.getTelefone1());
+            dto.setTelefone2(entityAtual.getTelefone2());
+            dto.setEstadoCivil(entityAtual.getEstadoCivil());
+            dto.setEscolaridade(entityAtual.getEscolaridade());
+            dto.setTrabalho(entityAtual.getTrabalhando());
+            dto.setOcupacao(entityAtual.getOcupacao());
 
-            donatarioDtoList.add(donatarioDto);
+            titularDtos.add(dto);
         }
-        return donatarioDtoList;
+        return titularDtos;
     }
 
     public static List<FamiliaConsultaDto.DespesaDto> toDespesaDto(List<Despesa> despesas) {
