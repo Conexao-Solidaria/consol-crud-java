@@ -163,6 +163,16 @@ public class DoacaoController {
         return ResponseEntity.status(200).body(dto);
     }
 
+    @GetMapping("/listagem-decrecente")
+    public ResponseEntity<List<DoacaoConsultaComFamiliaDto>> listagemDecrescente(){
+        List<Doacao> doacaos = service.listagemDecrescente();
+
+        if (doacaos.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<DoacaoConsultaComFamiliaDto> doacaoConsultaComFamiliaDtos = DoacaoMapper.toDtoFamilia(doacaos);
+        return ResponseEntity.status(200).body(doacaoConsultaComFamiliaDtos);
+    }
+
     @GetMapping("/baixar-csv")
     public ResponseEntity <byte[]> baixarCsv() throws IOException {
         List <Doacao> doacoes = service.listar();

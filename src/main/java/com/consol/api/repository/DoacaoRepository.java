@@ -14,8 +14,10 @@ public interface DoacaoRepository extends JpaRepository<Doacao, Integer> {
     List<Doacao> findByTitularNomeContainsIgnoreCase(String nome);
     List<Doacao> findByDataDoacaoBetweenAndFlagDoacaoEntregue(LocalDateTime inicio, LocalDateTime fim, Byte flag);
 
-    @Query("SELECT d FROM Doacao d JOIN FETCH d.titular t JOIN FETCH t.familia f")
+    @Query("SELECT d FROM Doacao d JOIN FETCH d.titular t JOIN FETCH t.familia f ORDER BY d.dataDoacao DESC")
     List<Doacao> findByTitularFamilia();
 
+    @Query("SELECT d FROM Doacao d JOIN FETCH d.titular t JOIN FETCH t.familia f ORDER BY d.dataDoacao")
+    List<Doacao> findByTitularFamiliaDecrescente();
 
 }
