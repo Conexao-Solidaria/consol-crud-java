@@ -8,7 +8,7 @@
 - Git Bash ou Qualquer terminal baseado em Bash.
   
 ## Desenvolvimento
-Criar na base do seu projeto um arquivo .env com o seguinte conteúdo:
+Criar no **diretório base** e no diretório **.database** do seu projeto um arquivo .env com o seguinte conteúdo:
 ```
 ROOT_PASSWORD="{senha_do_banco_desejada}"
 ```
@@ -20,7 +20,8 @@ Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o a
 
 Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o arquivo "./.database/build.sh"
 ```
-./.database/build.sh
+cd .database
+./build.sh
 ```
 
 Executar pelo `git bash` ou qualquer `bash` (CMD e Powershell não inclusos) o arquivo "start.sh"
