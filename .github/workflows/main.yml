@@ -5,32 +5,47 @@ jobs:
   Build-and-Test:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-        
-      - name: Set up JDK 17
+      - uses: actions/checkout@v3
+
+      - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'temurin' 
+          distribution: 'temurin'
           cache: maven
 
-      - name: Check Current Directory
-        run: pwd
-
-      - name: List Files in Current Directory
-        run: ls -R
-
-
-      - name: Verify pom.xml exists
-        run: |
-          if [ ! -f "./pom.xml" ]; then
-          echo "Error: pom.xml not found in consol-crud-java directory.";
-          exit 1;
-          fi
-
-      - name: Build with Maven (Skip Tests Fully)
+      
+      - name: Run tests
         run: |
           mvn package -DskipTests
+
+    
+      # - name: Check out repository code
+      #   uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
+        
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     java-version: '17'
+      #     distribution: 'temurin' 
+      #     cache: maven
+
+      # - name: Check Current Directory
+      #   run: pwd
+
+      # - name: List Files in Current Directory
+      #   run: ls -R
+
+
+      # - name: Verify pom.xml exists
+      #   run: |
+      #     if [ ! -f "./pom.xml" ]; then
+      #     echo "Error: pom.xml not found in consol-crud-java directory.";
+      #     exit 1;
+      #     fi
+
+      # - name: Build with Maven (Skip Tests Fully)
+      #   run: |
+      #     mvn package -DskipTests
