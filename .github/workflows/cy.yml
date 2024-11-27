@@ -19,3 +19,9 @@ jobs:
 
     - name: Build com Maven
       run: mvn -B package -DskipTests
+
+    - name: Gerar artefato Github com o .jar gerado
+      uses: actions/upload-artifact@v4
+      with:
+        name: aplicacao
+        path: api-pets-completa/target/*.jar 
