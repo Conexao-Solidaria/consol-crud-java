@@ -1,0 +1,21 @@
+name: CI/CD para Spring Boot com Maven e publicação em EC2
+
+on:
+  push:
+    branches: [feat/endpoints]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Atualização do código
+      uses: actions/checkout@v4
+
+    - name: Definindo a versão da JDK 
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'oracle' 
+        java-version: '17'
+
+    - name: Build com Maven
+      run: mvn -B packege -DskipTests
