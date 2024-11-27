@@ -43,5 +43,14 @@ jobs:
         name: aplicacao
         path: ./aplicacao/
 
-    - name: Listar arquivos no diretório aplicacao
+    - name: Verificar conteúdo do diretório aplicacao
       run: ls -la ./aplicacao/
+
+    - name: Recuperar scripts
+      uses: actions/download-artifact@v4
+      with:
+        name: scripts
+        path: ./scripts/
+
+    - name: Verificar conteúdo do diretório scripts
+      run: ls -la ./scripts/
