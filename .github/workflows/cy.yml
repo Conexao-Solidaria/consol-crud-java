@@ -20,14 +20,17 @@ jobs:
     - name: Build com Maven
       run: mvn -B package -DskipTests
 
+    - name: listagem teste1
+      run: ls ./target/
+
     - name: Gerar artefato Github com o .jar gerado
       uses: actions/upload-artifact@v4
       with:
         name: aplicacao
         path: ./target/*.jar 
 
-    - name: listagem teste
-      run: ls 
+    - name: listagem teste2
+      run: ls ./target/
 
     - name: Gerar artefato Github com os arquivos .sh
       uses: actions/upload-artifact@v4        
