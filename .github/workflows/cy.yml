@@ -18,4 +18,4 @@ jobs:
         java-version: '17'
 
     - name: Build com Maven
-      run: mvn -B packege -DskipTests
+      run: mvn -B package -DskipTests
