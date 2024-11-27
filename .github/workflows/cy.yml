@@ -49,5 +49,8 @@ jobs:
          name: scripts
          path: ./scripts/
 
-  #   - name: Verificar conteúdo do diretório scripts
-  #     run: ls -la ./scripts/
+    - name: Criar arquivo .pem a partir da variável DEPLOY_KEY e fazer o chmod 400 nele
+      id: geracao-arquivo-pem
+      run: |
+        echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+        chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
