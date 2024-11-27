@@ -27,7 +27,7 @@ jobs:
         path: consol-crud-java/target/*.jar 
 
     - name: listagem teste
-        run: -ls
+        run: ls
 
     - name: Gerar artefato Github com os arquivos .sh
       uses: actions/upload-artifact@v4        
