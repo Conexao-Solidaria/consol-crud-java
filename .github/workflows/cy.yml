@@ -24,7 +24,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: aplicacao
-        path: consol-crud-java/target/*.jar 
+        path: ./target/*.jar 
 
     - name: Listar arquivos no target 
       run: ls -la ./target/
