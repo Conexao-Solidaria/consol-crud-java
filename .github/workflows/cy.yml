@@ -27,7 +27,7 @@ jobs:
         path: consol-crud-java/target/*.jar 
 
     - name: Listar arquivos no target 
-      run: ls -la
+      run: ls -la consol-crud-java/target/
 
     - name: Gerar artefato Github com os arquivos .sh
       uses: actions/upload-artifact@v4        
