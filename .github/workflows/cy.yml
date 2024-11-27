@@ -25,7 +25,7 @@ jobs:
       with:
         name: aplicacao
         path: consol-crud-java/target/*.jar 
-    
+
     - name: Gerar artefato Github com os arquivos .sh
       uses: actions/upload-artifact@v4        
       with:
@@ -41,4 +41,10 @@ jobs:
       uses: actions/download-artifact@v4 
       with:
         name: aplicacao
-        path: ./ 
+        path: ./aplicacao/
+
+    - name: Recuperar scripts
+      uses: actions/download-artifact@v4
+      with:
+        name: scripts
+        path: ./scripts/
