@@ -26,12 +26,12 @@ jobs:
 
       - name: Verify pom.xml exists
         run: |
-          if [ ! -f "./pom.xml" ]; then
+          if [ ! -f "./API-crud-consol/pom.xml" ]; then
           echo "Error: pom.xml not found in consol-crud-java directory.";
           exit 1;
           fi
 
       - name: Build and Test with Maven
         run: |
-          mvn -f ./pom.xml clean install
-          mvn -f ./pom.xml test
+          mvn -f ./API-crud-consol/pom.xml clean install
+          mvn -f ./API-crud-consol/pom.xml test
