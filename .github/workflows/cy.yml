@@ -25,3 +25,9 @@ jobs:
       with:
         name: aplicacao
         path: api-pets-completa/target/*.jar 
+    
+    - name: Gerar artefato Github com os arquivos .sh
+      uses: actions/upload-artifact@v4        
+      with:
+        name: scripts 
+        path: .github/scripts/*.sh
