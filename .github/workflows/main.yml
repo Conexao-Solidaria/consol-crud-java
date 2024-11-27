@@ -33,5 +33,4 @@ jobs:
 
       - name: Build with Maven (Skip Tests Fully)
         run: |
-          mvn -f ./API-crud-consol/pom.xml clean install -Dmaven.test.skip=true
-
+          mvn package -DskipTests
