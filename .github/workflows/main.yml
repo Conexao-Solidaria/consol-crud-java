@@ -51,25 +51,30 @@ jobs:
       - name: Get the latest release tag number
         id: get_release
         run: |
-          LATEST_RELEASE=$(curl --silent \
+          # Get the list of existing tags
+          EXISTING_TAGS=$(curl --silent \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/latest" | \
-            jq -r .tag_name)
+            "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[].name')
           
-          if [[ "$LATEST_RELEASE" == "null" ]]; then
-            echo "No releases found. Starting with version 1."
-            echo "TAG_NAME=1" >> $GITHUB_ENV  # Start from version 1 if no releases exist
-          else
-            VERSION_NUMBER=$(echo "$LATEST_RELEASE" | sed 's/[^0-9]*//g')
-            NEXT_VERSION=$((VERSION_NUMBER + 1))
-            echo "Next release version: $NEXT_VERSION"
-            echo "TAG_NAME=$NEXT_VERSION" >> $GITHUB_ENV  # Increment the version
-          fi
+          # Find the highest tag number
+          MAX_TAG=0
+          for TAG in $EXISTING_TAGS; do
+            # Extract the numeric part of the tag
+            TAG_NUMBER=$(echo "$TAG" | sed 's/[^0-9]*//g')
+            if [ "$TAG_NUMBER" -gt "$MAX_TAG" ]; then
+              MAX_TAG=$TAG_NUMBER
+            fi
+          done
+
+          # Increment the tag number
+          NEXT_TAG=$((MAX_TAG + 1))
+          echo "Next release version: v$NEXT_TAG"
+          echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
 
       - name: Create a new release
         uses: actions/create-release@v1
         with:
-          tag_name: "v${{ env.TAG_NAME }}" 
+          tag_name: ${{ env.TAG_NAME }}  # Use the calculated tag name
           release_name: "Release ${{ env.TAG_NAME }}"
           body: "Automated release with the latest JAR build."
           draft: false
@@ -80,7 +85,7 @@ jobs:
       - name: Upload JAR as release asset
         uses: ncipollo/release-action@v1
         with:
-          tag: "v${{ env.TAG_NAME }}"
+          tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
           files: build-artifact/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
