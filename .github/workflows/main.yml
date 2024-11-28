@@ -1,0 +1,61 @@
+name: GitHub Actions Demo
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  verify-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: List directory
+        run: ls -a
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Verify and build project (Skip tests)
+        run: |
+          mvn clean verify -DskipTests
+          mvn package -DskipTests
+
+      - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: target/*.jar
+
+  create-release:
+    needs: verify-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+
+      - name: Create or update release
+        uses: actions/create-release@v1
+        with:
+          tag_name: latest
+          release_name: "Latest Build"
+          body: "Automated release with the latest JAR build."
+          draft: false
+          prerelease: false
+          files: build-artifact/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
