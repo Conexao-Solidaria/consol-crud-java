@@ -84,9 +84,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload JAR as release asset
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
-          bodyFile: target/*.jar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ls -a
+        # uses: ncipollo/release-action@v1
+        # with:
+        #   tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
+        #   bodyFile: target/*.jar
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
