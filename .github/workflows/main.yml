@@ -11,9 +11,9 @@ on:
       - dev
 
 jobs:
-  verify-and-build:
+  verify-and-build: # primeiro job para verificar o código e fazer o build do mesmo
     runs-on: ubuntu-latest
-    steps:
+    steps: # definindo etapas
       - uses: actions/checkout@v3
 
       - name: List directory
@@ -26,29 +26,29 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Verify and build project (Skip tests)
+      - name: Verify and build project (Skip tests) # passo para compilar o projeto, pulando os testes
         run: |
           mvn clean verify -DskipTests
           mvn package -DskipTests
 
-      - name: Upload JAR as artifact
+      - name: Upload JAR as artifact  # fazendo o upload do .jar e gerando o artefato
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
           path: target/*.jar
 
-  create-release:
+  create-release: # segundo job para criar ou atualizar a release com o arquivo jar, toda vez que houver push e/ou pull request na main
     needs: verify-and-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download build artifacts
+      - name: Download build artifacts # baixar o artefato (.jar) gerado no job anterior
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
 
-      - name: Create or update release
+      - name: Create or update release # criar ou atualizar a release
         uses: actions/create-release@v1
         with:
           tag_name: latest
@@ -58,4 +58,4 @@ jobs:
           prerelease: false
           files: build-artifact/*.jar
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # usa o token do GitHub para autenticar a criação da release e ver as permissões
