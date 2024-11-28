@@ -71,7 +71,17 @@ jobs:
           echo "Next release version: v$NEXT_TAG"
           echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
 
-
+      - name: Create a new release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}  # Use the calculated tag name
+          release_name: "Release ${{ env.TAG_NAME }}"
+          body: "Automated release with the latest JAR build."
+          bodyFile: build-artifact/*.jar
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload JAR as release asset
         uses: ncipollo/release-action@v1
