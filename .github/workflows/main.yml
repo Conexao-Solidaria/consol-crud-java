@@ -87,6 +87,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
-          files: build-artifact/*.jar
+          bodyFile: build-artifact/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
