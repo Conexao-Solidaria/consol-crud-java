@@ -91,4 +91,9 @@ public class DoacaoService {
         return repository.findByDataDoacaoBetweenAndFlagDoacaoEntregue(incio,fim,(byte) 1);
 
     }
+
+    public List<Doacao> listagemDecrescente(){
+        return repository.findByTitularFamiliaDecrescente();
+    }
+
 }

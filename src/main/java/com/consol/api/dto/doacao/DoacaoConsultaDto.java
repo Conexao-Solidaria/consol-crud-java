@@ -27,7 +27,6 @@ public class DoacaoConsultaDto {
     @Data
     public static class TitularDto {
         private Integer id;
-        private LocalDate dataCadastro;
         private String nome;
         private String rg;
         private String cpf;

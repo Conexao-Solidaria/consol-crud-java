@@ -1,13 +1,21 @@
 package com.consol.api.dto.titular;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.br.CPF;
+
+import java.time.LocalDate;
 
 @Data
 public class TitularAtualizarDto {
 
     private String nome;
 
-    private String Sobrenome;
+    private String rg;
+
+    @CPF
+    private String cpf;
+
+    private LocalDate dataNascimento;
 
     private String telefone1;
 
@@ -20,4 +28,5 @@ public class TitularAtualizarDto {
     private Byte trabalhando;
 
     private String ocupacao;
+
 }

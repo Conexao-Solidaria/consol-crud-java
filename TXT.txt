@@ -1,8 +1,0 @@
-00DOACAO30/10/2024 21:45:0301
-02Cesta Básica                                      1    1          20co
-02Kit Escolar                                       2    0          20co
-010000000002
-00DOACAO30/10/2024 21:47:0901
-02Cesta Básica                                      1    1          20co
-02Kit Escolar                                       2    0          20co
-010000000002

@@ -1,0 +1,109 @@
+name: CI/CD para Spring Boot com Maven e publicação em EC2
+
+on:
+  push:
+    branches: [feat/endpoints]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Atualização do código
+      uses: actions/checkout@v4
+
+    - name: Definindo a versão da JDK 
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'oracle' 
+        java-version: '17'
+
+    - name: Build com Maven
+      run: mvn -B package -DskipTests
+
+    - name: Gerar artefato Github com o .jar gerado
+      uses: actions/upload-artifact@v4
+      with:
+        name: aplicacao
+        path: ./target/*.jar 
+
+    - name: Gerar artefato Github com os arquivos .sh
+      uses: actions/upload-artifact@v4        
+      with:
+        name: scripts 
+        path: .github/scripts/*.sh
+
+  deploy:
+    needs: build 
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Recuperar jars
+      uses: actions/download-artifact@v4 
+      with:
+        name: aplicacao
+        path: ./aplicacao/
+        
+    - name: Recuperar scripts
+      uses: actions/download-artifact@v4
+      with:
+         name: scripts
+         path: ./scripts/
+
+    - name: Criar arquivo .pem a partir da variável DEPLOY_KEY e fazer o chmod 400 nele
+      id: geracao-arquivo-pem
+      run: |
+        echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+        chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }} 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of 9495d26 (Update cy.yml)
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
+<<<<<<< HEAD
+>>>>>>> parent of 9495d26 (Update cy.yml)
+=======
+>>>>>>> parent of 509f585 (Update cy.yml)
+=======
+>>>>>>> parent of 9495d26 (Update cy.yml)
+
+    - name: Enviar o JAR p/ a EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ubuntu
+        key: ${{ secrets.DEPLOY_KEY }}
+        source: "./*.jar"
+        target: "/home/ubuntu/deploy-api/"
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 5f377b1 (Update cy.yml)
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> parent of 9495d26 (Update cy.yml)
+<<<<<<< HEAD
+>>>>>>> parent of 5f377b1 (Update cy.yml)
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
+<<<<<<< HEAD
+>>>>>>> parent of 9495d26 (Update cy.yml)
+=======
+>>>>>>> parent of 509f585 (Update cy.yml)
+=======
+>>>>>>> parent of 9495d26 (Update cy.yml)
