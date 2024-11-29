@@ -56,7 +56,10 @@ jobs:
         chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }} 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
 =======
 >>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
 
@@ -70,6 +73,9 @@ jobs:
         target: "/home/ubuntu/deploy-api/"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of 5f377b1 (Update cy.yml)
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
 =======
 >>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
