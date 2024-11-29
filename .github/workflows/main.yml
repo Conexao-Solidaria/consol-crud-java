@@ -84,7 +84,7 @@ jobs:
       #     tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
       #     bodyFile: target/*.jar
       #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set release version
         id: set_version
