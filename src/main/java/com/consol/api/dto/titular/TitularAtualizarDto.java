@@ -12,7 +12,6 @@ public class TitularAtualizarDto {
 
     private String rg;
 
-    @CPF
     private String cpf;
 
     private LocalDate dataNascimento;
