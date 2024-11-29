@@ -42,46 +42,73 @@ jobs:
         with:
           name: build-artifact
 
-      - name: Get the latest release tag number
-        id: get_release
-        run: |
-          # Get the list of existing tags
-          EXISTING_TAGS=$(curl --silent \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[].name')
+      # - name: Get the latest release tag number
+      #   id: get_release
+      #   run: |
+      #     # Get the list of existing tags
+      #     EXISTING_TAGS=$(curl --silent \
+      #       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+      #       "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[].name')
           
-          # Find the highest tag number
-          MAX_TAG=0
-          for TAG in $EXISTING_TAGS; do
-            # Extract the numeric part of the tag
-            TAG_NUMBER=$(echo "$TAG" | sed 's/[^0-9]*//g')
-            if [ "$TAG_NUMBER" -gt "$MAX_TAG" ]; then
-              MAX_TAG=$TAG_NUMBER
-            fi
-          done
+      #     # Find the highest tag number
+      #     MAX_TAG=0
+      #     for TAG in $EXISTING_TAGS; do
+      #       # Extract the numeric part of the tag
+      #       TAG_NUMBER=$(echo "$TAG" | sed 's/[^0-9]*//g')
+      #       if [ "$TAG_NUMBER" -gt "$MAX_TAG" ]; then
+      #         MAX_TAG=$TAG_NUMBER
+      #       fi
+      #     done
 
-          # Increment the tag number
-          NEXT_TAG=$((MAX_TAG + 1))
-          echo "Next release version: v$NEXT_TAG"
-          echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
+      #     # Increment the tag number
+      #     NEXT_TAG=$((MAX_TAG + 1))
+      #     echo "Next release version: v$NEXT_TAG"
+      #     echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
 
+      # - name: Create a new release
+      #   uses: actions/create-release@v1
+      #   with:
+      #     tag_name: ${{ env.TAG_NAME }}  # Use the calculated tag name
+      #     release_name: "Release ${{ env.TAG_NAME }}"
+      #     body: "Automated release with the latest JAR build."
+      #     bodyFile: build-artifact/*.jar
+      #     draft: false
+      #     prerelease: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Upload JAR as release asset
+      #   run: ls -a
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
+      #     bodyFile: target/*.jar
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set release version
+        id: set_version
+        run: |
+          TAG_NAME=$(date +'%Y.%m.%d-%H%M%S')
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
+      
       - name: Create a new release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ env.TAG_NAME }}  # Use the calculated tag name
+          tag_name: ${{ env.TAG_NAME }}
           release_name: "Release ${{ env.TAG_NAME }}"
           body: "Automated release with the latest JAR build."
-          bodyFile: build-artifact/*.jar
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      
+            
       - name: Upload JAR as release asset
-        run: ls -a
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
-          bodyFile: target/*.jar
+          tag: ${{ env.TAG_NAME }}
+          artifacts: build-artifact/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
