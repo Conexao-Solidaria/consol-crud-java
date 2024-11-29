@@ -72,6 +72,9 @@ public class TitularMapper {
         Titular titular = new Titular();
 
         titular.setNome(dto.getNome());
+        titular.setRg(dto.getRg());
+        titular.setCpf(dto.getCpf());
+        titular.setDataNascimento(dto.getDataNascimento());
         titular.setTelefone1(dto.getTelefone1());
         titular.setTelefone2(dto.getTelefone2());
         titular.setEstadoCivil(dto.getEstadoCivil());

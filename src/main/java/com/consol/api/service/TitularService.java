@@ -54,20 +54,39 @@ public class TitularService {
         );
     }
 
-    public List<Titular> listarPorNome(String nome) {
-        return repository.findByNomeContainsIgnoreCase(nome);
-    }
-
     public Titular atualizar(int id, Titular titular) {
         Titular titularAtualizado = porId(id);
 
-        titularAtualizado.setNome(titular.getNome());
-        titularAtualizado.setEstadoCivil(titular.getEstadoCivil());
-        titularAtualizado.setEscolaridade(titular.getEscolaridade());
-        titularAtualizado.setTelefone1(titular.getTelefone1());
-        titularAtualizado.setTelefone2(titular.getTelefone2());
-        titularAtualizado.setTrabalhando(titular.getTrabalhando());
-        titularAtualizado.setOcupacao(titular.getOcupacao());
+        if (titular.getNome() != null && !titular.getNome().trim().isEmpty() && titular.getNome().length() <= 60) {
+            titularAtualizado.setNome(titular.getNome());
+        }
+        if (titular.getRg() != null && !titular.getRg().trim().isEmpty() && titular.getRg().length() == 9) {
+            titularAtualizado.setRg(titular.getRg());
+        }
+        if (titular.getCpf() != null && !titular.getCpf().trim().isEmpty() && titular.getCpf().matches("\\d{11}")) {
+            titularAtualizado.setCpf(titular.getCpf());
+        }
+        if (titular.getDataNascimento() != null && !titular.getDataNascimento().isAfter(LocalDate.now())) {
+            titularAtualizado.setDataNascimento(titular.getDataNascimento());
+        }
+        if (titular.getTelefone1() != null && !titular.getTelefone1().trim().isEmpty() && titular.getTelefone1().matches("\\d{10,11}")) {
+            titularAtualizado.setTelefone1(titular.getTelefone1());
+        }
+        if (titular.getTelefone2() == null || titular.getTelefone2().matches("\\d{10,11}")) {
+            titularAtualizado.setTelefone2(titular.getTelefone2());
+        }
+        if (titular.getEstadoCivil() != null && !titular.getEstadoCivil().trim().isEmpty() && titular.getEstadoCivil().length() <= 15) {
+            titularAtualizado.setEstadoCivil(titular.getEstadoCivil());
+        }
+        if (titular.getEscolaridade() != null && !titular.getEscolaridade().trim().isEmpty() && titular.getEscolaridade().length() <= 30) {
+            titularAtualizado.setEscolaridade(titular.getEscolaridade());
+        }
+        if (titular.getTrabalhando() != null && (titular.getTrabalhando() == 0 || titular.getTrabalhando() == 1)) {
+            titularAtualizado.setTrabalhando(titular.getTrabalhando());
+        }
+        if (titular.getOcupacao() != null && !titular.getOcupacao().trim().isEmpty() && titular.getOcupacao().length() <= 45) {
+            titularAtualizado.setOcupacao(titular.getOcupacao());
+        }
 
         return repository.save(titularAtualizado);
     }
