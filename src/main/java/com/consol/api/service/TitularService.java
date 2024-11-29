@@ -54,6 +54,10 @@ public class TitularService {
         );
     }
 
+    public List<Titular> listarPorNome(String nome) {
+        return repository.findByNomeContainsIgnoreCase(nome);
+    }
+
     public Titular atualizar(int id, Titular titular) {
         Titular titularAtualizado = porId(id);
 
