@@ -55,7 +55,10 @@ jobs:
         echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
         chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }} 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
 
     - name: Enviar o JAR p/ a EC2
       uses: appleboy/scp-action@master
@@ -66,4 +69,7 @@ jobs:
         source: "./*.jar"
         target: "/home/ubuntu/deploy-api/"
 
+<<<<<<< HEAD
 >>>>>>> parent of 5f377b1 (Update cy.yml)
+=======
+>>>>>>> parent of 81fb9bc (Revert "Update cy.yml")
