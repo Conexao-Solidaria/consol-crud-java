@@ -55,6 +55,13 @@ jobs:
         echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
         chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }} 
 
+    - name: Verificar Existência do Arquivo JAR
+      run: test -f ${{ secrets.NOME_ARQUIVO_JAR }}
+   
+    - name: Verificar Existência do Arquivo PEM
+      run: test -f ~/.ssh/${{ secrets.NOME_ARQUIVO_PEM }}
+
+  
     - name: Enviar o JAR p/ a EC2
       uses: appleboy/scp-action@master
       with:
