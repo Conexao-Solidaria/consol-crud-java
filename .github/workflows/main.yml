@@ -37,12 +37,6 @@ jobs:
           name: build-artifact
           path: target/*.jar
 
-  create-release:
-    needs: verify-and-build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -85,9 +79,9 @@ jobs:
 
       - name: Upload JAR as release asset
         run: ls -a
-        # uses: ncipollo/release-action@v1
-        # with:
-        #   tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
-        #   bodyFile: target/*.jar
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
+          bodyFile: target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
