@@ -154,16 +154,16 @@ public class DoacaoController {
     }
 
     @GetMapping("/por-nome")
-    public ResponseEntity <List <DoacaoConsultaDto>> porNome(@RequestParam String nome) {
+    public ResponseEntity <List <DoacaoConsultaComFamiliaDto>> porNome(@RequestParam String nome) {
         List <Doacao> doacaos = service.listarPorNome(nome);
 
         if (doacaos.isEmpty()) return ResponseEntity.status(204).build();
 
-        List <DoacaoConsultaDto> dto = DoacaoMapper.toDto(doacaos);
+        List <DoacaoConsultaComFamiliaDto> dto = DoacaoMapper.toDtoFamilia(doacaos);
         return ResponseEntity.status(200).body(dto);
     }
 
-    @GetMapping("/listagem-decrecente")
+    @GetMapping("/listagem-decrescente")
     public ResponseEntity<List<DoacaoConsultaComFamiliaDto>> listagemDecrescente(){
         List<Doacao> doacaos = service.listagemDecrescente();
 
