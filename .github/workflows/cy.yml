@@ -54,3 +54,16 @@ jobs:
       run: |
         echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
         chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }} 
+<<<<<<< HEAD
+=======
+
+    - name: Enviar o JAR p/ a EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ubuntu
+        key: ${{ secrets.DEPLOY_KEY }}
+        source: "./*.jar"
+        target: "/home/ubuntu/deploy-api/"
+
+>>>>>>> parent of 5f377b1 (Update cy.yml)
