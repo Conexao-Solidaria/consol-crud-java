@@ -3,8 +3,12 @@ name: GitHub Actions Demo
 on:
   push:
     branches:
-      - Thigos-patch-1
-
+      - dev
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
 jobs:
   verify-and-build:
     runs-on: ubuntu-latest
