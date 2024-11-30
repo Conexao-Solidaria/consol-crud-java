@@ -1,0 +1,92 @@
+name: GitHub Actions Demo
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+  verify-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: List directory
+        run: ls -a
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Verify and build project (Skip tests)
+        run: |
+          mvn clean verify -DskipTests
+          mvn package -DskipTests
+      - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: target/*.jar
+
+  create-release:
+    needs: verify-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+
+      - name: Get the latest release tag number
+        id: get_release
+        run: |
+          # Get the list of existing tags
+          EXISTING_TAGS=$(curl --silent \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[].name')
+          
+          # Find the highest tag number
+          MAX_TAG=0
+          for TAG in $EXISTING_TAGS; do
+            # Extract the numeric part of the tag
+            TAG_NUMBER=$(echo "$TAG" | sed 's/[^0-9]*//g')
+            if [ "$TAG_NUMBER" -gt "$MAX_TAG" ]; then
+              MAX_TAG=$TAG_NUMBER
+            fi
+          done
+          # Increment the tag number
+          NEXT_TAG=$((MAX_TAG + 1))
+          echo "Next release version: v$NEXT_TAG"
+          echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
+
+      - name: List directory 2
+        run: ls -a
+
+      - name: Create a new release
+        run: |
+          gh release create "$TAG_NAME" \
+            --repo="$GITHUB_REPOSITORY" \
+            --title="${GITHUB_REPOSITORY#*/} ${TAG_NAME#v}" \
+            --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          TAG_NAME: ${{ env.TAG_NAME }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+  
+      - name: Upload backend.jar
+        run: |
+          gh release upload "$TAG_NAME" ./backend.jar \
+            --repo="$GITHUB_REPOSITORY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          TAG_NAME: ${{ env.TAG_NAME }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
