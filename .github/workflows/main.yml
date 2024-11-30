@@ -77,7 +77,7 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}  # Use the calculated tag name
           release_name: "Release ${{ env.TAG_NAME }}"
           body: "Automated release with the latest JAR build."
-          bodyFile: target/*.jar
+          bodyFile: backend.jar
           draft: false
           prerelease: false
         env:
@@ -91,6 +91,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
            tag: ${{ env.TAG_NAME }}  # Use the same tag for the uploaded asset
-           bodyFile: backend.jar
+           bodyFile: ./backend.jar
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
