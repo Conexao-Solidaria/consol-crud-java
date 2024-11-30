@@ -59,40 +59,47 @@ public class TitularService {
     }
 
     public Titular atualizar(int id, Titular titular) {
-        Titular titularAtualizado = porId(id);
+        Titular titularAtual = porId(id);
 
         if (titular.getNome() != null && !titular.getNome().trim().isEmpty() && titular.getNome().length() <= 60) {
-            titularAtualizado.setNome(titular.getNome());
+            titularAtual.setNome(titular.getNome());
         }
         if (titular.getRg() != null && !titular.getRg().trim().isEmpty() && titular.getRg().length() == 9) {
-            titularAtualizado.setRg(titular.getRg());
+            titularAtual.setRg(titular.getRg());
         }
         if (titular.getCpf() != null && !titular.getCpf().trim().isEmpty() && titular.getCpf().matches("\\d{11}")) {
-            titularAtualizado.setCpf(titular.getCpf());
+            titularAtual.setCpf(titular.getCpf());
         }
         if (titular.getDataNascimento() != null && !titular.getDataNascimento().isAfter(LocalDate.now())) {
-            titularAtualizado.setDataNascimento(titular.getDataNascimento());
+            titularAtual.setDataNascimento(titular.getDataNascimento());
         }
         if (titular.getTelefone1() != null && !titular.getTelefone1().trim().isEmpty() && titular.getTelefone1().matches("\\d{10,11}")) {
-            titularAtualizado.setTelefone1(titular.getTelefone1());
+            titularAtual.setTelefone1(titular.getTelefone1());
         }
         if (titular.getTelefone2() == null || titular.getTelefone2().matches("\\d{10,11}")) {
-            titularAtualizado.setTelefone2(titular.getTelefone2());
+            titularAtual.setTelefone2(titular.getTelefone2());
         }
         if (titular.getEstadoCivil() != null && !titular.getEstadoCivil().trim().isEmpty() && titular.getEstadoCivil().length() <= 15) {
-            titularAtualizado.setEstadoCivil(titular.getEstadoCivil());
+            titularAtual.setEstadoCivil(titular.getEstadoCivil());
         }
         if (titular.getEscolaridade() != null && !titular.getEscolaridade().trim().isEmpty() && titular.getEscolaridade().length() <= 30) {
-            titularAtualizado.setEscolaridade(titular.getEscolaridade());
+            titularAtual.setEscolaridade(titular.getEscolaridade());
         }
         if (titular.getTrabalhando() != null && (titular.getTrabalhando() == 0 || titular.getTrabalhando() == 1)) {
-            titularAtualizado.setTrabalhando(titular.getTrabalhando());
+            titularAtual.setTrabalhando(titular.getTrabalhando());
         }
         if (titular.getOcupacao() != null && !titular.getOcupacao().trim().isEmpty() && titular.getOcupacao().length() <= 45) {
-            titularAtualizado.setOcupacao(titular.getOcupacao());
+            titularAtual.setOcupacao(titular.getOcupacao());
         }
 
-        return repository.save(titularAtualizado);
+        return repository.save(titular);
+    }
+
+    public Titular atualizarFamilia(int id, int idFamilia){
+       Familia familia = familiaService.porId(idFamilia);
+        Titular titular = porId(id);
+        titular.setFamilia(familia);
+        return repository.save(titular);
     }
 
     public void deletar(int id) {

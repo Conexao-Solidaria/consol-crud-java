@@ -1,13 +1,11 @@
 package com.consol.api.controller;
 
-import com.consol.api.dto.titular.TitularAtualizarDto;
-import com.consol.api.dto.titular.TitularCadastroDto;
-import com.consol.api.dto.titular.TitularConsultaDto;
-import com.consol.api.dto.titular.TitularMapper;
+import com.consol.api.dto.titular.*;
 import com.consol.api.entity.Titular;
 import com.consol.api.service.TitularService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.valves.rewrite.Substitution;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +67,7 @@ public class TitularController {
         return ResponseEntity.ok(dto);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TitularConsultaDto> atualizar(
             @RequestBody @Valid TitularAtualizarDto dto,
             @PathVariable Integer id
@@ -81,7 +79,17 @@ public class TitularController {
         return ResponseEntity.ok(titularConsultaDto);
     }
 
-    @DeleteMapping("{id}")
+    @PutMapping("/atualizar-familia/{id}")
+    public ResponseEntity<TitularConsultaDto> atualizarFamilia(
+            @RequestBody TitularAtualizarFamiliaDto atualizarFamiliaDto,
+            @PathVariable Integer id
+    ){
+        Titular titularAtualizado = service.atualizarFamilia(id,atualizarFamiliaDto.getIdFamilia());
+        TitularConsultaDto dto = TitularMapper.toDto(titularAtualizado);
+        return ResponseEntity.status(200).body(dto);
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagarPorId(
             @PathVariable Integer id
     ) {

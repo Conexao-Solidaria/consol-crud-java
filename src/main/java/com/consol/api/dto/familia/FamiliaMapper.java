@@ -89,9 +89,10 @@ public class FamiliaMapper {
         if (dto == null) return null;
 
         Familia familia = new Familia();
+        familia.setNome(dto.getNome());
         familia.setCep(dto.getCep());
         familia.setNumeroCasa(dto.getNumeroCasa());
-
+        familia.setRenda(dto.getRenda());
         return familia;
     }
 

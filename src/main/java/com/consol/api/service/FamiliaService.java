@@ -32,8 +32,19 @@ public class FamiliaService {
     public Familia atualizar(int id, Familia familia) {
         Familia familiaAtualizada = porId(id);
 
-        familiaAtualizada.setCep(familia.getCep());
-        familiaAtualizada.setNumeroCasa(familia.getNumeroCasa());
+        if (familia.getNome() != null && !familia.getNome().trim().isEmpty() && familia.getNome().length() <= 60) {
+            familiaAtualizada.setNome(familia.getNome());
+        }
+        if (familia.getCep() != null && !familia.getCep().trim().isEmpty() && familia.getCep().matches("\\d{8}")) {
+            familiaAtualizada.setCep(familia.getCep());
+        }
+        if (familia.getNumeroCasa() != null && familia.getNumeroCasa() > 0) {
+            familiaAtualizada.setNumeroCasa(familia.getNumeroCasa());
+        }
+        if (familia.getRenda() != null && familia.getRenda() >= 0) {
+            familiaAtualizada.setRenda(familia.getRenda());
+        }
+
         return repository.save(familiaAtualizada);
     }
 

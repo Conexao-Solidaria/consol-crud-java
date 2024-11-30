@@ -50,7 +50,7 @@ public class FamiliaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FamiliaConsultaDto> atualizarEndereco(
+    public ResponseEntity<FamiliaConsultaDto> atualizarFamilia(
             @PathVariable int id,
             @RequestBody @Valid FamiliaAtualizarDto dto
     ) {
