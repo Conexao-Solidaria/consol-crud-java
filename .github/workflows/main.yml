@@ -83,6 +83,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: List directory 2
+        run: ls -a
+
+
       - name: Upload JAR as release asset
         uses: ncipollo/release-action@v1
         with:
