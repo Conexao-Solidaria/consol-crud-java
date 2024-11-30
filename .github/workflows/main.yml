@@ -3,7 +3,12 @@ name: GitHub Actions Demo
 on:
   push:
     branches:
-      - caioarnonii-patch-1
+      - dev
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   verify-and-build:
