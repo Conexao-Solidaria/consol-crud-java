@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - dev
-      - main
-      - caioarnonii-patch-1
       
 jobs:
   verify-and-build:
