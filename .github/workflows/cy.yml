@@ -3,7 +3,7 @@ name: GitHub Actions Backend com Deploy na EC2
 on:
   push:
     branches:
-      - dev
+      - caioarnonii-patch-3
       
 jobs:
   verify-and-build:
