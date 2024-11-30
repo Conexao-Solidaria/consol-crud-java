@@ -68,6 +68,17 @@ jobs:
           echo "Next release version: v$NEXT_TAG"
           echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
 
+          
+      # This GitHub Actions workflow performs the following steps:
+      # 1. Create a new release on GitHub using the `gh release create` command.
+      #    - The release is created with the tag name specified in the `TAG_NAME` environment variable.
+      #    - The repository is specified using the `GITHUB_REPOSITORY` environment variable.
+      #    - The release title is generated using the repository name and the tag name.
+      #    - Release notes are automatically generated.
+      # 2. Upload the `backend.jar` file to the created release using the `gh release upload` command.
+      #    - The file is uploaded to the release specified by the `TAG_NAME` environment variable.
+      #    - The repository is specified using the `GITHUB_REPOSITORY` environment variable.
+      # 3. List all files and directories in the current directory using the `ls -a` command.
       - name: List directory 2
         run: ls -a
 
@@ -90,3 +101,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           TAG_NAME: ${{ env.TAG_NAME }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+
+      
