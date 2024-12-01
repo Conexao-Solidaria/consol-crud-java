@@ -32,6 +32,9 @@ jobs:
           name: build-artifact
           path: target/*.jar
 
+      - name: Listar arquivos de criados 
+        run: ls -lha
+
   create-release:
     needs: verify-and-build
     runs-on: ubuntu-latest
