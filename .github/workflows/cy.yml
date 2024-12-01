@@ -82,3 +82,4 @@ jobs:
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-crud/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
           scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-crud/*.sh ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
           ssh -i ${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sh /home/ubuntu/deploy-crud/api-restart.sh"
+        '
