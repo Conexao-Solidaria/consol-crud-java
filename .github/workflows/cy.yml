@@ -27,3 +27,6 @@ jobs: # cada 'job' é um agrupamento de steps
       with:
         name: aplicacao # nome do arquivo ou conjunto de arquivos (veja ele depois em 'Recuperar jars')
         path: consol-crud-java/target/*.jar # todos os arquivos .jar do diretório api-pets-completa/target
+        
+    - name: Listar arquivos de criados 
+      run: ls -lha
