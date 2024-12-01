@@ -92,7 +92,7 @@ jobs:
       - name: Recuperar artefato
         uses: actions/download-artifact@v4
         with:
-          name: aplicacao
+          name: build-artifact
           path: ./
 
       - name: Recuperar docker-scripts
