@@ -36,5 +36,5 @@ jobs:
         path: .github/scripts/*.sh
 
   deploy:
-      needs: build # segundo grupo de steps
-      runs-on: ubuntu-latest
+    needs: build # segundo grupo de steps
+    runs-on: ubuntu-latest
