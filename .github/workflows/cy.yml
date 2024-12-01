@@ -45,3 +45,9 @@ jobs:
       with:
         name: aplicacao # nome do arquivo ou conjunto de arquivos que queremos recuperar
         path: ./ # diretório da VM de execução do workflow onde os arquivos recuperados ficarão
+        
+    - name: Recuperar scripts
+      uses: actions/download-artifact@v4
+      with:
+        name: scripts
+        path: ./        
