@@ -20,4 +20,4 @@ jobs: # cada 'job' é um agrupamento de steps
         java-version: '17'
 
     - name: Build com Maven
-      run: mvn -f consol-crud-java/pom.xml clean package
+      run: mvn -f ./consol-crud-java/pom.xml clean package
