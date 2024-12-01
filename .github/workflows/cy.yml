@@ -7,8 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
     
+    steps:
     - name: Atualização do código
       uses: actions/checkout@v4
 
