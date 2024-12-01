@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - caioarnonii-patch-3
-      
+
 jobs:
   verify-and-build:
     runs-on: ubuntu-latest
@@ -25,6 +25,7 @@ jobs:
         run: |
           mvn clean verify -DskipTests
           mvn package -DskipTests
+
       - name: Upload JAR as artifact
         uses: actions/upload-artifact@v3
         with:
@@ -45,36 +46,21 @@ jobs:
       - name: Get the latest release tag number
         id: get_release
         run: |
-          # Get the list of existing tags
           EXISTING_TAGS=$(curl --silent \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/tags" | jq -r '.[].name')
-          
-          # Find the highest tag number
+
           MAX_TAG=0
           for TAG in $EXISTING_TAGS; do
-            # Extract the numeric part of the tag
             TAG_NUMBER=$(echo "$TAG" | sed 's/[^0-9]*//g')
             if [ "$TAG_NUMBER" -gt "$MAX_TAG" ]; then
               MAX_TAG=$TAG_NUMBER
             fi
           done
-          # Increment the tag number
           NEXT_TAG=$((MAX_TAG + 1))
           echo "Next release version: v$NEXT_TAG"
-          echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV  # Save the tag name in the environment variable
+          echo "TAG_NAME=v$NEXT_TAG" >> $GITHUB_ENV
 
-          
-      # This GitHub Actions workflow performs the following steps:
-      # 1. Create a new release on GitHub using the `gh release create` command.
-      #    - The release is created with the tag name specified in the `TAG_NAME` environment variable.
-      #    - The repository is specified using the `GITHUB_REPOSITORY` environment variable.
-      #    - The release title is generated using the repository name and the tag name.
-      #    - Release notes are automatically generated.
-      # 2. Upload the `backend.jar` file to the created release using the `gh release upload` command.
-      #    - The file is uploaded to the release specified by the `TAG_NAME` environment variable.
-      #    - The repository is specified using the `GITHUB_REPOSITORY` environment variable.
-      # 3. List all files and directories in the current directory using the `ls -a` command.
       - name: List directory 2
         run: ls -a
 
@@ -88,7 +74,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           TAG_NAME: ${{ env.TAG_NAME }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-  
+
       - name: Upload backend.jar
         run: |
           gh release upload "$TAG_NAME" ./backend.jar \
@@ -97,3 +83,53 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           TAG_NAME: ${{ env.TAG_NAME }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+
+  deploy:
+    needs: verify-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recuperar artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: aplicacao
+          path: ./
+
+      - name: Recuperar docker-scripts
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-scripts
+          path: ./docker-scripts/
+
+      - name: Enviar o JAR p/ a EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
+          source: ./*.jar
+          target: /home/ubuntu/deploy-api/
+
+      - name: Enviar os docker-scripts p/ a EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
+          source: ./docker-scripts/*
+          target: /home/ubuntu/deploy-api/
+
+      - name: Criar arquivo .pem a partir da variável ACCESS_WEBSERVER_KEY e fazer o chmod 400 nele
+        id: geracao-arquivo-pem
+        run: |
+          echo "${{ secrets.ACCESS_WEBSERVER_KEY }}" >> $HOME/deploy_key.pem
+          chmod 400 $HOME/deploy_key.pem
+
+      - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
+        run: |
+          ssh -T -o StrictHostKeyChecking=no -i $HOME/deploy_key.pem ubuntu@${{ secrets.DEPLOY_HOST }} << 'EOF'
+          echo "${{ secrets.ACCESS_WEBSERVER_KEY }}" >> $HOME/deploy_key.pem
+          chmod 400 $HOME/deploy_key.pem
+          scp -i $HOME/deploy_key.pem deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/
+          scp -i $HOME/deploy_key.pem deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/
+          ssh -i $HOME/deploy_key.pem ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-compose.yml up -d --build"
+          EOF
