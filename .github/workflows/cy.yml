@@ -98,6 +98,9 @@ jobs:
           name: build-artifact
           path: ./
 
+      - name: Listar arquivos de criados 
+        run: ls -lha
+
       - name: Recuperar docker-scripts
         uses: actions/download-artifact@v4
         with:
