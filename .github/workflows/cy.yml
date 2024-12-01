@@ -12,3 +12,12 @@ jobs: # cada 'job' é um agrupamento de steps
     steps: # cada 'step' é uma ação dentro de um grupo de steps
     - name: Atualização do código
       uses: actions/checkout@v2 # action que leva para a VM de execução do workflow os arquivos da branch alvo
+      
+    - name: Definindo a versão da JDK 
+      uses: actions/setup-java@v2 # configura na VM uma versão do Java
+      with:
+        distribution: 'temurin' # ver opções em https://github.com/actions/setup-java?tab=readme-ov-file#supported-distributions
+        java-version: '17'
+
+    - name: Build com Maven
+      run: mvn -f consol-crud-java/pom.xml clean package
