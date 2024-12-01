@@ -64,35 +64,44 @@ public class TitularService {
         if (titular.getNome() != null && !titular.getNome().trim().isEmpty() && titular.getNome().length() <= 60) {
             titularAtual.setNome(titular.getNome());
         }
+
         if (titular.getRg() != null && !titular.getRg().trim().isEmpty() && titular.getRg().length() == 9) {
             titularAtual.setRg(titular.getRg());
         }
+
         if (titular.getCpf() != null && !titular.getCpf().trim().isEmpty() && titular.getCpf().matches("\\d{11}")) {
             titularAtual.setCpf(titular.getCpf());
         }
+
         if (titular.getDataNascimento() != null && !titular.getDataNascimento().isAfter(LocalDate.now())) {
             titularAtual.setDataNascimento(titular.getDataNascimento());
         }
+
         if (titular.getTelefone1() != null && !titular.getTelefone1().trim().isEmpty() && titular.getTelefone1().matches("\\d{10,11}")) {
             titularAtual.setTelefone1(titular.getTelefone1());
         }
+
         if (titular.getTelefone2() == null || titular.getTelefone2().matches("\\d{10,11}")) {
             titularAtual.setTelefone2(titular.getTelefone2());
         }
+
         if (titular.getEstadoCivil() != null && !titular.getEstadoCivil().trim().isEmpty() && titular.getEstadoCivil().length() <= 15) {
             titularAtual.setEstadoCivil(titular.getEstadoCivil());
         }
+
         if (titular.getEscolaridade() != null && !titular.getEscolaridade().trim().isEmpty() && titular.getEscolaridade().length() <= 30) {
             titularAtual.setEscolaridade(titular.getEscolaridade());
         }
+
         if (titular.getTrabalhando() != null && (titular.getTrabalhando() == 0 || titular.getTrabalhando() == 1)) {
             titularAtual.setTrabalhando(titular.getTrabalhando());
         }
+
         if (titular.getOcupacao() != null && !titular.getOcupacao().trim().isEmpty() && titular.getOcupacao().length() <= 45) {
             titularAtual.setOcupacao(titular.getOcupacao());
         }
 
-        return repository.save(titular);
+        return repository.save(titularAtual);
     }
 
     public Titular atualizarFamilia(int id, int idFamilia){
