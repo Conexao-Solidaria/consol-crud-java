@@ -20,7 +20,10 @@ jobs: # cada 'job' é um agrupamento de steps
         java-version: '17'
 
     - name: Build com Maven
-      run: mvn -B package -DskipTests
+      run: mvn -f ./pom.xml clean package
+
+    - name: Listar arquivos antes de gerar o .jar 
+      run: ls -lha
       
     - name: Gerar artefato Github com o .jar gerado
       uses: actions/upload-artifact@v4 # essa action promove o envio de um ou mais arquivos para uma pasta temporária do github actions
