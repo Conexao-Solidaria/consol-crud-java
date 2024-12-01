@@ -21,3 +21,9 @@ jobs: # cada 'job' é um agrupamento de steps
 
     - name: Build com Maven
       run: mvn -B package -DskipTests
+      
+    - name: Gerar artefato Github com o .jar gerado
+      uses: actions/upload-artifact@v4 # essa action promove o envio de um ou mais arquivos para uma pasta temporária do github actions
+      with:
+        name: aplicacao # nome do arquivo ou conjunto de arquivos (veja ele depois em 'Recuperar jars')
+        path: consol-crud-java/target/*.jar # todos os arquivos .jar do diretório api-pets-completa/target
