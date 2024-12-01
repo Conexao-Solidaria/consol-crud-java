@@ -29,48 +29,8 @@ jobs:
         name: aplicacao
         path: ./target/*.jar
 
-
-# name: CI/CD para Spring Boot com Maven e publicação em EC2
-
-# on:
-#   push:
-#     branches: #branch 'alvo'. Ou seja, se algo mudar nela, a mínima mudança que seja, este arquivo de workflow será executado
-#       - caioarnonii-patch-3
-
-# jobs: # cada 'job' é um agrupamento de steps
-#   build: # primeiro grupo de steps
-#     runs-on: ubuntu-latest # aqui apenas indicamos onde o workflow será executado (em qual tipo de VM). No caso indicamos que será num ubuntu. Isso NÃO tem relação com o SO de sua EC2!
-
-#     steps: # cada 'step' é uma ação dentro de um grupo de steps
-#     - name: Atualização do código
-#       uses: actions/checkout@v2 # action que leva para a VM de execução do workflow os arquivos da branch alvo
-      
-#     - name: Definindo a versão da JDK 
-#       uses: actions/setup-java@v2 # configura na VM uma versão do Java
-#       with:
-#         distribution: 'temurin' # ver opções em https://github.com/actions/setup-java?tab=readme-ov-file#supported-distributions
-#         java-version: '17'
-
-#     - name: Build com Maven
-#       run: mvn -f ./pom.xml clean package
-
-#     - name: Listar arquivos de build 
-#       run: ls -lha target
-
-#     - name: Listar arquivos antes de gerar o .jar 
-#       run: ls -lha
-      
-#     - name: Gerar artefato Github com o .jar gerado
-#       uses: actions/upload-artifact@v4 # essa action promove o envio de um ou mais arquivos para uma pasta temporária do github actions
-#       with:
-#         name: aplicacao # nome do arquivo ou conjunto de arquivos (veja ele depois em 'Recuperar jars')
-#         path: ./consol-crud-java/target/*.jar # todos os arquivos .jar do diretório api-pets-completa/target
-        
-#     - name: Listar arquivos de criados 
-#       run: ls -lha
-
-#     # - name: Gerar artefato Github com os arquivos .sh
-#     #   uses: actions/upload-artifact@v4        
-#     #   with:
-#     #     name: scripts  # nome do arquivo ou conjunto de arquivos (veja ele depois em 'Recuperar scripts')
-#     #     path: .github/scripts/*.sh # todos os arquivos .sh do diretório .github/scripts
+    - name: Gerar artefato Github com os arquivos .sh
+      uses: actions/upload-artifact@v4        
+      with:
+        name: scripts
+        path: .github/scripts/*.sh
