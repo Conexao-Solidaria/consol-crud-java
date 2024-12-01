@@ -87,6 +87,7 @@ jobs:
   deploy:
     needs: verify-and-build
     runs-on: ubuntu-latest
+    
     steps:
       - name: Recuperar artefato
         uses: actions/download-artifact@v4
