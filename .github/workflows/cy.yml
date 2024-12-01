@@ -38,3 +38,10 @@ jobs:
   deploy:
     needs: build # segundo grupo de steps
     runs-on: ubuntu-latest
+
+    steps:
+    - name: Recuperar jars
+      uses: actions/download-artifact@v4  # essa action promove o download de um ou mais arquivos de uma pasta temporária do github actions
+      with:
+        name: aplicacao # nome do arquivo ou conjunto de arquivos que queremos recuperar
+        path: ./ # diretório da VM de execução do workflow onde os arquivos recuperados ficarão
