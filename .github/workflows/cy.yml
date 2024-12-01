@@ -22,6 +22,9 @@ jobs: # cada 'job' é um agrupamento de steps
     - name: Build com Maven
       run: mvn -f ./pom.xml clean package
 
+    - name: Listar arquivos de build 
+      run: ls -lha target
+
     - name: Listar arquivos antes de gerar o .jar 
       run: ls -lha
       
@@ -33,3 +36,9 @@ jobs: # cada 'job' é um agrupamento de steps
         
     - name: Listar arquivos de criados 
       run: ls -lha
+
+    # - name: Gerar artefato Github com os arquivos .sh
+    #   uses: actions/upload-artifact@v4        
+    #   with:
+    #     name: scripts  # nome do arquivo ou conjunto de arquivos (veja ele depois em 'Recuperar scripts')
+    #     path: .github/scripts/*.sh # todos os arquivos .sh do diretório .github/scripts
