@@ -8,4 +8,4 @@ set -e
 # daqui em diante, se ocorrer erro, interrompe o script
 
 # tentando iniciar a API (se ocorrer erro, interrompe o script)
-sh /home/ubuntu/deploy-api/api-start.sh
+sh /home/ubuntu/deploy-crud/api-start.sh
