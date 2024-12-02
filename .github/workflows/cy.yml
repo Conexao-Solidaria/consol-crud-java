@@ -75,9 +75,3 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "./*.sh"
           target: "/home/ubuntu/deploy-crud/"
-
-
-      - name: Copiar arquivos de uma EC2 para outra via SSH
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} -r /home/ubuntu/deploy-crud ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
