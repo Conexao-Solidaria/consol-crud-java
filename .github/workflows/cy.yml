@@ -83,5 +83,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} ' 
         echo "Iniciando SCP para EC2 privada..." 
         ls -lha deploy-crud
+        scp -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} $PWD/deploy-crud/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud 
+        echo "Comando SCP concluído. Iniciando conexão SSH para EC2 privada..."
+    
         '
          
