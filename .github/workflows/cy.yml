@@ -79,14 +79,19 @@ jobs:
           source: "./*.sh"
           target: "/home/ubuntu/deploy-crud/"
 
-      - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
+      - name: Copiar arquivos de uma EC2 para outra via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} '
-            echo "Iniciando SCP para EC2 privada..."
-            ls -lha $PWD/deploy-crud  # Verifica se o arquivo JAR está presente
-            scp -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} $PWD/deploy-crud/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
-            scp -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} $PWD/deploy-crud/*.sh ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
-            echo "Comando SCP concluído. Iniciando conexão SSH para EC2 privada..."
-            ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "chmod +x /home/ubuntu/deploy-crud/api-restart.sh"
-            ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sh /home/ubuntu/deploy-crud/api-restart.sh"
-          '
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
+          scp -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} -r /home/ubuntu/deploy-crud ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
+
+      # - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} '
+      #       echo "Iniciando SCP para EC2 privada..."
+      #       ls -lha $PWD/deploy-crud  # Verifica se o arquivo JAR está presente
+      #       scp -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} $PWD/deploy-crud/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
+      #       scp -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} $PWD/deploy-crud/*.sh ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
+      #       echo "Comando SCP concluído. Iniciando conexão SSH para EC2 privada..."
+      #       ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "chmod +x /home/ubuntu/deploy-crud/api-restart.sh"
+      #       ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sh /home/ubuntu/deploy-crud/api-restart.sh"
+      #     '
