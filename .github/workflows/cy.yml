@@ -57,6 +57,7 @@ jobs:
       run: |
         echo "${{ secrets.DEPLOY_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
         chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+        ls
 
     - name: Enviar o JAR p/ a EC2
       uses: appleboy/scp-action@master # esta action abstrai o uso do comando scp, permitindo o envio de arquivos via ssh
@@ -79,6 +80,7 @@ jobs:
 
     - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
       run: |
+        ls
         ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} '
         scp -o StrictHostKeyChecking=no -i ${{ secrets.NOME_ARQUIVO_PEM }} ./home/ubuntu/deploy-crud/${{ secrets.NOME_ARQUIVO_JAR }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud
         '
