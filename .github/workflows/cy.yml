@@ -53,19 +53,11 @@ jobs:
           path: ./
 
       - name: Criar arquivo .pem a partir da variável DEPLOY_KEY e fazer o chmod 400 nele
+        id: geracao-arquivo-pem
         run: |
           echo "${{ secrets.DEPLOY_KEY }}" > $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
           chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
-
-      - name: Enviar chave .pem para a EC2 pública
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ubuntu
-          key: ${{ secrets.DEPLOY_KEY }}
-          source: "$HOME/${{ secrets.NOME_ARQUIVO_PEM }}"
-          target: "/home/ubuntu/"
-
+          ls -lha $HOME/${{ secrets.NOME_ARQUIVO_PEM }} # Verificar se o arquivo foi criado corretamente
       - name: Enviar o JAR para a EC2
         uses: appleboy/scp-action@master
         with:
@@ -83,9 +75,3 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "./*.sh"
           target: "/home/ubuntu/deploy-crud/"
-
-      - name: Enviar diretório do backend para EC2 privada
-        run: |
-          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
-          scp -o StrictHostKeyChecking=no -i /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM }} -r /home/ubuntu/deploy-crud/ ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud/"
-
