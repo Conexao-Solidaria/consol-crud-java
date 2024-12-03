@@ -76,3 +76,9 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           source: "./*.sh"
           target: "/home/ubuntu/deploy-crud/"
+
+      - name: Enviar diretório do backend para EC2 privada
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} "
+          scp -o StrictHostKeyChecking=no -i /home/ubuntu/${{ secrets.NOME_ARQUIVO_PEM }} -r /home/ubuntu/deploy-crud/ ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-crud/"
+
