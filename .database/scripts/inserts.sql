@@ -127,6 +127,7 @@ INSERT INTO `consol`.`doacao` (`descricao`, `data_doacao`, `flag_doacao_entregue
 -- Inserindo dados na tabela `usuario`
 INSERT INTO `consol`.`usuario` (`coordenador`, `nome_usuario`, `email`, `senha`, `cpf`, `flag_aprovado`, `fk_instituicao`) VALUES 
 (1, 'Maria da Silva', 'maria@example.com', 'senha123', '12345678901', 1, 1),
+(1, 'Eduardo Seba', 'dududuedu@gmail.com', '$2a$10$i30P3ZSlzP8teV9oHVIKOO8gtnnOVVdrTyUSGaUZxkIw.EB8v05RK', '49635542836', 1, 1),
 (0, 'João Oliveira', 'joao@example.com', 'senha456', '10987654321', 1, 2);
 
 -- Inserindo dados na tabela `instituicao_familia`
@@ -134,3 +135,4 @@ INSERT INTO `consol`.`instituicao_familia` (`fk_instituicao`, `fk_familia`) VALU
 (1, 1),
 (2, 2),
 (1, 3);
+
