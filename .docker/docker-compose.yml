@@ -1,0 +1,33 @@
+services:
+  api:
+    image: consol-be
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/consol
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: ${ROOT_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: consol-db
+    environment:
+      MYSQL_DATABASE: consol
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../.database/scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql-data:
+

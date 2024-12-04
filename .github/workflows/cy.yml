@@ -1,0 +1,77 @@
+name: CI/CD para Spring Boot com Maven e publicação em EC2
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Atualização do código
+        uses: actions/checkout@v4
+    
+      - name: Definindo a versão da JDK 
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build com Maven
+        run: mvn -B package -DskipTests
+    
+      - name: Gerar artefato Github com o .jar gerado
+        uses: actions/upload-artifact@v4
+        with:
+          name: aplicacao
+          path: ./target/*.jar
+
+      - name: Gerar artefato Github com os arquivos .sh
+        uses: actions/upload-artifact@v4        
+        with:
+          name: scripts
+          path: .github/scripts/*.sh
+
+  deploy:
+    needs: build 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperar jars
+        uses: actions/download-artifact@v4
+        with:
+          name: aplicacao
+          path: ./
+        
+      - name: Recuperar scripts
+        uses: actions/download-artifact@v4
+        with:
+          name: scripts
+          path: ./
+
+      - name: Criar arquivo .pem a partir da variável DEPLOY_KEY e fazer o chmod 400 nele
+        id: geracao-arquivo-pem
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          ls -lha $HOME/${{ secrets.NOME_ARQUIVO_PEM }} # Verificar se o arquivo foi criado corretamente
+      - name: Enviar o JAR para a EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: "./*.jar"
+          target: "/home/ubuntu/deploy-crud/"
+
+      - name: Enviar os Scripts para a EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: "./*.sh"
+          target: "/home/ubuntu/deploy-crud/"
